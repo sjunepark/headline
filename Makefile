@@ -1,3 +1,5 @@
+.PHONY: build
+
 check:
 	go fmt ./...
 	golangci-lint run
@@ -5,3 +7,6 @@ check:
 
 test:
 	go test ./...
+
+build:
+	wails build

@@ -1,4 +1,4 @@
-module news
+module github.com/sejunpark/headline
 
 go 1.21
 

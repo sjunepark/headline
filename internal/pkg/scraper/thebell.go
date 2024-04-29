@@ -1,6 +1,6 @@
 package scraper
 
-import "news/internal/pkg/rodext"
+import "github.com/sejunpark/headline/internal/pkg/rodext"
 
 type TheBellScraper struct {
 	browser *rodext.Browser
