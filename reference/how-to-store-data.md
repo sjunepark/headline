@@ -1,0 +1,3 @@
+- Where should you store local data?
+  - Golang has built one for os.UserConfigDir and os.UserHomeDir I believe @Atterpac prefers to put into appdata by using XDG To help see code here
+    - https://github.com/atterpac/wails-vue-gorm-base/blob/main/api/controllers/api_setup.go
