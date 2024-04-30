@@ -1,18 +1,16 @@
 package scraper
 
-import "github.com/sejunpark/headline/internal/pkg/rodext"
-
 type TheBellScraper struct {
-	browser *rodext.Browser
+	browser *Browser
 }
 
 func NewTheBellScraper() (*TheBellScraper, error) {
-	browserOptions := rodext.BrowserOptions{
+	browserOptions := BrowserOptions{
 		NoDefaultDevice: true,
 		Incognito:       true,
 		Debug:           false,
 	}
-	browser, err := rodext.NewBrowser(browserOptions)
+	browser, err := NewBrowser(browserOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -24,5 +22,6 @@ func NewTheBellScraper() (*TheBellScraper, error) {
 
 func (s *TheBellScraper) Scrape() error {
 	// todo: implement scraping logic
+
 	return nil
 }

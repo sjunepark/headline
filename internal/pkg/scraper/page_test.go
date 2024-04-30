@@ -1,4 +1,4 @@
-package rodext
+package scraper
 
 import (
 	"github.com/go-rod/rod/lib/proto"
