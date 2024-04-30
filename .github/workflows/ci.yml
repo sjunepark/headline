@@ -37,7 +37,7 @@ jobs:
           go-version: '1.22'
 
       - name: Check
-        run: make check
+        run: make check-ci
 
       - name: Test
         run: make test
