@@ -1,23 +1,22 @@
 package scraper
 
 import (
+	"fmt"
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
+	"github.com/go-rod/rod/lib/proto"
 	"time"
 )
 
 // Browser is a wrapper around rod.Browser
 type Browser struct {
 	rodBrowser *rod.Browser
-	pagePool   pagePool
+	pagePool   chan *Page
 }
 
-// BrowserOptions holds options configurable while initializing a Browser.
-// They align with methods available to call on a rod.Browser.
-type BrowserOptions struct {
-	NoDefaultDevice bool
-	Incognito       bool
-	Debug           bool
+// Page is a wrapper around rod.Page
+type Page struct {
+	rodPage *rod.Page
 }
 
 // NewBrowser initializes a new Browser. After initialization, it runs methods defined in BrowserOptions.
@@ -47,9 +46,11 @@ func NewBrowser(options BrowserOptions) (*Browser, error) {
 		}
 	}
 
-	// todo: need to determine how many pages to pool
-	numberOfPages := 16
-	pagePool := newPagePool(numberOfPages)
+	numberOfPages := options.PagePoolSize
+	pagePool := make(chan *Page, numberOfPages)
+	for i := 0; i < numberOfPages; i++ {
+		pagePool <- nil
+	}
 
 	return &Browser{
 		rodBrowser: b,
@@ -57,29 +58,133 @@ func NewBrowser(options BrowserOptions) (*Browser, error) {
 	}, nil
 }
 
+// BrowserOptions holds options configurable while initializing a Browser.
+// They align with methods available to call on a rod.Browser.
+type BrowserOptions struct {
+	NoDefaultDevice bool
+	Incognito       bool
+	Debug           bool
+	PagePoolSize    int
+}
+
+// Cleanup
+// 1. Closes all Pages in pagePool
+// 2. Closes the Browser
 func (b *Browser) Cleanup() error {
-	err := b.pagePool.cleanup()
+	// Cannot use the range keyword here because it will deadlock
+	for i := 0; i < cap(b.pagePool); i++ {
+		page := <-b.pagePool
+		if page == nil {
+			continue
+		}
+		err := page.cleanup()
+		if err != nil {
+			return err
+		}
+	}
+
+	err := b.rodBrowser.Close()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Page returns a new Page from the pool.
+// Always make sure to call putPage after using the Page, or else a deadlock can occur.
+// The returned Page is thread-safe.
+func (b *Browser) Page() (page *Page, putPage func(), err error) {
+	options := pageOptions{
+		WindowFullscreen: false,
+	}
+
+	putPageFactory := func(page *Page) func() {
+		return func() {
+			fmt.Printf("Putting back page with address %p\n", page)
+			b.pagePool <- page
+		}
+	}
+
+	page = <-b.pagePool
+	fmt.Printf("Got page with address %p\n", page)
+
+	if page == nil {
+		page, err = b.newPage(options)
+		if err != nil {
+			return nil, nil, err
+		}
+		fmt.Printf("Created new page with address %p\n", page)
+		return page, putPageFactory(page), nil
+	}
+
+	fmt.Printf("Reusing page with address %p\n", page)
+	return page, putPageFactory(page), nil
+}
+
+// newPage initializes a new Page. After initialization, it runs methods defined in pageOptions.
+func (b *Browser) newPage(options pageOptions) (*Page, error) {
+	opts := proto.TargetCreateTarget{}
+	p, err := b.rodBrowser.Page(opts)
+	if err != nil {
+		return nil, err
+	}
+
+	if options.WindowFullscreen {
+		err = p.SetWindow(&proto.BrowserBounds{
+			WindowState: proto.BrowserWindowStateFullscreen,
+		})
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		err = p.SetViewport(&proto.EmulationSetDeviceMetricsOverride{
+			Width:             1920,
+			Height:            1080,
+			DeviceScaleFactor: 1,
+			Mobile:            false,
+		})
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return &Page{rodPage: p}, nil
+}
+
+// pageOptions holds options configurable while initializing a Page.
+// They align with methods available to call on a rod.Page.
+type pageOptions struct {
+	WindowFullscreen bool
+}
+
+// cleanup closes the Page
+func (p *Page) cleanup() error {
+	err := p.rodPage.Close()
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// Page returns a new Page from the pool.
-// Always make sure to call PutPage after using the Page, or else a deadlock will occur.
-func (b *Browser) Page() (*Page, error) {
-	options := pageOptions{
-		WindowFullscreen: false,
+// navigate navigates the Page to the given url.
+// It waits until the Page is stable for 1 second, and sets the window state to fullscreen.
+func (p *Page) navigate(url string) error {
+	var err error
+	wait := p.rodPage.WaitNavigation(proto.PageLifecycleEventNameNetworkAlmostIdle)
+	err = p.rodPage.Navigate(url)
+	if err != nil {
+		return err
 	}
-	create := newPageFactory(b, options)
+	wait()
 
-	p, err := b.pagePool.get(create)
+	return nil
+}
+
+func (p *Page) Element(selector string) (*rod.Element, error) {
+	el, err := p.rodPage.Element(selector)
 	if err != nil {
 		return nil, err
 	}
-	return p, nil
-}
-
-func (b *Browser) PutPage(page *Page) {
-	b.pagePool.put(page)
+	return el, nil
 }

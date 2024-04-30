@@ -5,13 +5,13 @@ go 1.21
 toolchain go1.22.2
 
 require (
+	github.com/adrg/xdg v0.4.0
 	github.com/go-rod/rod v0.115.0
 	github.com/stretchr/testify v1.9.0
 	github.com/wailsapp/wails/v2 v2.8.1
 )
 
 require (
-	github.com/adrg/xdg v0.4.0 // indirect
 	github.com/bep/debounce v1.2.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
