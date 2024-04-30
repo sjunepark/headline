@@ -9,6 +9,7 @@ import (
 )
 
 // Browser is a wrapper around rod.Browser
+// It has a pagePool which you can get Pages from.
 type Browser struct {
 	rodBrowser *rod.Browser
 	pagePool   chan *Page
@@ -168,9 +169,10 @@ func (p *Page) cleanup() error {
 }
 
 // navigate navigates the Page to the given url.
-// It waits until the Page is stable for 1 second, and sets the window state to fullscreen.
+// It waits for the NetworkAlmostIdle event before returning.
 func (p *Page) navigate(url string) error {
 	var err error
+	// A more conservative approach would be to wait for the onLoad event using the WaitLoad method.
 	wait := p.rodPage.WaitNavigation(proto.PageLifecycleEventNameNetworkAlmostIdle)
 	err = p.rodPage.Navigate(url)
 	if err != nil {
@@ -181,6 +183,7 @@ func (p *Page) navigate(url string) error {
 	return nil
 }
 
+// Element returns the rod.Element for the given selector.
 func (p *Page) Element(selector string) (*rod.Element, error) {
 	el, err := p.rodPage.Element(selector)
 	if err != nil {
