@@ -1,16 +1,16 @@
 package scraper
 
 type TheBellScraper struct {
-	browser *Browser
+	browser *browser
 }
 
 func NewTheBellScraper() (*TheBellScraper, error) {
-	browserOptions := BrowserOptions{
-		NoDefaultDevice: true,
-		Incognito:       true,
-		Debug:           false,
+	browserOptions := browserOptions{
+		noDefaultDevice: true,
+		incognito:       true,
+		debug:           false,
 	}
-	browser, err := NewBrowser(browserOptions)
+	browser, err := newBrowser(browserOptions)
 	if err != nil {
 		return nil, err
 	}

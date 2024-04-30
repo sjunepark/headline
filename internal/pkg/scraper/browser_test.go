@@ -10,38 +10,38 @@ import (
 
 type BrowserSuite struct {
 	suite.Suite
-	browser       *Browser
+	browser       *browser
 	pagePoolLimit int
 }
 
 func (ts *BrowserSuite) SetupTest() {
-	browserOptions := BrowserOptions{
-		NoDefaultDevice: true,
-		Incognito:       true,
-		Debug:           false,
-		PagePoolSize:    16,
+	browserOptions := browserOptions{
+		noDefaultDevice: true,
+		incognito:       true,
+		debug:           false,
+		pagePoolSize:    16,
 	}
-	b, err := NewBrowser(browserOptions)
+	b, err := newBrowser(browserOptions)
 	ts.NoErrorf(err, "failed to initialize browser: %v", err)
 	ts.browser = b
 
-	ts.pagePoolLimit = browserOptions.PagePoolSize
+	ts.pagePoolLimit = browserOptions.pagePoolSize
 }
 
 func (ts *BrowserSuite) TearDownTest() {
-	err := ts.browser.Cleanup()
+	err := ts.browser.cleanup()
 	ts.NoErrorf(err, "failed to cleanup page: %v", err)
 }
 
 func (ts *BrowserSuite) TestPage_navigate() {
-	page, putPage, err := ts.browser.Page()
+	page, putPage, err := ts.browser.page()
 	defer putPage()
 	ts.NoErrorf(err, "failed to get page: %v", err)
 
 	err = page.navigate("https://www.wikipedia.org/")
 	ts.NoErrorf(err, "failed to navigate: %v", err)
 
-	element, err := page.Element("h1")
+	element, err := page.element("h1")
 	ts.NoErrorf(err, "failed to find element: %v", err)
 
 	text, err := element.Text()
@@ -57,7 +57,7 @@ func (ts *BrowserSuite) TestBrowser_Page() {
 			pageIds := make(map[proto.TargetTargetID]bool)
 
 			for i := 0; i < ts.pagePoolLimit*multiplier; i++ {
-				page, putPage, err := ts.browser.Page()
+				page, putPage, err := ts.browser.page()
 				ts.NoErrorf(err, "failed to get page: %v", err)
 
 				id := page.rodPage.TargetID
@@ -79,7 +79,7 @@ func (ts *BrowserSuite) TestBrowser_Page() {
 				wg.Add(1)
 				go func() {
 					defer wg.Done()
-					page, putPage, err := ts.browser.Page()
+					page, putPage, err := ts.browser.page()
 					ts.NoErrorf(err, "failed to get page: %v", err)
 
 					id := page.rodPage.TargetID

@@ -8,24 +8,24 @@ import (
 	"time"
 )
 
-// Browser is a wrapper around rod.Browser
+// browser is a wrapper around rod.Browser
 // It has a pagePool which you can get Pages from.
-type Browser struct {
+type browser struct {
 	rodBrowser *rod.Browser
-	pagePool   chan *Page
+	pagePool   chan *page
 }
 
-// Page is a wrapper around rod.Page
-type Page struct {
+// page is a wrapper around rod.Page
+type page struct {
 	rodPage *rod.Page
 }
 
-// NewBrowser initializes a new Browser. After initialization, it runs methods defined in BrowserOptions.
-func NewBrowser(options BrowserOptions) (*Browser, error) {
+// newBrowser initializes a new browser. After initialization, it runs methods defined in browserOptions.
+func newBrowser(options browserOptions) (*browser, error) {
 	var err error
 	b := rod.New()
 
-	if options.Debug {
+	if options.debug {
 		l, err := launcher.New().Headless(false).Devtools(true).Launch()
 		if err != nil {
 			return nil, err
@@ -37,41 +37,41 @@ func NewBrowser(options BrowserOptions) (*Browser, error) {
 	if err != nil {
 		return nil, err
 	}
-	if options.NoDefaultDevice {
+	if options.noDefaultDevice {
 		b = b.NoDefaultDevice()
 	}
-	if options.Incognito {
+	if options.incognito {
 		b, err = b.Incognito()
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	numberOfPages := options.PagePoolSize
-	pagePool := make(chan *Page, numberOfPages)
+	numberOfPages := options.pagePoolSize
+	pagePool := make(chan *page, numberOfPages)
 	for i := 0; i < numberOfPages; i++ {
 		pagePool <- nil
 	}
 
-	return &Browser{
+	return &browser{
 		rodBrowser: b,
 		pagePool:   pagePool,
 	}, nil
 }
 
-// BrowserOptions holds options configurable while initializing a Browser.
+// browserOptions holds options configurable while initializing a browser.
 // They align with methods available to call on a rod.Browser.
-type BrowserOptions struct {
-	NoDefaultDevice bool
-	Incognito       bool
-	Debug           bool
-	PagePoolSize    int
+type browserOptions struct {
+	noDefaultDevice bool
+	incognito       bool
+	debug           bool
+	pagePoolSize    int
 }
 
-// Cleanup
+// cleanup
 // 1. Closes all Pages in pagePool
-// 2. Closes the Browser
-func (b *Browser) Cleanup() error {
+// 2. Closes the browser
+func (b *browser) cleanup() error {
 	// Cannot use the range keyword here because it will deadlock
 	for i := 0; i < cap(b.pagePool); i++ {
 		page := <-b.pagePool
@@ -92,46 +92,46 @@ func (b *Browser) Cleanup() error {
 	return nil
 }
 
-// Page returns a new Page from the pool.
-// Always make sure to call putPage after using the Page, or else a deadlock can occur.
-// The returned Page is thread-safe.
-func (b *Browser) Page() (page *Page, putPage func(), err error) {
+// page returns a new page from the pool.
+// Always make sure to call putPage after using the page, or else a deadlock can occur.
+// The returned page is thread-safe.
+func (b *browser) page() (p *page, putPage func(), err error) {
 	options := pageOptions{
-		WindowFullscreen: false,
+		windowFullscreen: false,
 	}
 
-	putPageFactory := func(page *Page) func() {
+	putPageFactory := func(page *page) func() {
 		return func() {
 			fmt.Printf("Putting back page with address %p\n", page)
 			b.pagePool <- page
 		}
 	}
 
-	page = <-b.pagePool
-	fmt.Printf("Got page with address %p\n", page)
+	p = <-b.pagePool
+	fmt.Printf("Got page with address %p\n", p)
 
-	if page == nil {
-		page, err = b.newPage(options)
+	if p == nil {
+		p, err = b.newPage(options)
 		if err != nil {
 			return nil, nil, err
 		}
-		fmt.Printf("Created new page with address %p\n", page)
-		return page, putPageFactory(page), nil
+		fmt.Printf("Created new page with address %p\n", p)
+		return p, putPageFactory(p), nil
 	}
 
-	fmt.Printf("Reusing page with address %p\n", page)
-	return page, putPageFactory(page), nil
+	fmt.Printf("Reusing page with address %p\n", p)
+	return p, putPageFactory(p), nil
 }
 
-// newPage initializes a new Page. After initialization, it runs methods defined in pageOptions.
-func (b *Browser) newPage(options pageOptions) (*Page, error) {
+// newPage initializes a new page. After initialization, it runs methods defined in pageOptions.
+func (b *browser) newPage(options pageOptions) (*page, error) {
 	opts := proto.TargetCreateTarget{}
 	p, err := b.rodBrowser.Page(opts)
 	if err != nil {
 		return nil, err
 	}
 
-	if options.WindowFullscreen {
+	if options.windowFullscreen {
 		err = p.SetWindow(&proto.BrowserBounds{
 			WindowState: proto.BrowserWindowStateFullscreen,
 		})
@@ -150,17 +150,17 @@ func (b *Browser) newPage(options pageOptions) (*Page, error) {
 		}
 	}
 
-	return &Page{rodPage: p}, nil
+	return &page{rodPage: p}, nil
 }
 
-// pageOptions holds options configurable while initializing a Page.
+// pageOptions holds options configurable while initializing a page.
 // They align with methods available to call on a rod.Page.
 type pageOptions struct {
-	WindowFullscreen bool
+	windowFullscreen bool
 }
 
-// cleanup closes the Page
-func (p *Page) cleanup() error {
+// cleanup closes the page
+func (p *page) cleanup() error {
 	err := p.rodPage.Close()
 	if err != nil {
 		return err
@@ -168,9 +168,9 @@ func (p *Page) cleanup() error {
 	return nil
 }
 
-// navigate navigates the Page to the given url.
+// navigate navigates the page to the given url.
 // It waits for the NetworkAlmostIdle event before returning.
-func (p *Page) navigate(url string) error {
+func (p *page) navigate(url string) error {
 	var err error
 	// A more conservative approach would be to wait for the onLoad event using the WaitLoad method.
 	wait := p.rodPage.WaitNavigation(proto.PageLifecycleEventNameNetworkAlmostIdle)
@@ -183,8 +183,8 @@ func (p *Page) navigate(url string) error {
 	return nil
 }
 
-// Element returns the rod.Element for the given selector.
-func (p *Page) Element(selector string) (*rod.Element, error) {
+// element returns the rod.Element for the given selector.
+func (p *page) element(selector string) (*rod.Element, error) {
 	el, err := p.rodPage.Element(selector)
 	if err != nil {
 		return nil, err
