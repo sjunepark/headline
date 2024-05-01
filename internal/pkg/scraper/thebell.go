@@ -11,41 +11,25 @@ type TheBellScraper struct {
 	browser *browser
 }
 
-func NewTheBellScraper() (*TheBellScraper, error) {
+func NewTheBellScraper() (theBellScraper *TheBellScraper, cleanup func(), err error) {
 	options := browserOptions{
 		noDefaultDevice: true,
 		incognito:       true,
 		debug:           false,
 	}
-	b, err := newBrowser(options)
+	b, browserCleanup, err := newBrowser(options)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return &TheBellScraper{
+	theBellScraper = &TheBellScraper{
 		browser: b,
-	}, nil
+	}
+	return theBellScraper, browserCleanup, nil
 }
 
 func (s *TheBellScraper) Cleanup() {
 	s.browser.cleanup()
-}
-
-// Scrape should
-// 1. Navigate to thebell
-// 2. Get the list of articles to scrape for each keyword
-// 3. For each article, get the article content
-func (s *TheBellScraper) Scrape(keywords []string) ([]model.Article, error) {
-	p, putPage, err := s.browser.page()
-	defer putPage()
-	if err != nil {
-		return nil, err
-	}
-	err = p.navigate("https://thebell.co.kr/free/content/Article.asp?svccode=00/")
-	if err != nil {
-		return nil, err
-	}
-	return nil, nil
 }
 
 func (s *TheBellScraper) getArticleUrls(keyword string) (<-chan []url.URL, error) {

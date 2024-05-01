@@ -7,17 +7,19 @@ import (
 
 type TheBellSuite struct {
 	suite.Suite
-	scraper *TheBellScraper
+	scraper        *TheBellScraper
+	cleanupScraper func()
 }
 
 func (ts *TheBellSuite) SetupTest() {
-	scraper, err := NewTheBellScraper()
+	scraper, cleanup, err := NewTheBellScraper()
 	ts.NoErrorf(err, "failed to initialize TheBellScraper: %v", err)
 	ts.scraper = scraper
+	ts.cleanupScraper = cleanup
 }
 
 func (ts *TheBellSuite) TearDownTest() {
-	ts.scraper.Cleanup()
+	ts.cleanupScraper()
 }
 
 func (ts *TheBellSuite) TestTheBellScraper_Scrape() {

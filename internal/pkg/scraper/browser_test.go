@@ -10,8 +10,9 @@ import (
 
 type BrowserSuite struct {
 	suite.Suite
-	browser       *browser
-	pagePoolLimit int
+	browser        *browser
+	cleanupBrowser func()
+	pagePoolLimit  int
 }
 
 func (ts *BrowserSuite) SetupTest() {
@@ -21,15 +22,15 @@ func (ts *BrowserSuite) SetupTest() {
 		debug:           false,
 		pagePoolSize:    16,
 	}
-	b, err := newBrowser(options)
+	b, cleanup, err := newBrowser(options)
 	ts.NoErrorf(err, "failed to initialize browser: %v", err)
 	ts.browser = b
-
+	ts.cleanupBrowser = cleanup
 	ts.pagePoolLimit = options.pagePoolSize
 }
 
 func (ts *BrowserSuite) TearDownTest() {
-	ts.browser.cleanup()
+	ts.cleanupBrowser()
 }
 
 func (ts *BrowserSuite) TestPage_navigate() {

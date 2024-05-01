@@ -22,29 +22,29 @@ type page struct {
 }
 
 // newBrowser initializes a new browser. After initialization, it runs methods defined in browserOptions.
-func newBrowser(options browserOptions) (*browser, error) {
-	var err error
-	b := rod.New()
+// A cleanup function is returned to close the browser and all pages in the pagePool.
+func newBrowser(options browserOptions) (b *browser, cleanup func(), err error) {
+	rodBrowser := rod.New()
 
 	if options.debug {
 		l, err := launcher.New().Headless(false).Devtools(true).Launch()
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
-		b = b.Trace(true).SlowMotion(2 * time.Second).ControlURL(l)
+		rodBrowser = rodBrowser.Trace(true).SlowMotion(2 * time.Second).ControlURL(l)
 	}
 
-	err = b.Connect()
+	err = rodBrowser.Connect()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	if options.noDefaultDevice {
-		b = b.NoDefaultDevice()
+		rodBrowser = rodBrowser.NoDefaultDevice()
 	}
 	if options.incognito {
-		b, err = b.Incognito()
+		rodBrowser, err = rodBrowser.Incognito()
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 	}
 
@@ -54,10 +54,11 @@ func newBrowser(options browserOptions) (*browser, error) {
 		pagePool <- nil
 	}
 
-	return &browser{
-		rodBrowser: b,
+	b = &browser{
+		rodBrowser: rodBrowser,
 		pagePool:   pagePool,
-	}, nil
+	}
+	return b, b.cleanup, nil
 }
 
 // browserOptions holds options configurable while initializing a browser.
@@ -107,7 +108,8 @@ func (b *browser) page() (p *page, putPage func(), err error) {
 	fmt.Printf("Got page with address %p\n", p)
 
 	if p == nil {
-		p, err = b.newPage(options)
+		// We don't need to handle the cleanup since the page is to be reused.
+		p, _, err = b.newPage(options)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -120,33 +122,34 @@ func (b *browser) page() (p *page, putPage func(), err error) {
 }
 
 // newPage initializes a new page. After initialization, it runs methods defined in pageOptions.
-func (b *browser) newPage(options pageOptions) (*page, error) {
+func (b *browser) newPage(options pageOptions) (p *page, cleanup func(), err error) {
 	opts := proto.TargetCreateTarget{}
-	p, err := b.rodBrowser.Page(opts)
+	rodPage, err := b.rodBrowser.Page(opts)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	if options.windowFullscreen {
-		err = p.SetWindow(&proto.BrowserBounds{
+		err = rodPage.SetWindow(&proto.BrowserBounds{
 			WindowState: proto.BrowserWindowStateFullscreen,
 		})
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 	} else {
-		err = p.SetViewport(&proto.EmulationSetDeviceMetricsOverride{
+		err = rodPage.SetViewport(&proto.EmulationSetDeviceMetricsOverride{
 			Width:             1920,
 			Height:            1080,
 			DeviceScaleFactor: 1,
 			Mobile:            false,
 		})
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 	}
 
-	return &page{rodPage: p}, nil
+	p = &page{rodPage: rodPage}
+	return p, p.cleanup, nil
 }
 
 // pageOptions holds options configurable while initializing a page.
