@@ -7,7 +7,7 @@ import (
 	"sync"
 )
 
-// sourceScraper is an interface that defines the methods that a scraper should implement.
+// sourceScraper is an interface that defines the methods that a sourceScraper should implement.
 //
 // fetchUrlsToScrape should return a channel of urls to scrape, and it should handle pagination.
 // It should also be thread-safe.
@@ -16,16 +16,21 @@ import (
 type sourceScraper interface {
 	fetchUrlsToScrape() (<-chan url.URL, error)
 	fetchArticle(url.URL) (model.Article, error)
-	cleanup() error
+	cleanup()
 	//	todo: implement context to cancel the scraping in certain conditions
 }
 
 type Scraper struct {
-	sourceScraper sourceScraper
+	sourceScraper
+}
+
+func NewScraper(s sourceScraper) (scraper *Scraper, cleanup func()) {
+	scraper = &Scraper{s}
+	return scraper, s.cleanup
 }
 
 func (s *Scraper) Scrape(keywords []string) (<-chan model.Article, error) {
-	urlsToScrape, err := s.sourceScraper.fetchUrlsToScrape()
+	urlsToScrape, err := s.fetchUrlsToScrape()
 	if err != nil {
 		return nil, err
 	}
@@ -38,7 +43,7 @@ func (s *Scraper) Scrape(keywords []string) (<-chan model.Article, error) {
 		wg.Add(1)
 		go func(u url.URL) {
 			defer wg.Done()
-			article, articleFetchErr := s.sourceScraper.fetchArticle(u)
+			article, articleFetchErr := s.fetchArticle(u)
 			if articleFetchErr != nil {
 				slog.Error("failed to fetch article", "url", u.String(), "error", articleFetchErr)
 				return
