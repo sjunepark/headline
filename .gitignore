@@ -2,3 +2,6 @@ build
 node_modules
 
 .idea
+
+# Go test output
+c.out

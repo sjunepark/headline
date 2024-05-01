@@ -12,5 +12,9 @@ check-ci:
 test:
 	go test ./...
 
+coverage:
+	go test -coverprofile=c.out ./...
+	go tool cover -html="c.out"
+
 build:
 	wails build
