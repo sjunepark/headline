@@ -102,6 +102,21 @@ func (ts *BrowserSuite) TestBrowser_Page() {
 	})
 }
 
+func (ts *BrowserSuite) TestPage_cleanup() {
+	ts.Run("page should be cleaned up after putPage is called", func() {
+		p, cleanup, err := ts.browser.newPage(pageOptions{})
+		ts.NoErrorf(err, "failed to create new page: %v", err)
+
+		_, err = p.rodPage.Info()
+		ts.NoErrorf(err, "failed to get page info: %v", err)
+
+		cleanup()
+
+		_, err = p.rodPage.Info()
+		ts.Error(err, "shouldn't be able to get page info after cleanup")
+	})
+}
+
 func (ts *BrowserSuite) TestPage_navigate() {
 	p, putPage, err := ts.browser.page()
 	defer putPage()
