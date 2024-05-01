@@ -6,12 +6,11 @@ import (
 	"net/url"
 )
 
-type TheBellScraper struct {
-	sourceScraper
+type thebellScraper struct {
 	browser *browser
 }
 
-func NewTheBellScraper() (theBellScraper *TheBellScraper, cleanup func(), err error) {
+func NewThebellScraper() (s *thebellScraper, cleanup func(), err error) {
 	options := browserOptions{
 		noDefaultDevice: true,
 		incognito:       true,
@@ -22,30 +21,30 @@ func NewTheBellScraper() (theBellScraper *TheBellScraper, cleanup func(), err er
 		return nil, nil, err
 	}
 
-	theBellScraper = &TheBellScraper{
+	s = &thebellScraper{
 		browser: b,
 	}
-	return theBellScraper, browserCleanup, nil
+	return s, browserCleanup, nil
 }
 
-func (s *TheBellScraper) Cleanup() {
+func (s *thebellScraper) Cleanup() {
 	s.browser.cleanup()
 }
 
-func (s *TheBellScraper) getArticleUrls(keyword string) (<-chan []url.URL, error) {
+func (s *thebellScraper) getArticleUrls(keyword string) (<-chan []url.URL, error) {
 	baseUrl := fmt.Sprintf("https://thebell.co.kr/free/content/Search.asp?page=1&period=360&part=A&keyword=%s", keyword)
 	fmt.Printf("baseUrl: %s\n", baseUrl)
 	// todo: implement
 	return nil, nil
 }
 
-func (s *TheBellScraper) getArticle(url string) (model.Article, error) {
+func (s *thebellScraper) getArticle(url string) (model.Article, error) {
 	return model.Article{}, nil
 }
 
-// cleanTheBellArticleUrl removes unnecessary query parameters from thebell article url,
+// cleanThebellArticleUrl removes unnecessary query parameters from thebell article url,
 // leaving only the 'key' parameter
-func cleanTheBellArticleUrl(u string) (string, error) {
+func cleanThebellArticleUrl(u string) (string, error) {
 	parsedUrl, err := url.Parse(u)
 	if err != nil {
 		return "", err

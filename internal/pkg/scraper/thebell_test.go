@@ -5,31 +5,24 @@ import (
 	"testing"
 )
 
-type TheBellSuite struct {
+type ThebellSuite struct {
 	suite.Suite
-	scraper        *TheBellScraper
+	scraper        *thebellScraper
 	cleanupScraper func()
 }
 
-func (ts *TheBellSuite) SetupTest() {
-	scraper, cleanup, err := NewTheBellScraper()
-	ts.NoErrorf(err, "failed to initialize TheBellScraper: %v", err)
+func (ts *ThebellSuite) SetupTest() {
+	scraper, cleanup, err := NewThebellScraper()
+	ts.NoErrorf(err, "failed to initialize thebellScraper: %v", err)
 	ts.scraper = scraper
 	ts.cleanupScraper = cleanup
 }
 
-func (ts *TheBellSuite) TearDownTest() {
+func (ts *ThebellSuite) TearDownTest() {
 	ts.cleanupScraper()
 }
 
-func (ts *TheBellSuite) TestTheBellScraper_Scrape() {
-}
-
-func TestTheBellSuite(t *testing.T) {
-	suite.Run(t, new(TheBellSuite))
-}
-
-func (ts *TheBellSuite) Test_cleanTheBellArticleUrl() {
+func (ts *ThebellSuite) Test_cleanThebellArticleUrl() {
 	tests := []struct {
 		name        string
 		u           string
@@ -50,7 +43,7 @@ func (ts *TheBellSuite) Test_cleanTheBellArticleUrl() {
 	}
 	for _, tt := range tests {
 		ts.Run(tt.name, func() {
-			got, err := cleanTheBellArticleUrl(tt.u)
+			got, err := cleanThebellArticleUrl(tt.u)
 			ts.Equal(tt.want, got)
 			if tt.shouldError {
 				ts.Error(err)
@@ -59,4 +52,8 @@ func (ts *TheBellSuite) Test_cleanTheBellArticleUrl() {
 			}
 		})
 	}
+}
+
+func TestThebellSuite(t *testing.T) {
+	suite.Run(t, new(ThebellSuite))
 }
