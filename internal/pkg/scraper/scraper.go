@@ -16,6 +16,7 @@ import (
 type sourceScraper interface {
 	fetchUrlsToScrape() (<-chan url.URL, error)
 	fetchArticle(url.URL) (model.Article, error)
+	cleanup() error
 	//	todo: implement context to cancel the scraping in certain conditions
 }
 

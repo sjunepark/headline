@@ -29,8 +29,7 @@ func (ts *BrowserSuite) SetupTest() {
 }
 
 func (ts *BrowserSuite) TearDownTest() {
-	err := ts.browser.cleanup()
-	ts.NoErrorf(err, "failed to cleanup page: %v", err)
+	ts.browser.cleanup()
 }
 
 func (ts *BrowserSuite) TestPage_navigate() {
@@ -99,6 +98,6 @@ func (ts *BrowserSuite) TestBrowser_Page() {
 	})
 }
 
-func TestPageSuite(t *testing.T) {
+func TestBrowserSuite(t *testing.T) {
 	suite.Run(t, new(BrowserSuite))
 }

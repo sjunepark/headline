@@ -5,6 +5,7 @@ import (
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
 	"github.com/go-rod/rod/lib/proto"
+	"log/slog"
 	"time"
 )
 
@@ -71,25 +72,20 @@ type browserOptions struct {
 // cleanup
 // 1. Closes all Pages in pagePool
 // 2. Closes the browser
-func (b *browser) cleanup() error {
+func (b *browser) cleanup() {
 	// Cannot use the range keyword here because it will deadlock
 	for i := 0; i < cap(b.pagePool); i++ {
-		page := <-b.pagePool
-		if page == nil {
+		p := <-b.pagePool
+		if p == nil {
 			continue
 		}
-		err := page.cleanup()
-		if err != nil {
-			return err
-		}
+		p.cleanup()
 	}
 
-	err := b.rodBrowser.Close()
-	if err != nil {
-		return err
+	browserCloseErr := b.rodBrowser.Close()
+	if browserCloseErr != nil {
+		slog.Error("failed to close browser", "error", browserCloseErr)
 	}
-
-	return nil
 }
 
 // page returns a new page from the pool.
@@ -160,12 +156,11 @@ type pageOptions struct {
 }
 
 // cleanup closes the page
-func (p *page) cleanup() error {
+func (p *page) cleanup() {
 	err := p.rodPage.Close()
 	if err != nil {
-		return err
+		slog.Error("failed to close page", "error", err)
 	}
-	return nil
 }
 
 // navigate navigates the page to the given url.
