@@ -1,6 +1,7 @@
 package scraper
 
 import (
+	"context"
 	"fmt"
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
@@ -12,6 +13,8 @@ import (
 // browser is a wrapper around rod.Browser
 // It has a pagePool which you can get Pages from.
 type browser struct {
+	ctx        context.Context
+	cancel     context.CancelFunc
 	rodBrowser *rod.Browser
 	pagePool   chan *page
 }
@@ -24,18 +27,22 @@ type page struct {
 // newBrowser initializes a new browser. After initialization, it runs methods defined in browserOptions.
 // A cleanup function is returned to close the browser and all pages in the pagePool.
 func newBrowser(options browserOptions) (b *browser, cleanup func(), err error) {
+	ctx, cancel := context.WithCancel(context.Background())
+
 	rodBrowser := rod.New()
 
 	if options.debug {
-		l, err := launcher.New().Headless(false).Devtools(true).Launch()
-		if err != nil {
-			return nil, nil, err
+		l, launchErr := launcher.New().Headless(false).Devtools(true).Launch()
+		if launchErr != nil {
+			cancel()
+			return nil, nil, launchErr
 		}
 		rodBrowser = rodBrowser.Trace(true).SlowMotion(2 * time.Second).ControlURL(l)
 	}
 
 	err = rodBrowser.Connect()
 	if err != nil {
+		cancel()
 		return nil, nil, err
 	}
 	if options.noDefaultDevice {
@@ -44,17 +51,24 @@ func newBrowser(options browserOptions) (b *browser, cleanup func(), err error) 
 	if options.incognito {
 		rodBrowser, err = rodBrowser.Incognito()
 		if err != nil {
+			cancel()
 			return nil, nil, err
 		}
 	}
 
 	numberOfPages := options.pagePoolSize
 	pagePool := make(chan *page, numberOfPages)
+	// You have to fill the pagePool with nil values first.
+	// By filling it with nil values, you can avoid using the select statement.
+	// Also, if you don't fill it with nil values first, it's hard to properly clean them up.
+	// There are lots of complexities to handle when a channel is not full.
 	for i := 0; i < numberOfPages; i++ {
 		pagePool <- nil
 	}
 
 	b = &browser{
+		ctx:        ctx,
+		cancel:     cancel,
 		rodBrowser: rodBrowser,
 		pagePool:   pagePool,
 	}
@@ -73,10 +87,13 @@ type browserOptions struct {
 // cleanup
 // 1. Closes all Pages in pagePool
 // 2. Closes the browser
+// todo: need to broadcast all operations to cancel
 func (b *browser) cleanup() {
-	// Cannot use the range keyword here because it will deadlock
-	for i := 0; i < cap(b.pagePool); i++ {
-		p := <-b.pagePool
+	// Need to run cancel first to make sure no new pages are put back to the pool
+	b.cancel()
+	// Since you cannot designate specific producers for the pagePool, channel close should be handled by cleanup.
+	close(b.pagePool)
+	for p := range b.pagePool {
 		if p == nil {
 			continue
 		}
@@ -89,36 +106,41 @@ func (b *browser) cleanup() {
 	}
 }
 
-// page returns a new page from the pool.
-// Always make sure to call putPage after using the page, or else a deadlock can occur.
+// page returns a new page from the pagePool.
+// If the pagePool is empty, a new page is created.
+// Always make sure to call putPage after using the page.
 // The returned page is thread-safe.
 func (b *browser) page() (p *page, putPage func(), err error) {
 	options := pageOptions{
 		windowFullscreen: false,
 	}
 
-	putPageFactory := func(page *page) func() {
-		return func() {
-			fmt.Printf("Putting back page with address %p\n", page)
-			b.pagePool <- page
-		}
-	}
-
 	p = <-b.pagePool
-	fmt.Printf("Got page with address %p\n", p)
 
-	if p == nil {
-		// We don't need to handle the cleanup since the page is to be reused.
-		p, _, err = b.newPage(options)
-		if err != nil {
-			return nil, nil, err
-		}
-		fmt.Printf("Created new page with address %p\n", p)
-		return p, putPageFactory(p), nil
+	if p != nil {
+		fmt.Printf("Reusing page with address %p\n", p)
+		return p, putPageFactory(b.ctx, b.pagePool, p), nil
 	}
 
-	fmt.Printf("Reusing page with address %p\n", p)
-	return p, putPageFactory(p), nil
+	p, _, err = b.newPage(options)
+	if err != nil {
+		return nil, nil, err
+	}
+	fmt.Printf("No page in pool, created new page with address: %p\n", p)
+	return p, putPageFactory(b.ctx, b.pagePool, p), nil
+}
+
+func putPageFactory(ctx context.Context, pagePool chan *page, page *page) func() {
+	return func() {
+		select {
+		case <-ctx.Done():
+			page.cleanup()
+			fmt.Printf("Cleaning up page with address %p\n", page)
+		default:
+			pagePool <- page
+			fmt.Printf("Putting back page with address %p\n", page)
+		}
+	}
 }
 
 // newPage initializes a new page. After initialization, it runs methods defined in pageOptions.
@@ -129,23 +151,9 @@ func (b *browser) newPage(options pageOptions) (p *page, cleanup func(), err err
 		return nil, nil, err
 	}
 
-	if options.windowFullscreen {
-		err = rodPage.SetWindow(&proto.BrowserBounds{
-			WindowState: proto.BrowserWindowStateFullscreen,
-		})
-		if err != nil {
-			return nil, nil, err
-		}
-	} else {
-		err = rodPage.SetViewport(&proto.EmulationSetDeviceMetricsOverride{
-			Width:             1920,
-			Height:            1080,
-			DeviceScaleFactor: 1,
-			Mobile:            false,
-		})
-		if err != nil {
-			return nil, nil, err
-		}
+	err = setScreenSize(rodPage, options.windowFullscreen)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	p = &page{rodPage: rodPage}
