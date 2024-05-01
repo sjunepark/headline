@@ -45,18 +45,18 @@ func (s *TheBellScraper) getArticle(url string) (model.Article, error) {
 
 // cleanTheBellArticleUrl removes unnecessary query parameters from thebell article url,
 // leaving only the 'key' parameter
-func cleanTheBellArticleUrl(u string) string {
+func cleanTheBellArticleUrl(u string) (string, error) {
 	parsedUrl, err := url.Parse(u)
 	if err != nil {
-		return u
+		return "", err
 	}
 	query := parsedUrl.Query()
 	key := query.Get("key")
 	if key == "" {
-		return u
+		return "", fmt.Errorf("parameter 'key' not found in url: %s", u)
 	}
 	query = url.Values{"key": []string{key}}
 	parsedUrl.RawQuery = query.Encode()
 	u = parsedUrl.String()
-	return u
+	return u, nil
 }
