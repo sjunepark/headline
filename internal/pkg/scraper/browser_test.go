@@ -32,6 +32,7 @@ func (ts *BrowserSuite) SetupTest() {
 
 func (ts *BrowserSuite) TearDownTest() {
 	ts.cleanupBrowser()
+	ts.Equal(len(ts.browser.pagePool), 0, "pagePool should be empty after cleanup")
 }
 
 func TestBrowserSuite(t *testing.T) {
