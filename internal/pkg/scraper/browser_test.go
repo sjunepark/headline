@@ -33,20 +33,8 @@ func (ts *BrowserSuite) TearDownTest() {
 	ts.cleanupBrowser()
 }
 
-func (ts *BrowserSuite) TestPage_navigate() {
-	p, putPage, err := ts.browser.page()
-	defer putPage()
-	ts.NoErrorf(err, "failed to get page: %v", err)
-
-	err = p.navigate("https://www.wikipedia.org/")
-	ts.NoErrorf(err, "failed to navigate: %v", err)
-
-	element, err := p.element("h1")
-	ts.NoErrorf(err, "failed to find element: %v", err)
-
-	text, err := element.Text()
-	ts.NoErrorf(err, "failed to get text: %v", err)
-	ts.True(strings.Contains(text, "Wikipedia"))
+func TestBrowserSuite(t *testing.T) {
+	suite.Run(t, new(BrowserSuite))
 }
 
 func (ts *BrowserSuite) TestBrowser_Page() {
@@ -99,6 +87,18 @@ func (ts *BrowserSuite) TestBrowser_Page() {
 	})
 }
 
-func TestBrowserSuite(t *testing.T) {
-	suite.Run(t, new(BrowserSuite))
+func (ts *BrowserSuite) TestPage_navigate() {
+	p, putPage, err := ts.browser.page()
+	defer putPage()
+	ts.NoErrorf(err, "failed to get page: %v", err)
+
+	err = p.navigate("https://www.wikipedia.org/")
+	ts.NoErrorf(err, "failed to navigate: %v", err)
+
+	element, err := p.element("h1")
+	ts.NoErrorf(err, "failed to find element: %v", err)
+
+	text, err := element.Text()
+	ts.NoErrorf(err, "failed to get text: %v", err)
+	ts.True(strings.Contains(text, "Wikipedia"))
 }

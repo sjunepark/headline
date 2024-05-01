@@ -7,19 +7,23 @@ import (
 
 type ThebellSuite struct {
 	suite.Suite
-	scraper        *thebellScraper
+	scraper        *ThebellScraper
 	cleanupScraper func()
 }
 
 func (ts *ThebellSuite) SetupTest() {
 	scraper, cleanup, err := NewThebellScraper()
-	ts.NoErrorf(err, "failed to initialize thebellScraper: %v", err)
+	ts.NoErrorf(err, "failed to initialize ThebellScraper: %v", err)
 	ts.scraper = scraper
 	ts.cleanupScraper = cleanup
 }
 
 func (ts *ThebellSuite) TearDownTest() {
 	ts.cleanupScraper()
+}
+
+func TestThebellSuite(t *testing.T) {
+	suite.Run(t, new(ThebellSuite))
 }
 
 func (ts *ThebellSuite) Test_cleanThebellArticleUrl() {
@@ -52,8 +56,4 @@ func (ts *ThebellSuite) Test_cleanThebellArticleUrl() {
 			}
 		})
 	}
-}
-
-func TestThebellSuite(t *testing.T) {
-	suite.Run(t, new(ThebellSuite))
 }
