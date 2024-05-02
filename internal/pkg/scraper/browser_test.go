@@ -133,3 +133,41 @@ func (ts *BrowserSuite) TestPage_navigate() {
 	ts.NoErrorf(err, "failed to get text: %v", err)
 	ts.True(strings.Contains(text, "Wikipedia"))
 }
+
+type BrowserCleanupSuite struct {
+	suite.Suite
+	browser        *browser
+	cleanupBrowser func()
+	pagePoolLimit  int
+}
+
+func (ts *BrowserCleanupSuite) SetupTest() {
+	options := browserOptions{
+		noDefaultDevice: true,
+		incognito:       true,
+		debug:           false,
+		pagePoolSize:    16,
+	}
+	b, cleanup, err := newBrowser(options)
+	ts.NoErrorf(err, "failed to initialize browser: %v", err)
+	ts.browser = b
+	ts.cleanupBrowser = cleanup
+	ts.pagePoolLimit = options.pagePoolSize
+}
+
+func TestBrowserCleanupSuite(t *testing.T) {
+	suite.Run(t, new(BrowserCleanupSuite))
+}
+
+func (ts *BrowserCleanupSuite) TestBrowser_cleanup() {
+	ts.Run("pagePool should be empty after cleanup", func() {
+		ts.cleanupBrowser()
+		ts.Equal(len(ts.browser.pagePool), 0, "pagePool should be empty after cleanup")
+	})
+}
+
+func (ts *BrowserCleanupSuite) TestBrowser_cancel() {
+	ts.Run("on context cancellation, everything should be cleaned up gracefully", func() {
+		//	todo: implement
+	})
+}

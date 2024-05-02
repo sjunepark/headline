@@ -14,7 +14,7 @@ import (
 //
 // fetchArticle should return an article for a given url, and should be thread-safe.
 type sourceScraper interface {
-	fetchUrlsToScrape() (<-chan url.URL, error)
+	fetchUrlsToScrape(keyword string) (<-chan url.URL, error)
 	fetchArticle(url.URL) (model.Article, error)
 	cleanup()
 	//	todo: implement context to cancel the scraping in certain conditions
@@ -29,8 +29,8 @@ func NewScraper(s sourceScraper) (scraper *Scraper, cleanup func()) {
 	return scraper, s.cleanup
 }
 
-func (s *Scraper) Scrape(keywords []string) (<-chan model.Article, error) {
-	urlsToScrape, err := s.fetchUrlsToScrape()
+func (s *Scraper) Scrape(keyword string) (<-chan model.Article, error) {
+	urlsToScrape, err := s.fetchUrlsToScrape(keyword)
 	if err != nil {
 		return nil, err
 	}
@@ -54,4 +54,28 @@ func (s *Scraper) Scrape(keywords []string) (<-chan model.Article, error) {
 
 	wg.Wait()
 	return articles, nil
+}
+
+func (s *Scraper) fetchAllUrlsToScrape(keywords []string) (<-chan url.URL, error) {
+	urls := make(chan url.URL)
+	defer close(urls)
+
+	wg := sync.WaitGroup{}
+	for _, keyword := range keywords {
+		wg.Add(1)
+		go func(keyword string) {
+			defer wg.Done()
+			urlsToScrape, err := s.fetchUrlsToScrape(keyword)
+			if err != nil {
+				slog.Error("failed to fetch urls to scrape", "error", err)
+				return
+			}
+			for u := range urlsToScrape {
+				urls <- u
+			}
+		}(keyword)
+	}
+
+	wg.Wait()
+	return urls, nil
 }

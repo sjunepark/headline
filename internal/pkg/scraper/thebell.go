@@ -6,11 +6,11 @@ import (
 	"net/url"
 )
 
-type thebellScraper struct {
+type ThebellScraper struct {
 	browser *browser
 }
 
-func NewThebellScraper() (s *thebellScraper, cleanup func(), err error) {
+func NewThebellScraper() (s *ThebellScraper, cleanup func(), err error) {
 	options := browserOptions{
 		noDefaultDevice: true,
 		incognito:       true,
@@ -21,24 +21,24 @@ func NewThebellScraper() (s *thebellScraper, cleanup func(), err error) {
 		return nil, nil, err
 	}
 
-	s = &thebellScraper{
+	s = &ThebellScraper{
 		browser: b,
 	}
 	return s, browserCleanup, nil
 }
 
-func (s *thebellScraper) Cleanup() {
+func (s *ThebellScraper) cleanup() {
 	s.browser.cleanup()
 }
 
-func (s *thebellScraper) getArticleUrls(keyword string) (<-chan []url.URL, error) {
+func (s *ThebellScraper) fetchUrlsToScrape(keyword string) (<-chan url.URL, error) {
 	baseUrl := fmt.Sprintf("https://thebell.co.kr/free/content/Search.asp?page=1&period=360&part=A&keyword=%s", keyword)
 	fmt.Printf("baseUrl: %s\n", baseUrl)
 	// todo: implement
 	return nil, nil
 }
 
-func (s *thebellScraper) getArticle(url string) (model.Article, error) {
+func (s *ThebellScraper) fetchArticle(url url.URL) (model.Article, error) {
 	return model.Article{}, nil
 }
 
