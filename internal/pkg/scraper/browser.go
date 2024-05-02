@@ -2,7 +2,6 @@ package scraper
 
 import (
 	"context"
-	"fmt"
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
 	"github.com/go-rod/rod/lib/proto"
@@ -89,7 +88,7 @@ type browserOptions struct {
 // 2. Closes the browser
 // todo: need to broadcast all operations to cancel
 func (b *browser) cleanup() {
-	// Need to run cancel first to make sure no new pages are put back to the pool
+	// Need to run cancel before closing pagPool to make sure no new pages are put back to the pool
 	b.cancel()
 	// Since you cannot designate specific producers for the pagePool, channel close should be handled by cleanup.
 	close(b.pagePool)
@@ -111,40 +110,43 @@ func (b *browser) cleanup() {
 // Always make sure to call putPage after using the page.
 // The returned page is thread-safe.
 func (b *browser) page() (p *page, putPage func(), err error) {
-	options := pageOptions{
-		windowFullscreen: false,
+	if b.ctx.Err() != nil {
+		return nil, nil, b.ctx.Err()
 	}
 
 	p = <-b.pagePool
 
 	if p != nil {
-		fmt.Printf("Reusing page with address %p\n", p)
+		slog.Debug("page(): got page from pool", "address", p)
 		return p, putPageFactory(b.ctx, b.pagePool, p), nil
 	}
 
-	p, _, err = b.newPage(options)
+	p, _, err = b.newPage(pageOptions{windowFullscreen: false})
 	if err != nil {
 		return nil, nil, err
 	}
-	fmt.Printf("No page in pool, created new page with address: %p\n", p)
+	slog.Debug("page(): no page in pool, created new page", "address", p)
 	return p, putPageFactory(b.ctx, b.pagePool, p), nil
 }
 
 func putPageFactory(ctx context.Context, pagePool chan *page, page *page) func() {
 	return func() {
-		select {
-		case <-ctx.Done():
+		if ctx.Err() != nil {
 			page.cleanup()
-			fmt.Printf("Cleaning up page with address %p\n", page)
-		default:
-			pagePool <- page
-			fmt.Printf("Putting back page with address %p\n", page)
+			slog.Debug("putPage: context cancelled, cleaning up page", "address", page)
+			return
 		}
+		pagePool <- page
+		slog.Debug("putPage: putting back page", "address", page)
 	}
 }
 
 // newPage initializes a new page. After initialization, it runs methods defined in pageOptions.
 func (b *browser) newPage(options pageOptions) (p *page, cleanup func(), err error) {
+	if b.ctx.Err() != nil {
+		return nil, nil, b.ctx.Err()
+	}
+
 	opts := proto.TargetCreateTarget{}
 	rodPage, err := b.rodBrowser.Page(opts)
 	if err != nil {
