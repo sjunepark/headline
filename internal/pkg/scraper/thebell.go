@@ -39,6 +39,7 @@ func (s *ThebellScraper) fetchUrlsToScrape(keyword string) (<-chan url.URL, erro
 }
 
 func (s *ThebellScraper) fetchArticle(url url.URL) (model.Article, error) {
+	// todo: implement
 	return model.Article{}, nil
 }
 
