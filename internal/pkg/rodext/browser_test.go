@@ -1,4 +1,4 @@
-package scraper
+package rodext
 
 import (
 	"fmt"
@@ -11,28 +11,28 @@ import (
 
 type BrowserSuite struct {
 	suite.Suite
-	browser        *browser
+	browser        *Browser
 	cleanupBrowser func()
 	pagePoolLimit  int
 }
 
 func (ts *BrowserSuite) SetupTest() {
-	options := browserOptions{
-		noDefaultDevice: true,
-		incognito:       true,
-		debug:           false,
-		pagePoolSize:    16,
+	options := BrowserOptions{
+		NoDefaultDevice: true,
+		Incognito:       true,
+		Debug:           false,
+		PagePoolSize:    16,
 	}
-	b, cleanup, err := newBrowser(options)
-	ts.NoErrorf(err, "failed to initialize browser: %v", err)
+	b, cleanup, err := NewBrowser(options)
+	ts.NoErrorf(err, "failed to initialize Browser: %v", err)
 	ts.browser = b
 	ts.cleanupBrowser = cleanup
-	ts.pagePoolLimit = options.pagePoolSize
+	ts.pagePoolLimit = options.PagePoolSize
 }
 
 func (ts *BrowserSuite) TearDownTest() {
 	ts.cleanupBrowser()
-	ts.Equal(len(ts.browser.pagePool), 0, "pagePool should be empty after cleanup")
+	ts.Equal(len(ts.browser.pagePool), 0, "pagePool should be empty after Cleanup")
 }
 
 func TestBrowserSuite(t *testing.T) {
@@ -114,7 +114,7 @@ func (ts *BrowserSuite) TestPage_cleanup() {
 		cleanup()
 
 		_, err = p.rodPage.Info()
-		ts.Error(err, "shouldn't be able to get page info after cleanup")
+		ts.Error(err, "shouldn't be able to get page info after Cleanup")
 	})
 }
 
@@ -136,23 +136,23 @@ func (ts *BrowserSuite) TestPage_navigate() {
 
 type BrowserCleanupSuite struct {
 	suite.Suite
-	browser        *browser
+	browser        *Browser
 	cleanupBrowser func()
 	pagePoolLimit  int
 }
 
 func (ts *BrowserCleanupSuite) SetupTest() {
-	options := browserOptions{
-		noDefaultDevice: true,
-		incognito:       true,
-		debug:           false,
-		pagePoolSize:    16,
+	options := BrowserOptions{
+		NoDefaultDevice: true,
+		Incognito:       true,
+		Debug:           false,
+		PagePoolSize:    16,
 	}
-	b, cleanup, err := newBrowser(options)
-	ts.NoErrorf(err, "failed to initialize browser: %v", err)
+	b, cleanup, err := NewBrowser(options)
+	ts.NoErrorf(err, "failed to initialize Browser: %v", err)
 	ts.browser = b
 	ts.cleanupBrowser = cleanup
-	ts.pagePoolLimit = options.pagePoolSize
+	ts.pagePoolLimit = options.PagePoolSize
 }
 
 func TestBrowserCleanupSuite(t *testing.T) {
@@ -160,9 +160,9 @@ func TestBrowserCleanupSuite(t *testing.T) {
 }
 
 func (ts *BrowserCleanupSuite) TestBrowser_cleanup() {
-	ts.Run("pagePool should be empty after cleanup", func() {
+	ts.Run("pagePool should be empty after Cleanup", func() {
 		ts.cleanupBrowser()
-		ts.Equal(len(ts.browser.pagePool), 0, "pagePool should be empty after cleanup")
+		ts.Equal(len(ts.browser.pagePool), 0, "pagePool should be empty after Cleanup")
 	})
 }
 

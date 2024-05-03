@@ -30,10 +30,3 @@ func (ts *ThebellScraperSuite) TearDownTest() {
 func TestThebellScraperSuite(t *testing.T) {
 	suite.Run(t, new(ThebellScraperSuite))
 }
-
-func (ts *ThebellSuite) TestThebellScraper_cleanup() {
-	version, err := ts.scraper.browser.rodBrowser.Version()
-	ts.NoError(err)
-	ts.NotEmpty(version.Product)
-
-}

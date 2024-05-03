@@ -1,4 +1,4 @@
-package scraper
+package rodext
 
 import (
 	"context"
@@ -9,9 +9,9 @@ import (
 	"time"
 )
 
-// browser is a wrapper around rod.Browser
+// Browser is a wrapper around rod.Browser
 // It has a pagePool which you can get Pages from.
-type browser struct {
+type Browser struct {
 	ctx        context.Context
 	cancel     context.CancelFunc
 	rodBrowser *rod.Browser
@@ -23,14 +23,14 @@ type page struct {
 	rodPage *rod.Page
 }
 
-// newBrowser initializes a new browser. After initialization, it runs methods defined in browserOptions.
-// A cleanup function is returned to close the browser and all pages in the pagePool.
-func newBrowser(options browserOptions) (b *browser, cleanup func(), err error) {
+// NewBrowser initializes a new Browser. After initialization, it runs methods defined in BrowserOptions.
+// A Cleanup function is returned to close the Browser and all pages in the pagePool.
+func NewBrowser(options BrowserOptions) (b *Browser, cleanup func(), err error) {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	rodBrowser := rod.New()
 
-	if options.debug {
+	if options.Debug {
 		l, launchErr := launcher.New().Headless(false).Devtools(true).Launch()
 		if launchErr != nil {
 			cancel()
@@ -44,10 +44,10 @@ func newBrowser(options browserOptions) (b *browser, cleanup func(), err error) 
 		cancel()
 		return nil, nil, err
 	}
-	if options.noDefaultDevice {
+	if options.NoDefaultDevice {
 		rodBrowser = rodBrowser.NoDefaultDevice()
 	}
-	if options.incognito {
+	if options.Incognito {
 		rodBrowser, err = rodBrowser.Incognito()
 		if err != nil {
 			cancel()
@@ -55,7 +55,7 @@ func newBrowser(options browserOptions) (b *browser, cleanup func(), err error) 
 		}
 	}
 
-	numberOfPages := options.pagePoolSize
+	numberOfPages := options.PagePoolSize
 	pagePool := make(chan *page, numberOfPages)
 	// You have to fill the pagePool with nil values first.
 	// By filling it with nil values, you can avoid using the select statement.
@@ -65,32 +65,31 @@ func newBrowser(options browserOptions) (b *browser, cleanup func(), err error) 
 		pagePool <- nil
 	}
 
-	b = &browser{
+	b = &Browser{
 		ctx:        ctx,
 		cancel:     cancel,
 		rodBrowser: rodBrowser,
 		pagePool:   pagePool,
 	}
-	return b, b.cleanup, nil
+	return b, b.Cleanup, nil
 }
 
-// browserOptions holds options configurable while initializing a browser.
+// BrowserOptions holds options configurable while initializing a Browser.
 // They align with methods available to call on a rod.Browser.
-type browserOptions struct {
-	noDefaultDevice bool
-	incognito       bool
-	debug           bool
-	pagePoolSize    int
+type BrowserOptions struct {
+	NoDefaultDevice bool
+	Incognito       bool
+	Debug           bool
+	PagePoolSize    int
 }
 
-// cleanup
+// Cleanup
 // 1. Closes all Pages in pagePool
-// 2. Closes the browser
-// todo: need to broadcast all operations to cancel
-func (b *browser) cleanup() {
+// 2. Closes the Browser
+func (b *Browser) Cleanup() {
 	// Need to run cancel before closing pagPool to make sure no new pages are put back to the pool
 	b.cancel()
-	// Since you cannot designate specific producers for the pagePool, channel close should be handled by cleanup.
+	// Since you cannot designate specific producers for the pagePool, channel close should be handled by Cleanup.
 	close(b.pagePool)
 	for p := range b.pagePool {
 		if p == nil {
@@ -101,7 +100,7 @@ func (b *browser) cleanup() {
 
 	browserCloseErr := b.rodBrowser.Close()
 	if browserCloseErr != nil {
-		slog.Error("failed to close browser", "error", browserCloseErr)
+		slog.Error("failed to close Browser", "error", browserCloseErr)
 	}
 }
 
@@ -109,7 +108,7 @@ func (b *browser) cleanup() {
 // If the pagePool is empty, a new page is created.
 // Always make sure to call putPage after using the page.
 // The returned page is thread-safe.
-func (b *browser) page() (p *page, putPage func(), err error) {
+func (b *Browser) page() (p *page, putPage func(), err error) {
 	if b.ctx.Err() != nil {
 		return nil, nil, b.ctx.Err()
 	}
@@ -142,7 +141,7 @@ func putPageFactory(ctx context.Context, pagePool chan *page, page *page) func()
 }
 
 // newPage initializes a new page. After initialization, it runs methods defined in pageOptions.
-func (b *browser) newPage(options pageOptions) (p *page, cleanup func(), err error) {
+func (b *Browser) newPage(options pageOptions) (p *page, cleanup func(), err error) {
 	if b.ctx.Err() != nil {
 		return nil, nil, b.ctx.Err()
 	}

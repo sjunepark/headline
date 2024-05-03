@@ -3,20 +3,22 @@ package scraper
 import (
 	"fmt"
 	"github.com/sejunpark/headline/internal/pkg/model"
+	"github.com/sejunpark/headline/internal/pkg/rodext"
 	"net/url"
 )
 
 type ThebellScraper struct {
-	browser *browser
+	browser *rodext.Browser
 }
 
 func NewThebellScraper() (s *ThebellScraper, cleanup func(), err error) {
-	options := browserOptions{
-		noDefaultDevice: true,
-		incognito:       true,
-		debug:           false,
+	options := rodext.BrowserOptions{
+		NoDefaultDevice: true,
+		Incognito:       true,
+		Debug:           false,
+		PagePoolSize:    16,
 	}
-	b, browserCleanup, err := newBrowser(options)
+	b, browserCleanup, err := rodext.NewBrowser(options)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -28,7 +30,7 @@ func NewThebellScraper() (s *ThebellScraper, cleanup func(), err error) {
 }
 
 func (s *ThebellScraper) cleanup() {
-	s.browser.cleanup()
+	s.browser.Cleanup()
 }
 
 func (s *ThebellScraper) fetchUrlsToScrape(keyword string) (<-chan url.URL, error) {
