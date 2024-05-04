@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Wiki Mockup with JS Content</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .nav {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #333;
+            margin: 0 10px;
+        }
+        .search-bar input[type="text"] {
+            width: 200px;
+            padding: 5px;
+        }
+        .main-content {
+            margin: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+        }
+        .main-content h2 {
+            margin-top: 0;
+        }
+        .js-content {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #f4f4f4;
+        }
+        .footer {
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Wiki Mockup with JS Content</h1>
+</div>
+
+<div class="nav">
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search...">
+        <button id="search-btn">Search</button>
+    </div>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</div>
+
+<div class="main-content">
+    <h2>Welcome to the Wiki Mockup</h2>
+    <p>This is a simple Wikipedia-like page for web testing purposes. You can use it to practice retrieving elements, filling out input fields, and more.</p>
+    <h3>Sections</h3>
+    <ul>
+        <li><a href="#section1">Section 1</a></li>
+        <li><a href="#section2">Section 2</a></li>
+        <li><a href="#section3">Section 3</a></li>
+    </ul>
+
+    <h3 id="section1">Section 1</h3>
+    <p>This is the first section content.</p>
+
+    <h3 id="section2">Section 2</h3>
+    <p>This is the second section content.</p>
+
+    <h3 id="section3">Section 3</h3>
+    <p>This is the third section content.</p>
+</div>
+
+<div class="js-content">
+    <h2>JavaScript-Generated Content</h2>
+    <p id="dynamic-content">Loading...</p>
+</div>
+
+<div class="footer">
+    <p>Footer © 2024</p>
+</div>
+
+<script>
+    // Simulating an API call or delayed data fetching
+    setTimeout(() => {
+        const dynamicContent = document.getElementById("dynamic-content");
+        dynamicContent.innerHTML = "This content was dynamically generated using JavaScript!";
+    }, 2000);
+</script>
+
+</body>
+</html>

@@ -16,7 +16,7 @@ type PageSuite struct {
 }
 
 func (ts *PageSuite) SetupSuite() {
-	relPath := "./testdata/Wikipedia.html"
+	relPath := "./testdata/WikiMockup.html"
 	absPath, err := filepath.Abs(relPath)
 	ts.NoErrorf(err, "failed to get absolute path: %v", err)
 	ts.wikipediaURL = "file://" + absPath
