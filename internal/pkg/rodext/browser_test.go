@@ -57,8 +57,8 @@ func (ts *BrowserSuite) TestBrowser_Page() {
 			createdPageIds := make(map[proto.TargetTargetID]bool)
 
 			for i := 0; i < ts.pagePoolLimit*multiplier; i++ {
-				p, putPage, err := ts.browser.page()
-				ts.NoErrorf(err, "failed to get page: %v", err)
+				p, putPage, err := ts.browser.Page()
+				ts.NoErrorf(err, "failed to get Page: %v", err)
 
 				id := p.rodPage.TargetID
 				createdPageIds[id] = true
@@ -81,8 +81,8 @@ func (ts *BrowserSuite) TestBrowser_Page() {
 				go func() {
 					defer wg.Done()
 					fmt.Printf("running goroutine\n")
-					p, putPage, err := ts.browser.page()
-					ts.NoErrorf(err, "failed to get page: %v", err)
+					p, putPage, err := ts.browser.Page()
+					ts.NoErrorf(err, "failed to get Page: %v", err)
 					if err == nil {
 						defer putPage()
 					}
@@ -104,33 +104,32 @@ func (ts *BrowserSuite) TestBrowser_Page() {
 }
 
 func (ts *BrowserSuite) TestPage_cleanup() {
-	ts.Run("page should be cleaned up after putPage is called", func() {
-		p, cleanup, err := ts.browser.newPage(pageOptions{})
-		ts.NoErrorf(err, "failed to create new page: %v", err)
+	ts.Run("Page should be cleaned up after putPage is called", func() {
+		p, cleanup, err := newPage(ts.browser, pageOptions{})
+		ts.NoErrorf(err, "failed to create new Page: %v", err)
 
 		_, err = p.rodPage.Info()
-		ts.NoErrorf(err, "failed to get page info: %v", err)
+		ts.NoErrorf(err, "failed to get Page info: %v", err)
 
 		cleanup()
 
 		_, err = p.rodPage.Info()
-		ts.Error(err, "shouldn't be able to get page info after Cleanup")
+		ts.Error(err, "shouldn't be able to get Page info after Cleanup")
 	})
 }
 
 func (ts *BrowserSuite) TestPage_navigate() {
-	p, putPage, err := ts.browser.page()
+	p, putPage, err := ts.browser.Page()
 	defer putPage()
-	ts.NoErrorf(err, "failed to get page: %v", err)
+	ts.NoErrorf(err, "failed to get Page: %v", err)
 
 	err = p.navigate("https://www.wikipedia.org/")
 	ts.NoErrorf(err, "failed to navigate: %v", err)
 
-	element, err := p.element("h1")
+	element, err := p.Element("h1")
 	ts.NoErrorf(err, "failed to find element: %v", err)
 
-	text, err := element.Text()
-	ts.NoErrorf(err, "failed to get text: %v", err)
+	text := element.Text()
 	ts.True(strings.Contains(text, "Wikipedia"))
 }
 

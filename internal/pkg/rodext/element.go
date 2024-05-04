@@ -9,10 +9,10 @@ type Element struct {
 	rodElement *rod.Element
 }
 
-func newElements(elements []*rod.Element) []Element {
-	newEls := make([]Element, len(elements))
+func newElements(elements rod.Elements) []*Element {
+	newEls := make([]*Element, len(elements))
 	for i, el := range elements {
-		newEls[i] = Element{rodElement: el}
+		newEls[i] = &Element{rodElement: el}
 	}
 	return newEls
 }
@@ -28,7 +28,7 @@ func (e *Element) Element(selector string) (*Element, error) {
 	return &Element{rodElement: elements[0]}, nil
 }
 
-func (e *Element) Elements(selector string) ([]Element, error) {
+func (e *Element) Elements(selector string) ([]*Element, error) {
 	elements, err := e.rodElement.Elements(selector)
 	if err != nil {
 		return nil, err

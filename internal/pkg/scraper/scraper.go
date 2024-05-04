@@ -2,6 +2,7 @@ package scraper
 
 import (
 	"github.com/sejunpark/headline/internal/pkg/model"
+	"github.com/sejunpark/headline/internal/pkg/rodext"
 	"log/slog"
 	"net/url"
 	"sync"
@@ -14,8 +15,10 @@ import (
 //
 // fetchArticle should return an article for a given url, and should be thread-safe.
 type sourceScraper interface {
-	fetchUrlsToScrape(keyword string) (<-chan url.URL, error)
-	fetchArticle(url.URL) (model.Article, error)
+	fetchArticleList(keyword string) (<-chan *model.Article, error)
+	fetchArticle(*url.URL) (*model.Article, error)
+	parseArticleListItem(el *rodext.Element) (*model.Article, error)
+	parseArticle(el *rodext.Element) (*model.Article, error)
 	cleanup()
 	//	todo: implement context to cancel the scraping in certain conditions
 }
@@ -29,19 +32,30 @@ func NewScraper(s sourceScraper) (scraper *Scraper, cleanup func()) {
 	return scraper, s.cleanup
 }
 
-func (s *Scraper) Scrape(keyword string) (<-chan model.Article, error) {
-	urlsToScrape, err := s.fetchUrlsToScrape(keyword)
+func (s *Scraper) ScrapeAll(keyword []string) (<-chan *model.Article, error) {
+	// todo: implement
+	return nil, nil
+}
+
+func (s *Scraper) scrape(keyword string) (<-chan *model.Article, error) {
+	articlesToScrape, err := s.fetchArticleList(keyword)
 	if err != nil {
 		return nil, err
 	}
 
-	articles := make(chan model.Article)
+	articles := make(chan *model.Article)
 	defer close(articles)
 
 	wg := sync.WaitGroup{}
-	for u := range urlsToScrape {
+	for articleToScrape := range articlesToScrape {
+		if !articleToScrape.IsUrlValid() {
+			slog.Error("invalid url", "url", articleToScrape.Url.String())
+			continue
+		}
+		u := articleToScrape.Url
+
 		wg.Add(1)
-		go func(u url.URL) {
+		go func(u *url.URL) {
 			defer wg.Done()
 			article, articleFetchErr := s.fetchArticle(u)
 			if articleFetchErr != nil {
@@ -56,26 +70,27 @@ func (s *Scraper) Scrape(keyword string) (<-chan model.Article, error) {
 	return articles, nil
 }
 
-func (s *Scraper) fetchAllUrlsToScrape(keywords []string) (<-chan url.URL, error) {
-	urls := make(chan url.URL)
-	defer close(urls)
+func (s *Scraper) fetchAllArticlesToScrape(keywords []string) (<-chan *model.Article, error) {
+	articles := make(chan *model.Article)
+	defer close(articles)
 
 	wg := sync.WaitGroup{}
 	for _, keyword := range keywords {
 		wg.Add(1)
 		go func(keyword string) {
 			defer wg.Done()
-			urlsToScrape, err := s.fetchUrlsToScrape(keyword)
+
+			articlesToScrape, err := s.fetchArticleList(keyword)
 			if err != nil {
-				slog.Error("failed to fetch urls to scrape", "error", err)
+				slog.Error("failed to fetch articles to scrape", "error", err)
 				return
 			}
-			for u := range urlsToScrape {
-				urls <- u
+			for articleToScrape := range articlesToScrape {
+				articles <- articleToScrape
 			}
 		}(keyword)
 	}
 
 	wg.Wait()
-	return urls, nil
+	return articles, nil
 }
