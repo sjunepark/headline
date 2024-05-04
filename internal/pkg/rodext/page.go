@@ -70,21 +70,31 @@ func (p *Page) navigate(url string) error {
 	return nil
 }
 
-func (p *Page) Elements(selector string) ([]*Element, error) {
-	elements, err := p.rodPage.Elements(selector)
-	if err != nil {
-		return nil, err
-	}
-	return newElements(elements), nil
-}
+var MultipleFoundError = errors.New("multiple elements found")
+var ElementNotFoundError = errors.New("element not found")
 
 func (p *Page) Element(selector string) (*Element, error) {
 	elements, err := p.rodPage.Elements(selector)
 	if err != nil {
 		return nil, err
 	}
+
 	if len(elements) > 1 {
-		return nil, errors.New("multiple elements found")
+		return nil, MultipleFoundError
 	}
-	return &Element{rodElement: elements.First()}, nil
+
+	element := elements.First()
+	if element == nil {
+		return nil, ElementNotFoundError
+	}
+
+	return &Element{rodElement: element}, nil
+}
+
+func (p *Page) Elements(selector string) ([]*Element, error) {
+	elements, err := p.rodPage.Elements(selector)
+	if err != nil {
+		return nil, err
+	}
+	return newElements(elements), nil
 }
