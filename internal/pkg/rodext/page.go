@@ -33,6 +33,14 @@ func newPage(b *Browser, options pageOptions) (p *Page, cleanup func(), err erro
 	return p, p.cleanup, nil
 }
 
+// newPageFactory returns a function(a closure) that returns a new Page.
+// The user doesn't have to remember the reference to the Browser, as it is already captured in the closure.
+func newPageFactory(b *Browser, options pageOptions) func() (*Page, func(), error) {
+	return func() (*Page, func(), error) {
+		return newPage(b, options)
+	}
+}
+
 // pageOptions holds options configurable while initializing a Page.
 // They align with methods available to call on a rod.Page.
 type pageOptions struct {

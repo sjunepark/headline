@@ -32,7 +32,7 @@ func (ts *BrowserSuite) SetupTest() {
 
 func (ts *BrowserSuite) TearDownTest() {
 	ts.cleanupBrowser()
-	ts.Equal(len(ts.browser.pagePool), 0, "pagePool should be empty after Cleanup")
+	ts.Equal(len(ts.browser.pagePool.pool), 0, "pagePool should be empty after Cleanup")
 }
 
 func TestBrowserSuite(t *testing.T) {
@@ -41,9 +41,9 @@ func TestBrowserSuite(t *testing.T) {
 
 func (ts *BrowserSuite) TestBrowser_newBrowser() {
 	ts.Run("all pages in pagePool should be nil after initialization", func() {
-		size := len(ts.browser.pagePool)
+		size := ts.browser.pagePool.len()
 		for i := 0; i < size; i++ {
-			p := <-ts.browser.pagePool
+			p := <-ts.browser.pagePool.pool
 			ts.Nil(p)
 		}
 	})
@@ -161,7 +161,7 @@ func TestBrowserCleanupSuite(t *testing.T) {
 func (ts *BrowserCleanupSuite) TestBrowser_cleanup() {
 	ts.Run("pagePool should be empty after Cleanup", func() {
 		ts.cleanupBrowser()
-		ts.Equal(len(ts.browser.pagePool), 0, "pagePool should be empty after Cleanup")
+		ts.Equal(ts.browser.pagePool.len(), 0, "pagePool should be empty after Cleanup")
 	})
 }
 

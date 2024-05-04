@@ -14,7 +14,7 @@ type Browser struct {
 	ctx        context.Context
 	cancel     context.CancelFunc
 	rodBrowser *rod.Browser
-	pagePool   chan *Page
+	pagePool   *pagePool
 }
 
 // NewBrowser initializes a new Browser. After initialization, it runs methods defined in BrowserOptions.
@@ -50,20 +50,13 @@ func NewBrowser(options BrowserOptions) (b *Browser, cleanup func(), err error) 
 	}
 
 	numberOfPages := options.PagePoolSize
-	pagePool := make(chan *Page, numberOfPages)
-	// You have to fill the pagePool with nil values first.
-	// By filling it with nil values, you can avoid using the select statement.
-	// Also, if you don't fill it with nil values first, it's hard to properly clean them up.
-	// There are lots of complexities to handle when a channel is not full.
-	for i := 0; i < numberOfPages; i++ {
-		pagePool <- nil
-	}
+	pp := newPagePool(ctx, numberOfPages)
 
 	b = &Browser{
 		ctx:        ctx,
 		cancel:     cancel,
 		rodBrowser: rodBrowser,
-		pagePool:   pagePool,
+		pagePool:   pp,
 	}
 	return b, b.Cleanup, nil
 }
@@ -83,14 +76,8 @@ type BrowserOptions struct {
 func (b *Browser) Cleanup() {
 	// Need to run cancel before closing pagPool to make sure no new pages are put back to the pool
 	b.cancel()
-	// Since you cannot designate specific producers for the pagePool, channel close should be handled by Cleanup.
-	close(b.pagePool)
-	for p := range b.pagePool {
-		if p == nil {
-			continue
-		}
-		p.cleanup()
-	}
+
+	b.pagePool.cleanup()
 
 	browserCloseErr := b.rodBrowser.Close()
 	if browserCloseErr != nil {
@@ -98,38 +85,12 @@ func (b *Browser) Cleanup() {
 	}
 }
 
-// Page returns a new Page from the pagePool.
-// If the pagePool is empty, a new Page is created.
-// Always make sure to call putPage after using the Page.
-// The returned Page is thread-safe.
+// Page returns a new Page from the pool.
+// Make sure to call putPage after using the Page, to put it back for reuse.
 func (b *Browser) Page() (p *Page, putPage func(), err error) {
-	if b.ctx.Err() != nil {
-		return nil, nil, b.ctx.Err()
+	options := pageOptions{
+		windowFullscreen: false,
 	}
-
-	p = <-b.pagePool
-
-	if p != nil {
-		slog.Debug("Page(): got Page from pool", "address", p)
-		return p, putPageFactory(b.ctx, b.pagePool, p), nil
-	}
-
-	p, _, err = newPage(b, pageOptions{windowFullscreen: false})
-	if err != nil {
-		return nil, nil, err
-	}
-	slog.Debug("Page(): no Page in pool, created new Page", "address", p)
-	return p, putPageFactory(b.ctx, b.pagePool, p), nil
-}
-
-func putPageFactory(ctx context.Context, pagePool chan *Page, page *Page) func() {
-	return func() {
-		if ctx.Err() != nil {
-			page.cleanup()
-			slog.Debug("putPage: context cancelled, cleaning up Page", "address", page)
-			return
-		}
-		pagePool <- page
-		slog.Debug("putPage: putting back Page", "address", page)
-	}
+	newPageFunc := newPageFactory(b, options)
+	return b.pagePool.Get(newPageFunc)
 }
