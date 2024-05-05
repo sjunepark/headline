@@ -77,6 +77,23 @@ func (ts *ElementSuite) TestElement_Element() {
 	})
 }
 
+func (ts *ElementSuite) TestElement_Elements() {
+	ts.Run("should return a slice of Elements with the correct selector", func() {
+		liElements, err := ts.ulElement.Elements("li")
+		ts.NoErrorf(err, "failed to get Elements: %v", err)
+		ts.Truef(len(liElements) > 0, "expected slice of Elements to have length > 0 but got %v", len(liElements))
+		for _, el := range liElements {
+			ts.Truef(isElement(el), "returned Element is not an Element")
+		}
+	})
+
+	ts.Run("should error if the selector is invalid", func() {
+		els, err := ts.ulElement.Elements("invalid")
+		ts.ErrorIsf(err, ElementNotFoundError, "expected ElementNotFoundError but got %v", err)
+		ts.Nilf(els, "expected Elements to be nil but got %v", els)
+	})
+}
+
 func isElement(toCheck any) bool {
 	switch toCheck.(type) {
 	case *Element:

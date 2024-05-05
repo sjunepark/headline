@@ -36,6 +36,10 @@ func (e *Element) Elements(selector string) ([]*Element, error) {
 		return nil, err
 	}
 
+	if len(elements) == 0 {
+		return nil, ElementNotFoundError
+	}
+
 	return newElements(elements), nil
 }
 
