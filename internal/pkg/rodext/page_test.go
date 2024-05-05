@@ -89,3 +89,17 @@ func (ts *PageSuite) TestPage_Element() {
 		ts.Nil(el, "element should be nil: %v", el)
 	})
 }
+
+func (ts *PageSuite) TestPage_Elements() {
+	ts.Run("Elements should return the elements if they exist", func() {
+		els, err := ts.page.Elements("a")
+		ts.NoErrorf(err, "failed to get elements: %v", err)
+		ts.NotEmptyf(els, "elements should not be empty: %v", els)
+	})
+
+	ts.Run("Elements should return an empty slice when no elements are found", func() {
+		els, err := ts.page.Elements(".nonexistent-element")
+		ts.NoErrorf(err, "failed to get elements: %v", err)
+		ts.Empty(els, "elements should be empty: %v", els)
+	})
+}
