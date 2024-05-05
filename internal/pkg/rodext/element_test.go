@@ -10,7 +10,7 @@ type ElementSuite struct {
 	suite.Suite
 	browser        *Browser
 	page           *Page
-	element        *Element
+	ulElement      *Element
 	putPage        func()
 	cleanupBrowser func()
 	wikipediaURL   string
@@ -42,6 +42,9 @@ func (ts *ElementSuite) SetupTest() {
 
 	err = ts.page.navigate(ts.wikipediaURL)
 	ts.NoErrorf(err, "failed to navigate: %v", err)
+
+	ts.ulElement, err = ts.page.Element("ul")
+	ts.NoErrorf(err, "failed to get Element: %v", err)
 }
 
 func (ts *ElementSuite) TearDownTest() {
@@ -54,5 +57,30 @@ func TestElementSuite(t *testing.T) {
 }
 
 func (ts *ElementSuite) TestElement_Element() {
+	ts.Run("should return an Element with the correct selector", func() {
+		aElement, err := ts.ulElement.Element("a[href='#section1']")
+		ts.NoErrorf(err, "failed to get Element: %v", err)
+		ts.Truef(isElement(aElement), "returned Element is not an Element")
+		ts.NotNilf(aElement, "returned Element is nil")
+	})
 
+	ts.Run("should error if the selector is invalid", func() {
+		el, err := ts.ulElement.Element("invalid")
+		ts.ErrorIsf(err, ElementNotFoundError, "expected ElementNotFoundError but got %v", err)
+		ts.Nilf(el, "expected Element to be nil but got %v", el)
+	})
+
+	ts.Run("should error when multiple elements are found", func() {
+		el, err := ts.ulElement.Element("li")
+		ts.ErrorIsf(err, MultipleElementsFoundError, "expected MultipleElementsFoundError but got %v", err)
+		ts.Nilf(el, "expected Element to be nil but got %v", el)
+	})
+}
+
+func isElement(toCheck any) bool {
+	switch toCheck.(type) {
+	case *Element:
+		return true
+	}
+	return false
 }

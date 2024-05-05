@@ -70,7 +70,7 @@ func (p *Page) navigate(url string) error {
 	return nil
 }
 
-var MultipleFoundError = errors.New("multiple elements found")
+var MultipleElementsFoundError = errors.New("multiple elements found")
 var ElementNotFoundError = errors.New("element not found")
 
 func (p *Page) Element(selector string) (*Element, error) {
@@ -80,7 +80,7 @@ func (p *Page) Element(selector string) (*Element, error) {
 	}
 
 	if len(elements) > 1 {
-		return nil, MultipleFoundError
+		return nil, MultipleElementsFoundError
 	}
 
 	element := elements.First()

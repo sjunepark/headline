@@ -1,7 +1,6 @@
 package rodext
 
 import (
-	"errors"
 	"github.com/go-rod/rod"
 )
 
@@ -23,7 +22,10 @@ func (e *Element) Element(selector string) (*Element, error) {
 		return nil, err
 	}
 	if len(elements) > 1 {
-		return nil, errors.New("multiple elements found")
+		return nil, MultipleElementsFoundError
+	}
+	if len(elements) == 0 {
+		return nil, ElementNotFoundError
 	}
 	return &Element{rodElement: elements[0]}, nil
 }

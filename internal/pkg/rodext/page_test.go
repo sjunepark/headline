@@ -79,7 +79,7 @@ func (ts *PageSuite) TestPage_Element() {
 
 	ts.Run("Element should return an error when multiple elements are found", func() {
 		el, err := ts.page.Element("a")
-		ts.ErrorIsf(err, MultipleFoundError, "should return MultipleFoundError when multiple elements are found, got: %v", err)
+		ts.ErrorIsf(err, MultipleElementsFoundError, "should return MultipleElementsFoundError when multiple elements are found, got: %v", err)
 		ts.Nilf(el, "element should be nil: %v", el)
 	})
 
