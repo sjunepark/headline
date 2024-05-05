@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<!-- saved from url=(0119)https://thebell.co.kr/free/content/Search.asp?page=&sdt=&period=360&part=A&keyword=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90 -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="naver-site-verification" content="c0fc65027b09c28753047b566f9b77b1d8fd3156">
+<title> 더벨 - 국내 최고 자본시장(Capital Markets) 미디어 </title>
+
+<meta name="description" content="더벨 - 국내 최고 자본시장(Capital Markets) 미디어">
+
+
+<meta property="og:type" content="website">
+<meta property="og:article:author" content="thebell">
+<meta property="og:title" content="더벨 - 국내 최고 자본시장(Capital Markets) 미디어">	
+<meta property="og:url" content="http://www.thebell.co.kr/">
+<meta property="og:image" content="https://image.thebell.co.kr/thebell_redlog.jpg">
+<meta property="og:description" content="더벨 - 국내 최고 자본시장(Capital Markets) 미디어">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="http://www.thebell.co.kr">
+<meta name="twitter:creator" content="thebell">
+<meta name="twitter:title" content="더벨 - 국내 최고 자본시장(Capital Markets) 미디어">
+<meta name="twitter:image" content="https://image.thebell.co.kr/thebell_redlog.jpg">
+<meta name="twitter:description" content="더벨 - 국내 최고 자본시장(Capital Markets) 미디어">
+
+
+
+<link href="files/css2" rel="stylesheet">
+
+<link rel="dns-prefetch" href="http://www.thebell.co.kr/">
+<link rel="dns-prefetch" href="https://image.thebell.co.kr/">
+<link rel="stylesheet" type="text/css" href="files/main_2020.css">
+<!--link rel="stylesheet" type="text/css" href="/css/newsstand.css"-->
+<link rel="stylesheet" type="text/css" href="files/style.css">
+<link rel="stylesheet" type="text/css" href="files/layout_2020.css">
+<link rel="stylesheet" type="text/css" href="files/sub.css">
+
+
+<link rel="shortcut icon" href="https://thebell.co.kr/ico/logo.ico">
+<script type="text/javascript" async="" src="files/thebell.tracker.js"></script><script src="files/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="files/jquery-datepicker.min.js" type="text/javascript"></script>
+<script src="files/jquery.bxslider.min.js" type="text/javascript"></script>
+<script src="files/script.js" type="text/javascript"></script>
+<script src="files/thebell.util.js" type="text/javascript"></script>
+<script src="files/premium.page.js" type="text/javascript"></script>
+<script src="files/free.js" type="text/javascript"></script>
+<script src="files/jquery.autocomplete.min.js" type="text/javascript" charset="utf-8"></script>
+
+
+<!--[if lt IE 9]><script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script><![endif]-->
+<!--[if lt IE 7]> <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE7.js"></script> <![endif]-->
+
+<script type="text/javascript">
+<!--
+	$(document).ready(function()
+	{
+		/*
+			$("body").bind("contextmenu", function(ex)
+			{
+						if((ex.srcElement.nodeName=="INPUT") || (ex.srcElement.nodeName=="TEXTAREA") )        return true;
+						else return false;
+			}).bind("dragstart", function(ex)
+			{
+						if((ex.srcElement.nodeName=="INPUT") || (ex.srcElement.nodeName=="TEXTAREA") )        return true;
+						else return false;
+			}).bind("selectstart", function(ex)
+			{
+						if((ex.srcElement.nodeName=="INPUT") || (ex.srcElement.nodeName=="TEXTAREA") )        return true;
+						else return false;
+			});
+		
+		*/
+				/*
+		header 메뉴처리
+		*/
+		//$(".indexSection").hide();
+		$(".header li").bind("click", function(){
+			var menu = $(this).attr("data-nm");
+			if (menu=="menu2"){
+				$(".header .hearderM").hide();
+				$(".header li").removeClass("on");
+			}else{
+				if ($(this).hasClass("on")){
+					$(this).removeClass("on");
+					$(this).children(".hearderM").hide();
+				}else{
+					$(".header .hearderM").hide();
+					$(".header li").removeClass("on");
+					$(this).addClass("on");
+					$(this).children(".hearderM").show();
+				}
+			}
+		});
+		/* 
+			GNB 처리 
+		*/
+		$(".userM li .icon").bind("click",function(){
+			
+			var userm = $(this).parent().parent();
+
+			if($(this).parent().parent().hasClass("on")){
+				//alert("zzz");
+				$(this).parent().parent().removeClass("on");
+				userm.children(".subM").hide();
+			}else{
+
+				$(".userM li").removeClass("on");
+				$(".userM .subM").hide();					
+				$(this).parent().parent().addClass("on");
+				userm.children(".subM").show();
+			}
+		});
+		/*
+			LNB 처리
+		*/
+		$(".all").bind("click",function(){
+			//$("body").css("overflow", "hidden");
+			$(".lnbWrap").show();			
+		});
+
+		$(".lnbBox .close").bind("click", function(){
+			//$("body").css("overflow", "");
+			$(".lnbWrap").hide();
+		
+		});
+		$(".lnbmenu").bind("click", function(){
+			var id = $(this).attr("data-id");
+			if ($(this).hasClass("on")){
+				$(this).removeClass("on");
+				$("."+id).hide();
+				$("#"+id).removeClass("up");
+				$("#"+id).addClass("down2");
+			}else{
+				$(this).addClass("on");
+				$("."+id).show();
+				$("#"+id).removeClass("down2");
+				$("#"+id).addClass("up");
+			}
+		});
+
+		/*
+			footer 사이트맵
+		*/
+		$(".footerSitemap").bind("click", function(){
+			if ($(this).hasClass("on")){
+				$(this).removeClass("on");
+				$(".allmenuBox").hide();
+			}else{
+				$(this).addClass("on");
+				$(".allmenuBox").show();
+			}
+		})
+		$(".slidebox").bind("mouseover", function(){
+			var id = $(this).attr("data-id");
+			$("."+id+"btn").show();
+		})
+		$(".slidebox").bind("mouseleave", function(){
+			var id = $(this).attr("data-id");
+			$("."+id+"btn").hide();
+		})
+
+		$(".slidepager").bind("click", function(){
+			var id = $(this).attr("data-pager");
+			var pager = $(this).attr("data-slide");
+			if (pager == "bx2"){
+				cfoSlider.goToSlide(id); 
+				//cfoSlider 
+			}else if (pager =="bx3"){
+				mgSlider.goToSlide(id);
+				//mgSlider
+			}else if (pager =="bx4"){
+				coSlider.goToSlide(id);
+				//coSlider
+			}else if (pager =="bx5"){
+				comSlider.goToSlide(id);
+				//comSlider
+			}else if (pager =="bx6"){
+				eventSlider.goToSlide(id);
+				//eventSlider
+			}
+		
+		}).css("cursor", "pointer");
+
+		/*
+			포럼어워드 롤링 //
+		*/
+		var eventSlider = $('.bx6').bxSlider({
+			auto: false,					// 자동롤링여부 
+			autoHover: true,			// 마우스 오버시 정지
+			autoDelay: 3000,			// 자동으로 롤링되는 딜레이시간
+			speed: 100,					// 속도
+			pager: false,				// 현재 이미지 위치가 어디인지 롤링중인 이미지 위치 표시   : 동그라미(불릿) 버튼 노출 여부
+			slideWidth: 400,			// 슬라이드 사이즈
+			controls: false,			// 자동 컨트롤 prev / next 사용여부
+			autoControls: false,		// play/stop/puase 
+			infiniteLoop: true,			// 롤링 무한루프 옵션 
+			//hideControlOnEnd : false,	// 롤링중 좌우 화살표 옵션
+			adaptiveHeight: false,		// 자동으로 이미지의 높이에 맞게 슬라이드의 높이값을 조절한것인지 옵션 
+			mode: 'horizontal',			// 슬라이드 효과 fade, horizontal, vertical
+			touchEnabled : (navigator.maxTouchPoints > 0), // a링크 안되는 버그조치
+			onSlideBeLoad: function(){
+				//슬라이드 로드
+			},
+			onSlideBefore: function(eventSlider, oldIndex, newIndex){ 
+				// 슬라이드 돌기 전 
+				var pg  = newIndex
+				$(".forumWrap .innerPage li").removeClass("on");
+				$("#bx6_"+pg).addClass("on");
+			},
+			onSlideAfter: function(eventSlider, oldIndex, newIndex){ 
+				// 슬라이드 돈 후  
+			}
+
+		});
+		//이전 버튼을 클릭하면 이전 슬라이드로 전환
+		$("#eventprev").on( 'click', function () {
+			$(".forumWrap .innerPage li").removeClass("on");
+			var pg = eventSlider.getCurrentSlide(); 
+			if (pg==0){
+				pg = 9
+			}else{
+				pg = pg - 1 
+			}
+			$("#bx6_"+pg).addClass("on");
+			eventSlider.goToPrevSlide();  //이전 슬라이드 배너로 이동
+			return false;              //<a>에 링크 차단
+		} );
+
+		//다음 버튼을 클릭하면 다음 슬라이드로 전환
+		$("#eventnext").on( 'click', function () {
+			$(".forumWrap .innerPage li").removeClass("on");
+			var pg = eventSlider.getCurrentSlide();
+			if (pg == 9){
+				pg = 0
+			}else{
+				pg = pg + 1 
+			}
+
+			$("#bx6_"+pg).addClass("on");
+			eventSlider.goToNextSlide();  //다음 슬라이드 배너로 이동
+			return false;
+		});
+
+
+
+	});
+	
+	function viewClick(val){
+		//$(".launcher_faq ul li a").removeClass();
+
+		if($("#launcher_faq_cont"+val).css("display") == "none"){
+			$("#launcher_faq_cont"+val).show();
+			$("#launcher_faq_a"+val).removeClass();
+			$("#launcher_faq_a"+val).addClass("launcher_faq_on");
+		} else {
+			$("#launcher_faq_cont"+val).hide();			
+			$("#launcher_faq_a"+val).removeClass();
+			$("#launcher_faq_a"+val).addClass("launcher_faq_off");
+		}
+	}
+	function notlogin(){
+		alert("로그인이 필요한 서비스입니다.");
+		top.location.href="/member/Login.asp";
+	}
+
+	function menugo(url){
+		top.location.href=url
+	}
+//-->
+</script>
+</head>
+<body>
+	<!--  contents  -->
+	<div id="contents">
+
+			
+
+	<!-- gnbBox -->
+    <div class="gnbBox freegnbBox">
+        <!--  headerBox  -->
+        <div class="headerBox">
+            <div class="header">
+                <ul>
+                    <li data-nm="menu1" class=""><a href="https://thebell.co.kr/free/content/Search.asp?page=&amp;sdt=&amp;period=360&amp;part=A&amp;keyword=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90#">thebell link<i class="icon hdup"></i></a>
+                        <div class="hearderM" style="display: none;">
+                            <ul>
+							<li><a href="http://link.thebell.co.kr/" target="_blank">thebell 포럼</a></li>
+							<li class="twoD"><a href="https://thebell.co.kr/free/service/ForumVideo.asp?lcode=17" target="_blank"> - 포럼 동영상(video)</a></li>
+							<li><a href="https://thebell.co.kr/academy/main.asp" target="_blank">finance academy</a></li>
+							<li><a href="http://scgf.or.kr/" target="_blank">Asian Corporate Governance and Finance Forum</a></li>
+							<li><a href="http://recruit.thebell.co.kr/" target="_blank">채용</a></li>
+							<li><a href="https://thebell.co.kr/free/company/list.asp?bno=6&amp;lcode=26" target="_blank">머니투데이미디어 event</a></li>
+                            </ul>
+                        </div>
+                    </li>
+					<li data-nm="menu2"><a href="http://ir.thebell.co.kr/" target="_blank"><img src="files/icon-irplaza.png" alt="IR"></a></li>
+                    <li data-nm="menu2"><a href="http://www.thewm.co.kr/" target="_blank"><img src="files/icon-theWM.png" alt="theWM"></a></li>
+					<li data-nm="menu2"><a href="https://www.thecfo.kr/" target="_blank"><img src="files/icon-THECFO.png" alt="THECFO" style="height:14px;"></a></li>
+                </ul>
+                <span class="fr">2024.05.05(일)</span> 
+			</div>
+        </div>
+        <!--  //headerBox  -->
+        <div class="logoBox">
+            <h1><a href="https://thebell.co.kr/"><img src="files/top-logo.png" alt="thebell"></a></h1>
+            <div class="topBanner">
+		
+<script>
+var arrayAD13 = new Array();
+arrayAD13[0] =new Array(2);arrayAD13[0][0]="http://www.doosan-tesna.com/";arrayAD13[0][1]="https://image.thebell.co.kr/banner/20240223135236708.jpg";arrayAD13[0][2]="other";
+arrayAD13[1] =new Array(2);arrayAD13[1][0]="http://www.hanafn.com/";arrayAD13[1][1]="https://image.thebell.co.kr/banner/20220930161657292.jpg";arrayAD13[1][2]="other";
+arrayAD13[2] =new Array(2);arrayAD13[2][0]="https://n44.nsmartta.com/click?slot=2575&ads=41268";arrayAD13[2][1]="https://image.thebell.co.kr/banner/20240430152304708.jpg";arrayAD13[2][2]="other";
+var idxAD13=0;	
+$(document).ready(function() {setInterval(function(){rollAD13(); }, 5*1000); });
+function rollAD13(){if(arrayAD13.length<=0) return;idxAD13++;if( idxAD13>=arrayAD13.length) idxAD13=0;try{$("#IMG_AD13").fadeOut(500, function(){$("#IMG_AD13").attr("src",arrayAD13[idxAD13][1]); $("#IMG_AD13").show();});}catch(ex){} }
+function goAD13(){if (arrayAD13[idxAD13][0] !=""){if (arrayAD13[idxAD13][2]=="_self") location.href=	arrayAD13[idxAD13][0]; else window.open(arrayAD13[idxAD13][0]);}}	
+</script>
+
+<a onclick="goAD13()" style="cursor:pointer"><img class="ADVIMG" src="files/20240430152304708.jpg" width="250" height="45" id="IMG_AD13" style="display: inline;"></a>
+	
+			</div>
+        </div>
+        <div class="gnbWrap"> <span class="all"><a href="https://thebell.co.kr/free/content/Search.asp?page=&amp;sdt=&amp;period=360&amp;part=A&amp;keyword=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90#"><img src="files/allM.png"></a></span>
+            <dl>
+            <dt><a href="https://thebell.co.kr/free/content/Article.asp?svccode=00">실시간뉴스</a></dt>
+            <dd>
+				<div class="bx-wrapper" style="max-width: 700px;"><div class="bx-viewport" aria-live="polite" style="width: 100%; overflow: hidden; position: relative; height: 18px;"><div class="bxfreetop" style="width: auto; position: relative; transition-duration: 0.1s; transform: translate3d(0px, -54px, 0px);"><li style="float: none; list-style: none; position: relative; width: 371px;" class="bx-clone" aria-hidden="true"><a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202405020955278160103795&amp;lcode=00">이재용 에이비프로바이오 대표, 바이오·반도체 신사업 '드라이브'</a></li>
+
+					<li style="float: none; list-style: none; position: relative; width: 371px;" aria-hidden="true"><a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202404301518442160101313&amp;lcode=00">'재무개선' AJ네트웍스, 조달비용 '확' 낮췄다</a></li>
+
+					<li style="float: none; list-style: none; position: relative; width: 371px;" aria-hidden="true"><a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202405031633065400102986&amp;lcode=00">'9년만에 엑시트' 한앤코, 한온시스템 거래구조 살펴보니</a></li>
+
+					<li style="float: none; list-style: none; position: relative; width: 371px;" aria-hidden="false"><a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202405031644308040101984&amp;lcode=00">한국타이어앤테크놀로지, 한온시스템 인수한다</a></li>
+
+					<li style="float: none; list-style: none; position: relative; width: 371px;" aria-hidden="true"><a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202405030929005800109330&amp;lcode=00">2대주주 지분매입 나선 MBK, 주식교환 카드 꺼냈다</a></li>
+
+					<li style="float: none; list-style: none; position: relative; width: 371px;" aria-hidden="true"><a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202405020955278160103795&amp;lcode=00">이재용 에이비프로바이오 대표, 바이오·반도체 신사업 '드라이브'</a></li>
+
+				<li style="float: none; list-style: none; position: relative; width: 371px;" class="bx-clone" aria-hidden="true"><a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202404301518442160101313&amp;lcode=00">'재무개선' AJ네트웍스, 조달비용 '확' 낮췄다</a></li></div></div></div>
+			</dd>
+			</dl>
+            <!-- userM -->
+            <ul class="userM">
+                <li class="login">
+					
+						<a href="https://thebell.co.kr/member/Login.asp">로그인</a>
+					
+				</li>
+                <li class="search"><a href="https://thebell.co.kr/free/content/Search.asp?page=&amp;sdt=&amp;period=360&amp;part=A&amp;keyword=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90#"> <span class="icon">검색&amp;닫기</span> </a>
+                    <div class="subM" style="display:none ;">
+                        <form name="total_search_form2" method="get" action="https://thebell.co.kr/free/content/Search.asp" onsubmit="return searchAllTop2()">
+                        <div class="multiOption">
+                            <ul>
+                                <li> <input type="text" value="" name="keyword" placeholder="검색" onkeyup="setComCd()" onfocus="this.createTextRange().select(); ">
+                                    <button class="icon">검색</button>
+                                </li>
+                            </ul>
+                        </div>
+                        </form>
+                    </div>
+                </li>
+                <li class="my"> <a href="https://thebell.co.kr/free/content/Search.asp?page=&amp;sdt=&amp;period=360&amp;part=A&amp;keyword=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90#"><span class="icon">마이페이지</span></a>
+                    <div class="subM" style=" display: none;">
+                        <ul>
+							<li><a href="javascript:notlogin();">개인정보 관리</a></li>
+							<li><a href="javascript:notlogin();">비밀번호 변경</a></li>
+							<li><a href="javascript:notlogin();">결제정보 관리</a></li>
+						
+						</ul>
+						<ul class="service">
+							
+							<li><a href="https://thebell.co.kr/member/MemberJoin.asp">회원가입</a></li>
+							
+							<li><a href="https://thebell.co.kr/free/company/ChargedInfo.asp?lcode=21">유료서비스 안내</a></li>
+							<li><a href="javascript:notlogin();">서비스 결제</a></li>
+						</ul>
+                        <!--ul class="userLink">
+                            <li><a href="/member/MyNews.asp?mbrmenu=01">my news</a></li>
+                            <li><a href="/member/MyKeywordNews.asp?mbrmenu=02">keyword news</a></li>
+                            <li><a href="/member/MyScrapNews.asp?mbrmenu=03">scrap news</a></li>
+                            <li><a href="/member/MyQuick.asp?mbrmenu=04">quick link</a></li>
+                        </ul-->
+                    </div>
+                </li>
+            </ul>
+        </div>
+		<!-- 추가 -->
+		<div class="gnbAdWrap">
+			<div class="gnbAd">
+			<!-- //userM -->		  
+			
+<!-- bannerBox -->
+		<div class="bannerBox left">
+			<a href="https://thebell.co.kr/free/service/ThebellLauncher.asp?lcode=16" target="_blank"><img src="files/banner_launcher.jpg" width="150" height="50"></a>
+			<span style="height:2px; display:block;"></span>
+			<div class="FLOAT_AD16 left_move_layer"><a href="https://www.akeep.co.kr/letter2" target="other"><img class="ADVIMG" src="files/20230530111342096.jpg" width="150" height="150"></a><span style="height:2px; display:block;"></span><a href="https://www.aekyung.co.kr/KR/main/main.do" target="other"><img class="ADVIMG" src="files/20231227172721376.jpg" width="150" height="150"></a><span style="height:2px; display:block;"></span><a href="https://www.gh.or.kr/" target="other"><img class="ADVIMG" src="files/20240109173805664.jpg" width="150" height="150"></a></div>
+		</div>
+	
+
+
+
+<div class="bannerBox right"><a href="https://pf.kakao.com/_UDRss" target="other"><img src="files/thebell_katalk_150.png"></a><span style="height:2px; display:block;"></span><a href="https://thebell.co.kr/esg/noservice_free.asp"><img src="files/esgBanner.jpg" width="150" height="50"></a><span style="height:2px; display:block;"></span><a href="http://ir.thebell.co.kr/" target="other"><img src="files/IR_sub.jpg" width="151" height="51"></a><span style="height:2px; display:block;"></span><a href="http://link.thebell.co.kr/" target="other"><img src="files/thebelllink.jpg" width="150" height="50"></a><span style="height:2px; display:block;"></span><a href="https://thebell.co.kr/free/service/ForumVideo.asp?lcode=17"><img src="files/forum_video.jpg" width="150" height="50"></a><span style="height:2px; display:block;"></span><div class="RightForumSlide"><div class="bx-wrapper" style="max-width: 100%;"><div class="bx-viewport" aria-live="polite" style="width: 100%; overflow: hidden; position: relative; height: 163px;"><ul style="width: auto; position: relative;">
+					<li style="float: none; list-style: none; position: absolute; width: 151px; z-index: 50; display: block;" aria-hidden="false"><a href="https://www.thebell.co.kr/free/content/magazine.asp?mdiv=1&amp;lcode=07" target="other"><img src="files/20240213133132568_p.jpg" border="0" width="150px"></a></li>
+				</ul></div></div></div><span style="height:1px; display:block;"></span><script>$(document).ready(function(){$('.RightForumSlide ul').bxSlider({mode:'fade',auto: true,speed:1000,pager:false,controls: false,autoHover: true,touchEnabled :false});});</script><span style="height:2px; display:block;"></span><a href="http://www.scgf.or.kr/" target="other"><img src="files/scgf.jpg" width="150" height="50"></a><span style="height:2px; display:block;"></span><a href="https://thebell.co.kr/free/company/list.asp?bno=6&amp;lcode=27"><img src="files/mt_media.jpg" width="150" height="50"></a><span style="height:2px; display:block;"></span><div class="FLOAT_AD15 right_move_layer"><a href="https://www.ssafy.com/ksp/servlet/swp.content.controller.SwpContentServlet?p_process=select-content-view&amp;p_menu_cd=M0307&amp;p_content_cd=C0307&amp;utm_source=news_comm&amp;utm_medium=affiliates&amp;utm_campaign=news_comm_affiliates_none_all_pcmo" target="other"><img class="ADVIMG" src="files/20240416101627824.jpg" width="150" height="150"></a></div></div>
+<!-- //bannerBox -->
+
+
+			</div>
+		</div>
+		<!--//추가-->
+    </div>
+    <!-- gnbBox -->
+	<script type="text/javascript">
+		
+		/*
+			실시간 뉴스 롤링 
+		*/
+		$('.bxfreetop').bxSlider({
+			auto: true,					// 자동롤링여부 
+			autoHover: true,			// 마우스 오버시 정지
+			autoDelay: 1000,			// 자동으로 롤링되는 딜레이시간
+			speed: 100,					// 속도
+			pager: false,				// 현재 이미지 위치가 어디인지 롤링중인 이미지 위치 표시   : 동그라미(불릿) 버튼 노출 여부
+			slideWidth: 700,			// 슬라이드 사이즈
+			controls: false,			// 자동 컨트롤 prev / next 사용여부
+			//autoControls: false,		// play/stop/puase 
+			//infiniteLoop: true,		// 롤링 무한루프 옵션 
+			//hideControlOnEnd : false,	// 롤링중 좌우 화살표 옵션
+			adaptiveHeight: true,		// 자동으로 이미지의 높이에 맞게 슬라이드의 높이값을 조절한것인지 옵션 
+			mode: 'vertical',			// 슬라이드 효과 fade, horizontal, vertical 
+			touchEnabled : (navigator.maxTouchPoints > 0) // a링크 안되는 버그조치
+		});
+
+	</script><div class="lnbWrap" style="display:none ;">
+	<!--lnbBox(메뉴 열릴시 body에  style="overflow: hidden;" 넣어야 화면이 안움직입니다.)-->
+	<div class="lnbBox freelnbBox"> <span class="close"><a href="https://thebell.co.kr/free/content/Search.asp?page=&amp;sdt=&amp;period=360&amp;part=A&amp;keyword=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90#"><img src="files/icon-x.png"></a></span>
+		<h1><a href="https://thebell.co.kr/free/content/Search.asp?page=&amp;sdt=&amp;period=360&amp;part=A&amp;keyword=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90#"><img src="files/top-logo2.png"></a></h1>
+		<h2><a href="https://thebell.co.kr/free/index.asp">뉴스홈</a></h2>
+		<ul>
+			<li class="lnbmenu" data-id="01">
+				<dl>
+				<dt> <a href="https://thebell.co.kr/free/content/Search.asp?page=&amp;sdt=&amp;period=360&amp;part=A&amp;keyword=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90#">thebell news <span class="icon up"></span></a></dt>
+				<dd class="01" style="display: none;">
+					<ul>
+						<li class="on"><a href="https://thebell.co.kr/free/content/Article.asp?svccode=00">전체기사</a></li>
+						<li><a href="https://thebell.co.kr/free/content/article.asp?svccode=01">deal</a></li>
+						<li><a href="https://thebell.co.kr/free/content/article.asp?svccode=02">finance</a></li>
+						<li><a href="https://thebell.co.kr/free/content/article.asp?svccode=03">invest</a></li>
+						<li><a href="https://thebell.co.kr/free/content/article.asp?svccode=04">industry</a></li>
+						<li><a href="https://thebell.co.kr/free/content/article.asp?svccode=06">global </a></li>
+						<li><a href="https://thebell.co.kr/free/content/article.asp?svccode=07">people &amp; opinion</a></li>
+					</ul>
+				</dd>
+				</dl>
+			</li>
+
+			<!--[esg tracker] 메뉴 추가 시작-->
+			<li class="lnbmenu" data-id="06">
+				<dl>
+					<dt><a href="https://thebell.co.kr/esg/weekly_free.asp?Code=1501">esg tracker</a><span class="icon down2"></span></dt>
+					<dd class="06" style="display: none;">
+						<ul>
+							<li><a href="https://thebell.co.kr/esg/weekly_free.asp?Code=1501">weekly</a></li>
+							<li><a href="https://thebell.co.kr/esg/company_free.asp?Code=1502">company</a></li>
+							<li><a href="https://thebell.co.kr/esg/enterprise_free.asp?Code=1508">enterprise</a></li>
+							<li><a href="https://thebell.co.kr/esg/ranking_free.asp?Code=1503">ranking</a></li>
+							<li><a href="https://thebell.co.kr/esg/peer_free.asp?Code=1504">peer analysis</a></li>
+							<li><a href="https://thebell.co.kr/esg/news_free.asp?Code=1505">news</a></li>
+							<li><a href="https://thebell.co.kr/esg/bellnews_free.asp?Code=1507">thebell contents</a></li>
+							<li><a href="https://thebell.co.kr/esg/methodology_free.asp?Code=1506">methodology</a></li>
+						</ul>
+					</dd>
+				</dl>
+			</li>
+			<!--[esg tracker] 메뉴 추가 끝-->
+
+			<li class="lnbmenu" data-id="02">
+				<dl>
+				<dt> <a href="https://thebell.co.kr/free/content/Search.asp?page=&amp;sdt=&amp;period=360&amp;part=A&amp;keyword=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90#">content <span class="icon down2"></span></a></dt>
+				<dd class="02" style="display: none;">
+					<ul>
+						<!--li><a href="/free/content/Article.asp?lcode=00">news articles</a></li-->
+						<li><a href="https://thebell.co.kr/free/content/NewsIntroduction.asp?lcode=01">news introduction</a></li>
+						<li><a href="https://thebell.co.kr/free/content/DealInfo.asp?lcode=02">deal 정보</a></li>
+						<li><a href="https://thebell.co.kr/free/content/LeagueTable.asp?lcode=03">league table</a></li>
+						<li><a href="https://thebell.co.kr/free/content/LeagueTableReport.asp?lcode=04">league table report</a></li>
+						<li><a href="https://thebell.co.kr/free/content/FinanceInfo.asp?lcode=05">기업재무정보</a></li>
+						<li><a href="https://thebell.co.kr/free/content/CreditInfo.asp?lcode=06">기업신용정보</a></li>
+						<li><a href="https://thebell.co.kr/free/content/Magazine.asp?lcode=07">book &amp; magazine</a></li>
+					</ul>
+				</dd>
+				</dl>
+			</li>
+			<li class="lnbmenu" data-id="03">
+				<dl>
+				<dt> <a href="https://thebell.co.kr/free/content/Search.asp?page=&amp;sdt=&amp;period=360&amp;part=A&amp;keyword=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90#">service  <span class="icon down2"></span></a></dt>
+				<dd class="03" style="display: none;">
+					<ul>
+						<li><a href="https://thebell.co.kr/free/service/ThebellPlus.asp?lcode=08">thebell plus</a></li>
+						<li><a href="https://thebell.co.kr/free/service/ThebellSmart.asp?lcode=09">thebell smart</a></li>
+						<li><a href="https://thebell.co.kr/free/service/KeywordNews.asp?lcode=10">keyword news</a></li>
+						<li><a href="https://thebell.co.kr/free/service/Calendar.asp?lcode=11">calendar</a></li>
+						<li><a href="https://thebell.co.kr/free/service/ReportFeeder.asp?lcode=12">report feeder</a></li>
+						<li><a href="https://thebell.co.kr/free/service/ThebellLink.asp?lcode=13">thebell link</a></li>
+						<li><a href="https://thebell.co.kr/free/service/ForumVideo.asp?lcode=17">포럼 동영상 (video)</a></li>
+						<li><a href="https://thebell.co.kr/free/service/GoodMorning.asp?lcode=14">good morning</a></li>
+						<li><a href="https://thebell.co.kr/free/service/Personalization.asp?lcode=15">개인화 서비스</a></li>
+						<li><a href="https://thebell.co.kr/free/service/ThebellLauncher.asp?lcode=16">thebell launcher</a></li>
+					</ul>
+				</dd>
+				</dl>
+			</li>
+			<li class="lnbmenu" data-id="04">
+				<dl>
+				<dt> <a href="https://thebell.co.kr/free/content/Search.asp?page=&amp;sdt=&amp;period=360&amp;part=A&amp;keyword=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90#">company  <span class="icon down2"></span></a></dt>
+				<dd class="04" style="display: none;">
+					<ul>
+						<li><a href="https://thebell.co.kr/free/company/CompanyInfo.asp?lcode=17">회사소개</a></li>
+						<li><a href="https://thebell.co.kr/free/company/CeoInfo.asp?lcode=18">대표인사말</a></li>
+						<li><a href="https://thebell.co.kr/free/company/HistoryInfo.asp?lcode=19">연혁</a></li>
+						<li><a href="https://thebell.co.kr/free/company/LocationInfo.asp?lcode=20">찾아오는 길</a></li>
+						<li><a href="https://thebell.co.kr/free/company/ChargedInfo.asp?lcode=21">유료서비스안내</a></li>
+
+							<li><a href="javascript:notlogin();">서비스결제</a></li>
+
+						<li><a href="https://thebell.co.kr/free/company/ServiceInfo.asp?lcode=23">서비스이용약관</a></li>
+						<li><a href="https://thebell.co.kr/free/company/ProtectionInfo.asp?lcode=24">개인정보처리방침</a></li>
+						<li><a href="https://thebell.co.kr/free/company/YouthpolicyInfo.asp?lcode=25">청소년보호정책</a></li>
+						<li><a href="https://thebell.co.kr/free/company/list.asp?bno=1&amp;lcode=26">공지사항</a></li>
+						<li><a href="https://thebell.co.kr/free/company/list.asp?bno=6&amp;lcode=26">머니투데이미디어 event</a></li>
+					</ul>
+				</dd>
+				</dl>
+			</li>
+			<li class="lnbmenu" data-id="05">
+				<dl>
+				<dt> <a href="https://thebell.co.kr/free/content/Search.asp?page=&amp;sdt=&amp;period=360&amp;part=A&amp;keyword=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90#">my page  <span class="icon down2"></span></a></dt>
+				<dd class="05" style="display: none;">
+					<ul>
+						<li><a href="javascript:notlogin();">개인정보 관리</a></li>
+						<li><a href="javascript:notlogin();">비밀번호 변경</a></li>
+						<li><a href="javascript:notlogin();">결제정보 관리</a></li>
+						<li><a href="javascript:notlogin();">회원탈퇴</a></li>
+					</ul>
+				</dd>
+				</dl>
+			</li>
+		</ul>
+			  
+		<!--div class="lnbLink">
+		<p><a href="#">good morning</a></p>
+		<p><a href="#">실시간뉴스</a></p>
+		<p><a href="#">best click</a></p>
+		<p><a href="#">더벨레터</a></p>
+		</div-->
+			  
+	</div>
+	<!--//lnbBox-->
+</div>
+
+		<!--  contentSection  -->
+		<div class="contentSection">
+				
+			<!-- mainContent -->
+			<div class="mainContent freemainContent  asideLine">
+
+					
+
+		<script type="text/javascript">
+		$(document).ready(function()
+		{	
+			//page 버튼
+			$(".paging .btnPage").css("cursor", "pointer").bind("click", function()
+			{
+				var intPage   = $(this).attr("id");
+				$("input[name='page']").val(intPage);
+				$("form[name='SearchFreeForm']").submit();
+			});	
+			
+			$("#sDate").change(function(){
+				
+				$("form[name='SearchFreeForm']").submit();
+
+			});
+			$("#period").change(function(){
+				var sdt   = $(this).val();
+				$("input[name='sdt']").val(sdt);
+				//$("form[name='SearchFreeForm']").submit();
+
+			});
+
+
+		});
+		function searchFree(){
+			if ($.trim($("form[name='SearchFreeForm'] input[name='keyword']").val()) == ""){
+
+				alert("검색어를 입력해 주세요.");
+				$("form[name='SearchFreeForm'] input[name='keyword']").val("");
+				$("form[name='SearchFreeForm'] input[name='keyword']").focus();
+				return false;
+			}		
+			return true;
+		
+		}
+		</script>
+
+		 <!--newsBox-->
+            <div class="newsBox">
+
+                <!-- newsList -->
+                <div class="newsList">
+                    <div class="headBox">
+						 <form name="SearchFreeForm" method="get" action="https://thebell.co.kr/free/content/Search.asp" onsubmit="return searchFree()">
+						 <input type="hidden" name="page" value="">
+					     <input type="hidden" name="sdt" value="">
+						 <div class="searchinBox">
+							<ul>
+                                <li> <em>검색 기간</em>
+                                    <div class="selectBox grey">
+                                        <label for="">검색 기간</label>
+                                        <select name="period" id="period">
+                                        <!--option value="ALL">전체</option-->
+                                        <option value="7">최근 1주</option>
+                                        <option value="30">최근 1개월</option>
+                                        <option value="90">최근 3개월</option>
+                                        <option value="180">최근 6개월</option>
+                                        <option value="360" selected="">최근 12개월</option>
+                                        </select>
+                                    </div>
+                                </li>
+                                <!--li> <em>검색 대상</em>
+                                    <div class="selectBox grey">
+                                        <label for="">검색 대상</label>
+                                        <select name="kind" onchange="chgKind(this.value)">
+                                        <option value="ALL" selected="">전체</option>
+                                        <option value="NEWS">뉴스</option>
+                                        <option value="DEAL">딜리스트</option>
+                                        <option value="FINANCE">재무정보</option>
+                                        <option value="CREDIT">신용정보</option>
+                                        <option value="REPORT">전문자료</option>
+                                        </select>
+                                    </div>
+                                </li-->
+                                <li> <em>검색 범위</em>
+                                    <div class="selectBox grey">
+                                        <label for="">검색 범위</label>
+                                        <select name="part">
+                                        <option value="A" selected="">제목+본문</option>
+                                        <option value="T">제목</option>
+                                        <option value="C">본문</option>
+                                        </select>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="searchTxt">
+                                <em>검색어</em>
+                                <input name="keyword" class="ac_input" onkeyup="setComCd()" onfocus="this.createTextRange().select();" type="text" placeholder="검색어를 입력하세요." value="삼성전자" autocomplete="off">
+                                <button class="btn">검색</button>
+                            </div>
+
+                        </div>
+						</form>
+
+							<h4><span class="tcR">‘삼성전자’</span> 검색결과입니다.</h4>
+
+					</div>
+                                        
+                    <!-- listBox -->
+                    <div class="listBox">
+                        <ul>
+
+								<li>
+									<dl>
+										<a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202404301612315640103811&amp;lcode=00&amp;page=1&amp;svccode=00" title="[Company Watch] 갈 길 먼 삼성 파운드리, &#39;적자탈출&#39; 언제쯤">
+										<dt>[Company Watch] 갈 길 먼 삼성 파운드리, '적자탈출' 언제쯤</dt>
+										<!--dd>AI 타고 도망가는 TSMC, 빅테크 고객 유치 고대</dd-->
+										<dd>삼성전자 디바이스솔루션(DS)부문이 메모리 반등으로 한숨을 돌렸으나 반도체 위탁생산(파운드리) 사업에 대한 고민은 여전하다. 당장의 실적은 물론 중장기 성장성에 대한 의문이 커지고 있기 때문이다. ...</dd>
+										</a>
+										<dd class="userBox"><span class="user"> 김도현&nbsp;기자</span><span class="date">2024-05-03 오전 10:17:55</span></dd>
+									</dl>
+								</li>
+
+								<li>
+									<dl>
+										<a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202404251754208880105311&amp;lcode=00&amp;page=1&amp;svccode=00" title="[스튜어드십코드 모니터]IBK운용, 호실적 불구 무배당 삼성E&amp;A에 견제구">
+										<dt>[스튜어드십코드 모니터]IBK운용, 호실적 불구 무배당 삼성E&amp;A에 견제구</dt>
+										<!--dd>배당가능이익 달성 불구 묵묵부답, 주주가치 훼손 우려</dd-->
+										<dd>IBK자산운용이 삼성E&amp;A(옛 삼성엔지니어링)의 무배당 정책에 불만을 드러냈다. 삼성E&amp;A는 재작년에 이어 작년까지 호실적을 보이면서 10년만에 배당을 재개하겠다고 밝혔지만 2년 연속...</dd>
+										</a>
+										<dd class="userBox"><span class="user"> 황원지&nbsp;기자</span><span class="date">2024-05-03 오전 8:26:49</span></dd>
+									</dl>
+								</li>
+
+								<li>
+									<dl>
+										<a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202405021109091360107818&amp;lcode=00&amp;page=1&amp;svccode=00" title="곽노정 SK하이닉스 사장 &quot;HBM 1위 비결, 최태원 결단&quot;">
+										<dt>곽노정 SK하이닉스 사장 "HBM 1위 비결, 최태원 결단"</dt>
+										<!--dd>AI 메모리 공급 과잉 우려 일축, 낸드 경쟁력 강조</dd-->
+										<dd>"고대역폭 메모리(HBM) 경쟁력이 한순간에 확보된 게 아니다. SK그룹의 장기적 관점 투자 결정과 최태원 회장의 글로벌 네트워크가 큰 영향을 미쳤다."
+
+곽노정 SK하이닉스 ...</dd>
+										</a>
+										<dd class="userBox"><span class="user"> 이천(경기)=김도현&nbsp;기자</span><span class="date">2024-05-03 오전 8:18:23</span></dd>
+									</dl>
+								</li>
+
+								<li>
+									<dl>
+										<a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202405020958428960104478&amp;lcode=00&amp;page=1&amp;svccode=00" title="성장금융, 반도체생태계펀드 첫 GP로 &#39;노틱캐피탈&#39; 낙점">
+										<dt>성장금융, 반도체생태계펀드 첫 GP로 '노틱캐피탈' 낙점</dt>
+										<!--dd>10개월만에 출자 가동, 400억대 자펀드 결성 돌입</dd-->
+										<dd>한국성장금융이 지난해 결성한 반도체생태계펀드의 물꼬를 텄다. 첫 자펀드의 위탁운용사에는 사모투자펀드(PEF) 운용사인 노틱캐피탈이 낙점됐다. 노틱캐피탈은 400억원대 규모의 프로젝트펀드를 조성해 삼...</dd>
+										</a>
+										<dd class="userBox"><span class="user"> 임효정&nbsp;기자</span><span class="date">2024-05-03 오전 7:50:14</span></dd>
+									</dl>
+								</li>
+
+								<li>
+									<dl>
+										<a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202404291358302400106537&amp;lcode=00&amp;page=1&amp;svccode=00" title="[IB 풍향계]리벨리온 상장주관사에 시선집중…삼성증권 참전">
+										<dt>[IB 풍향계]리벨리온 상장주관사에 시선집중…삼성증권 참전</dt>
+										<!--dd>유력 파트너 KB증권 &#39;긴장모드&#39;…테크 IPO 강자 급부상</dd-->
+										<dd>팹리스 스타트업인 퓨리오사AI가 상장 주관사단을 교체하면서 라이벌사인 리벨리온 주관사 진용에 관심이 집중되고 있다. 이들 업체는 국내 AI반도체 '투톱'으로서 상장주관사가 중복될 가능...</dd>
+										</a>
+										<dd class="userBox"><span class="user"> 양정우&nbsp;기자</span><span class="date">2024-05-03 오전 7:41:40</span></dd>
+									</dl>
+								</li>
+
+								<li>
+									<dl>
+										<a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202404251259590440104290&amp;lcode=00&amp;page=1&amp;svccode=00" title="[스튜어드십코드 모니터]신한운용, DB하이텍 주총서 KCGI 주주제안 &#39;이견&#39;">
+										<dt>[스튜어드십코드 모니터]신한운용, DB하이텍 주총서 KCGI 주주제안 '이견'</dt>
+										<!--dd>&quot;KCGI, DB 지주사 전환 과정 조력자 역할 수행&quot;</dd-->
+										<dd>신한자산운용이 DB하이텍 이사회가 상정한 주총 안건에 제동을 걸었다. 보다 높은 이사회 독립성이 요구되는 시점에서 이사회 정원 수를 제한해 외부인사 진입을 막으려 한 것 아니냐는 분석이다. 과거 D...</dd>
+										</a>
+										<dd class="userBox"><span class="user"> 조영진&nbsp;기자</span><span class="date">2024-05-03 오전 7:26:07</span></dd>
+									</dl>
+								</li>
+
+								<li>
+									<dl>
+										<a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202404282021534960102014&amp;lcode=00&amp;page=1&amp;svccode=00" title="에이티넘인베, &#39;현대차그룹 눈독&#39; 보스반도체 베팅">
+										<dt>에이티넘인베, '현대차그룹 눈독' 보스반도체 베팅</dt>
+										<!--dd>지난해 3월 SAFE 투자자와 동일한 RCPS 취득…한투파도 투자 예정</dd-->
+										<dd>현대자동차그룹이 주목하고 있는 차량용 시스템반도체 기업에 에이티넘인베스트먼트가 베팅했다. 후속 투자 납입이 이뤄지며 앞서 조건부지분계약(SAFE) 방식으로 투자한 투자자들과 동일한 밸류에이션으로 주...</dd>
+										</a>
+										<dd class="userBox"><span class="user"> 최윤신&nbsp;기자</span><span class="date">2024-05-02 오전 8:39:48</span></dd>
+									</dl>
+								</li>
+
+								<li>
+									<dl>
+										<a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202404261649057320105770&amp;lcode=00&amp;page=1&amp;svccode=00" title="[매니저 프로파일/지앤텍벤처투자]&#39;고속 승진&#39; 강준규 대표, &#39;올라운더&#39; 심사역의 정석">
+										<dt>[매니저 프로파일/지앤텍벤처투자]'고속 승진' 강준규 대표, '올라운더' 심사역의...</dt>
+										<!--dd>산업계 출신 벤처캐피탈리스트, 에이피알 회수 IRR 479%…&quot;AUM 5...</dd-->
+										<dd>지앤텍벤처투자는 국순당 계열 벤처캐피탈(VC)이다. 일찍이 펀드 결성부터 투자, 회수에 이르기까지의 '선순환 투자구조'를 구축해 업황과 상관없이 매년 흑자를 기록하고 있는 탄탄한 회사...</dd>
+										</a>
+										<dd class="userBox"><span class="user"> 유정화&nbsp;기자</span><span class="date">2024-05-02 오전 8:37:01</span></dd>
+									</dl>
+								</li>
+
+								<li>
+									<dl>
+										<a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202404251206318120102393&amp;lcode=00&amp;page=1&amp;svccode=00" title="[스튜어드십코드 모니터]더제이운용 의결권 행사, 보수적 기조 속 &#39;반대&#39; 없었다">
+										<dt>[스튜어드십코드 모니터]더제이운용 의결권 행사, 보수적 기조 속 '반대' 없었다</dt>
+										<!--dd>삼성전자 사외이사 선임 등 주요 이슈에 모두 &#39;찬성&#39;</dd-->
+										<dd>더제이자산운용이 최근 1년간 투자 기업의 주주총회 주요 의안에 모두 찬성표를 던졌다. 일부 기업의 경우 타 운용사들의 반대가 있었지만 더제이운용은 크게 문제삼지 않았다.
+
+25일 더벨이 공시자료...</dd>
+										</a>
+										<dd class="userBox"><span class="user"> 이명관&nbsp;기자</span><span class="date">2024-05-02 오전 8:11:40</span></dd>
+									</dl>
+								</li>
+
+								<li>
+									<dl>
+										<a href="https://thebell.co.kr/free/content/ArticleView.asp?key=202404231120443960107816&amp;lcode=00&amp;page=1&amp;svccode=00" title="[Financial Index/디스플레이]LGD는 유형 자산, 삼성D는 현금 비중 포트폴리오">
+										<dt>[Financial Index/디스플레이]LGD는 유형 자산, 삼성D는 현금 비중...</dt>
+										<!--dd>[자산 구조 분석]①삼성전자 22조 대여 후에도 현금 비중 25%…LGD와 자산 ...</dd-->
+										<dd>국내 디스플레이 업계를 분할하고 있는 LG디스플레이와 삼성디스플레이는 같은 디스플레이 업체지만 재무 상황은 상이하다. THE CFO는 양 사의 2023년 말 별도·연결 기준 자산 구조 ...</dd>
+										</a>
+										<dd class="userBox"><span class="user"> 박기수&nbsp;기자</span><span class="date">2024-05-02 오전 8:08:38</span></dd>
+									</dl>
+								</li>
+
+                        </ul>
+                    </div>
+                    <!-- //listBox -->
+                </div>
+                <!-- //newsList -->
+                                
+                <!-- paging -->
+                <div class="paging tp2"> 
+<a class="arrow left">◀</a><em class="cur">1</em><a class="btnPage" id="2" style="cursor: pointer;">2</a><a class="btnPage" id="3" style="cursor: pointer;">3</a><a class="btnPage" id="4" style="cursor: pointer;">4</a><a class="btnPage" id="5" style="cursor: pointer;">5</a><a class="btnPage" id="6" style="cursor: pointer;">6</a><a class="btnPage" id="7" style="cursor: pointer;">7</a><a class="btnPage" id="8" style="cursor: pointer;">8</a><a class="btnPage" id="9" style="cursor: pointer;">9</a><a class="btnPage" id="10" style="cursor: pointer;">10</a><a class="arrow right arrowOn btnPage" id="11" style="cursor: pointer;">▶</a>				</div>
+                <!-- //paging -->
+                                
+            </div>
+            <!--//newsBox-->
+			   <!--//newsBox-->
+            <div class="asideBox">
+                                
+                <!-- bestBox -->
+                <div class="bestBox tp2">
+                    <h4><em>best</em> clicks</h4>
+                    <div class="tabView" style="margin-top: 10px;">
+                        <ul class="bestSlide">
+							<li>
+								<ul class="dataList">
+
+									<li><span class="num">1</span>
+									<a class="txtE" href="https://thebell.co.kr/free/Content/ArticleView.asp?key=202405031644308040101984">한국타이어앤테크놀로지, 한온시스템 인수한다</a>
+									</li>
+
+									<li><span class="num">2</span>
+									<a class="txtE" href="https://thebell.co.kr/free/Content/ArticleView.asp?key=202404291323048680103567">[Company Watch]'LGD 협력사' 아바코, BOE 8.6세대 OLED 공급망 합류</a>
+									</li>
+
+									<li><span class="num">3</span>
+									<a class="txtE" href="https://thebell.co.kr/free/Content/ArticleView.asp?key=202405021544169960105510">비만시장 뛰어든 HK이노엔, '케이캡' 성공공식 따른다</a>
+									</li>
+
+									<li><span class="num">4</span>
+									<a class="txtE" href="https://thebell.co.kr/free/Content/ArticleView.asp?key=202404300619573340103875">[수술대 오른 커넥트웨이브]8000억 투입하는 MBK, 높아진 엑시트의 벽</a>
+									</li>
+
+									<li><span class="num">5</span>
+									<a class="txtE" href="https://thebell.co.kr/free/Content/ArticleView.asp?key=202405020901303380103610">[아시아나 화물사업부 M&amp;A]이스타항공, '아틀라스에어' 파트너십 맺고 인수 도전</a>
+									</li>
+
+									<li class="gy"><span class="num">6</span>
+									<a class="txtE" href="https://thebell.co.kr/free/Content/ArticleView.asp?key=202404291358380520107917">[LG CNS IPO]몸값 '7조'...내년초 상장 '최적 스케줄' 무게</a>
+									</li>
+
+									<li class="gy"><span class="num">7</span>
+									<a class="txtE" href="https://thebell.co.kr/free/Content/ArticleView.asp?key=202404251528200920105826">쏟아지는 대형 딜…DL그룹 '디타워'도 마케팅 본격화</a>
+									</li>
+
+									<li class="gy"><span class="num">8</span>
+									<a class="txtE" href="https://thebell.co.kr/free/Content/ArticleView.asp?key=202405021611590880109534">우리벤처파트너스, 토스 구주매각 '40배' 멀티플 달성</a>
+									</li>
+
+									<li class="gy"><span class="num">9</span>
+									<a class="txtE" href="https://thebell.co.kr/free/Content/ArticleView.asp?key=202405031633065400102986">'9년만에 엑시트' 한앤코, 한온시스템 거래구조 살펴보니</a>
+									</li>
+
+									<li class="gy"><span class="num">10</span>
+									<a class="txtE" href="https://thebell.co.kr/free/Content/ArticleView.asp?key=202405031034390240106544">우리금융, 포스증권 합병 확정…임종룡 회장 '첫 M&amp;A' 성사</a>
+									</li>
+
+								</ul>
+							</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- //bestBox -->
+                <!--더벨서비스문의-->
+                <div class="shadowBox">
+                    <div class="serviceNum">
+                        <p class="txt">더벨 서비스 문의</p>
+                        <p class="num">02-724-4102</p>
+                        <a class="btn s pdlr3" href="https://thebell.co.kr/free/company/ChargedInfo.asp?lcode=21">유료 서비스 안내 <i class="icon arrow L1"></i></a>
+                    </div>
+                </div>
+                <!--//더벨서비스문의-->
+
+            </div>
+
+
+
+			</div>
+			<!-- //mainContent -->
+
+		</div>
+		<!--  //contentSection  -->
+
+		
+  <!-- footerBox -->
+    <div class="footerBox freefooterBox">
+
+        <div class="footerWrap">
+            <!--footerSitemap-->
+            <!-- 액션:열리기<div class="footerSitemap">에 <<div class="footerSitemap on">추가-->
+				<div class="footerSitemap ">
+					<div class="sitemaph3">
+						<h3><a href="https://thebell.co.kr/free/content/Search.asp?page=&amp;sdt=&amp;period=360&amp;part=A&amp;keyword=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90#" onclick="return false;">thebell 사이트맵 <span class="icon"></span></a></h3>
+					</div>
+					<div class="allmenuBox" style="display:none;">
+						<ul class="tp1">
+							<li> <a href="https://thebell.co.kr/free/content/article.asp?svccode=00"><em>thebell news</em></a>
+								<ul>
+									<li class="on"><a href="https://thebell.co.kr/free/content/Article.asp?svccode=00">전체기사</a></li>
+									<li><a href="https://thebell.co.kr/free/content/article.asp?svccode=01">deal</a></li>
+									<li><a href="https://thebell.co.kr/free/content/article.asp?svccode=02">finance</a></li>
+									<li><a href="https://thebell.co.kr/free/content/article.asp?svccode=03">invest</a></li>
+									<li><a href="https://thebell.co.kr/free/content/article.asp?svccode=04">industry</a></li>
+									<li><a href="https://thebell.co.kr/free/content/article.asp?svccode=06">global</a></li>
+									<li><a href="https://thebell.co.kr/free/content/article.asp?svccode=07">people &amp; opinion</a></li>
+								</ul>
+							</li>
+							<!--[esg tracker] 메뉴 추가 시작-->
+							<li> <a href="https://thebell.co.kr/esg/weekly_free.asp?Code=1501"><em>esg tracker</em></a>
+								<ul>
+									<li><a href="https://thebell.co.kr/esg/weekly_free.asp?Code=1501">weekly</a></li>
+									<li><a href="https://thebell.co.kr/esg/company_free.asp?Code=1502">company</a></li>
+									<li><a href="https://thebell.co.kr/esg/ranking_free.asp?Code=1503">ranking</a></li>
+									<li><a href="https://thebell.co.kr/esg/peer_free.asp?Code=1504">peer analysis</a></li>
+									<li><a href="https://thebell.co.kr/esg/news_free.asp?Code=1505">news</a></li>
+									<li><a href="https://thebell.co.kr/esg/bellnews_free.asp?Code=1507">thebell contents</a></li>
+									<li><a href="https://thebell.co.kr/esg/methodology_free.asp?Code=1506">methodology</a></li>
+								</ul>
+							</li>
+							<!--[esg tracker] 메뉴 추가 끝-->
+							<li> <a href="https://thebell.co.kr/free/content/NewsIntroduction.asp?lcode=01"><em>content</em></a>
+								<ul>
+									<!--li><a href="/free/content/Article.asp?lcode=00">news articles</a></li-->
+									<li><a href="https://thebell.co.kr/free/content/NewsIntroduction.asp?lcode=01">news introduction</a></li>
+									<li><a href="https://thebell.co.kr/free/content/DealInfo.asp?lcode=02">deal 정보</a></li>
+									<li><a href="https://thebell.co.kr/free/content/LeagueTable.asp?lcode=03">league table</a></li>
+									<li><a href="https://thebell.co.kr/free/content/LeagueTableReport.asp?lcode=04">league table report</a></li>
+									<li><a href="https://thebell.co.kr/free/content/FinanceInfo.asp?lcode=05">기업재무정보</a></li>
+									<li><a href="https://thebell.co.kr/free/content/CreditInfo.asp?lcode=06">기업신용정보</a></li>
+									<li><a href="https://thebell.co.kr/free/content/Magazine.asp?lcode=07">book &amp; magazine</a></li>
+								</ul>
+							</li>
+							<li> <a href="https://thebell.co.kr/free/service/ThebellPlus.asp?lcode=08"><em>service</em></a>
+								<ul>
+									<li><a href="https://thebell.co.kr/free/service/ThebellPlus.asp?lcode=08">thebell plus</a></li>
+									<li><a href="https://thebell.co.kr/free/service/ThebellSmart.asp?lcode=09">thebell smart</a></li>
+									<li><a href="https://thebell.co.kr/free/service/KeywordNews.asp?lcode=10">keyword news</a></li>
+									<li><a href="https://thebell.co.kr/free/service/Calendar.asp?lcode=11">calendar</a></li>
+									<li><a href="https://thebell.co.kr/free/service/ReportFeeder.asp?lcode=12">report feeder</a></li>
+									<li><a href="https://thebell.co.kr/free/service/ThebellLink.asp?lcode=13">thebell link</a></li>
+									<li><a href="https://thebell.co.kr/free/service/ForumVideo.asp?lcode=17">포럼 동영상 (video)</a></li>
+									<li><a href="https://thebell.co.kr/free/service/GoodMorning.asp?lcode=14">good morning</a></li>
+									<li><a href="https://thebell.co.kr/free/service/Personalization.asp?lcode=15">개인화 서비스</a></li>
+									<li><a href="https://thebell.co.kr/free/service/ThebellLauncher.asp?lcode=16">thebell launcher</a></li>
+								</ul>
+							</li>
+							<li> <a href="https://thebell.co.kr/free/company/CompanyInfo.asp?lcode=17"><em>company</em></a>
+								<ul>
+									<li><a href="https://thebell.co.kr/free/company/CompanyInfo.asp?lcode=17">회사소개</a></li>
+									<li><a href="https://thebell.co.kr/free/company/CeoInfo.asp?lcode=18">대표인사말</a></li>
+									<li><a href="https://thebell.co.kr/free/company/HistoryInfo.asp?lcode=19">연혁</a></li>
+									<li class="mgb20"><a href="https://thebell.co.kr/free/company/LocationInfo.asp?lcode=20">찾아오는 길</a></li>
+									<li><a href="https://thebell.co.kr/free/company/ChargedInfo.asp?lcode=21">유료서비스안내</a></li>
+									<li class="mgb20"><a href="javascript:notlogin();">서비스결제</a></li>
+									<li><a href="https://thebell.co.kr/free/company/ServiceInfo.asp?lcode=23">서비스이용약관</a></li>
+									<li><a href="https://thebell.co.kr/free/company/ProtectionInfo.asp?lcode=24">개인정보처리방침</a></li>
+									<li class="mgb20"><a href="https://thebell.co.kr/free/company/YouthpolicyInfo.asp?lcode=25">청소년보호정책</a></li>
+									<li><a href="https://thebell.co.kr/free/company/list.asp?bno=1&amp;lcode=26">공지사항</a></li>
+									<li><a href="https://thebell.co.kr/free/company/list.asp?bno=6&amp;lcode=26">머니투데이미디어 event</a></li>
+								</ul>
+							</li>
+							<li> <a href="javascript:alert(&#39;로그인이 필요한 서비스입니다.&#39;);"><em>my page</em></a>
+								<ul>
+									<li><a href="javascript:notlogin();">개인정보 관리</a></li>
+									<li><a href="javascript:notlogin();">비밀번호 변경</a></li>
+									<li><a href="javascript:notlogin();">결제정보 관리</a></li>
+									<li><a href="javascript:notlogin();">회원탈퇴</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!--//footerSitemap-->
+				<div class="footerMenu">
+					<ul class="menu">
+						<li><a href="https://thebell.co.kr/free/company/CompanyInfo.asp?lcode=17">회사소개</a></li>
+						<li><a href="https://thebell.co.kr/free/company/FreeSitemap.asp?lcode=28">사이트맵</a></li>
+						<li><a href="https://thebell.co.kr/free/company/ServiceInfo.asp?lcode=23">서비스이용약관</a></li>
+						<li class="on"><a href="https://thebell.co.kr/free/company/ProtectionInfo.asp?lcode=24">개인정보처리방침</a></li>
+						<li class="on"><a href="https://thebell.co.kr/free/company/YouthpolicyInfo.asp?lcode=25">청소년보호정책</a></li>
+					</ul>
+					<div class="siteBox sel tp1">
+						<select onchange="if(this.value) window.open(this.value);">
+						<option value="">패밀리사이트 바로가기</option>
+						<option value="http://www.mt.co.kr">머니투데이</option>
+						<option value="http://www.thewm.co.kr">theWM</option>
+						<option value="http://news1.kr">News 1</option>
+						<option value="http://www.newsis.com">NEWSis</option>
+						<option value="http://www.mtn.co.kr">MTN</option>
+						<option value="http://www.zdnet.co.kr">지디넷</option>
+						<option value="http://www.moneys.news">MoneyS</option>
+						<option value="http://the300.mt.co.kr">the300</option>
+						<option value="http://thel.mt.co.kr">theL</option>
+						<option value="http://star.mt.co.kr">스타뉴스</option>
+						</select>
+					</div>
+				</div>
+				<div class="addressBox">
+					<em>주)더벨</em> <b class="mgl0">주소</b>서울시 종로구 청계천로 41 영풍빌딩 5층, 6층<b>대표/발행인</b>성화용 <b>편집인</b>이진우 <b>등록번호</b>서울아00483<br>
+					<b class="mgl0">등록년월일</b>2007.12.27 / 제호 : 더벨(thebell) <b>발행년월일</b>2007.12.30<b>청소년보호관리책임자</b>김용관<br>
+					<b class="mgl0">문의</b>TEL : 02-724-4100 / FAX : 02-724-4109<b>서비스 문의 및 PC 초기화</b>TEL : 02-724-4102<b>기술 및 장애문의</b>TEL : 02-724-4159
+					<p>더벨의 모든 기사(콘텐트)는 저작권법의 보호를 받으며, 무단 전재 및 복사와 배포 등을 금지합니다.</p>
+					copyright ⓒ thebell all rights reserved. 
+				</div>
+			</div>
+		</div>
+		<!-- //footerBox -->
+	</div>
+<!-- //footerBox -->
+
+<script type="text/javascript">
+	var _uuii = _uuii || [];
+	_uuii.push(['account', '']);
+
+	var _uuip = _uuip || [];
+	_uuip.push(['ip', '220.127.197.243']);
+
+	(function() 
+	{
+		
+		var sa = document.createElement("script");
+		sa.type = "text/javascript";
+		sa.async = true;
+		sa.src = ("https:" == document.location.protocol ? "https://" : "http://") + "www.thebell.co.kr/log/js/thebell.tracker.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(sa, s);
+	})();
+</script>
+
+	
+	<!--  //contents  -->
+
+
+<div id="yt_article_summary_widget_wrapper" class="yt_article_summary_widget_wrapper" style="display: none;">
+        <div id="yt_article_summary_widget" class="yt_article_summary_widget"><svg style="filter: brightness(0.8);" width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <mask id="path-1-outside-1_3606_3145" maskUnits="userSpaceOnUse" x="1" y="1" width="22" height="22" fill="black">
+                <rect fill="white" x="1" y="1" width="22" height="22"></rect>
+                <path d="M20.6816 10.1843C20.9588 9.34066 21.0063 8.4399 20.8192 7.57245C20.6321 6.70499 20.217 5.90134 19.6157 5.24216C19.0143 4.58298 18.2478 4.09146 17.393 3.81692C16.5382 3.54238 15.6253 3.49449 14.7459 3.67805C14.1453 3.01747 13.379 2.52468 12.524 2.24931C11.669 1.97394 10.7555 1.92571 9.87559 2.10947C8.99568 2.29324 8.18039 2.70252 7.51181 3.29608C6.84323 3.88965 6.34499 4.64654 6.06725 5.49055C5.18642 5.67292 4.3699 6.08122 3.70003 6.67426C3.03017 7.26731 2.53064 8.02413 2.25182 8.86842C1.97299 9.71271 1.92474 10.6146 2.11192 11.4832C2.2991 12.3517 2.71509 13.1562 3.31795 13.8155C3.09309 14.4899 3.01633 15.2037 3.09278 15.9095C3.16924 16.6154 3.39716 17.2971 3.76139 17.9093C4.30169 18.8351 5.12567 19.568 6.11483 20.0027C7.104 20.4373 8.20738 20.5512 9.26631 20.328C9.74353 20.8568 10.3291 21.2796 10.9844 21.5684C11.6396 21.8571 12.3495 22.0053 13.0672 22.003C14.1516 22.003 15.2081 21.6635 16.0847 21.0334C16.9612 20.4034 17.6125 19.5152 17.9449 18.4968C18.649 18.3539 19.3141 18.0649 19.8962 17.6489C20.4784 17.233 20.9642 16.6997 21.3214 16.0843C21.8585 15.1598 22.0858 14.0915 21.9709 13.032C21.856 11.9724 21.4048 10.9758 20.6816 10.1843ZM13.0798 20.6968C12.191 20.6968 11.3302 20.3894 10.6473 19.828L10.7677 19.7593L14.8029 17.4593C14.9069 17.4047 14.9935 17.3225 15.0528 17.2221C15.1121 17.1216 15.1418 17.0068 15.1386 16.8905V11.2655L16.8427 12.2405C16.8517 12.2441 16.8594 12.2501 16.865 12.2579C16.8706 12.2656 16.8739 12.2748 16.8744 12.2843V16.9343C16.876 17.4289 16.7785 17.9189 16.5875 18.3761C16.3964 18.8333 16.1156 19.2488 15.7611 19.5985C15.4067 19.9482 14.9856 20.2253 14.5222 20.4138C14.0588 20.6023 13.5621 20.6984 13.0608 20.6968H13.0798ZM4.90165 17.2593C4.46164 16.5029 4.3026 15.6189 4.45188 14.7593L4.57224 14.828L8.60749 17.128C8.70379 17.1829 8.81303 17.2118 8.92423 17.2118C9.03543 17.2118 9.14467 17.1829 9.24097 17.128L14.1758 14.3218V16.253C14.1797 16.2608 14.1817 16.2694 14.1817 16.278C14.1817 16.2867 14.1797 16.2953 14.1758 16.303L10.0962 18.628C9.66403 18.8748 9.18685 19.0352 8.69188 19.0999C8.19692 19.1647 7.69387 19.1326 7.21148 19.0055C6.72909 18.8784 6.27681 18.6587 5.88048 18.3591C5.48415 18.0595 5.15154 17.6858 4.90165 17.2593ZM3.83741 8.5843C4.28764 7.82089 4.99655 7.23878 5.83919 6.94055V11.6718C5.83595 11.7857 5.86434 11.8983 5.92128 11.9975C5.97823 12.0966 6.06156 12.1785 6.16227 12.2343L11.0717 15.028L9.36766 16.003C9.34918 16.0092 9.32914 16.0092 9.31065 16.003L5.23106 13.678C4.36041 13.1812 3.72487 12.3642 3.46364 11.4059C3.20242 10.4476 3.33682 9.42624 3.83741 8.56555V8.5843ZM17.8563 11.7968L12.9278 8.9718L14.6319 8.00305C14.6403 7.99741 14.6502 7.99439 14.6604 7.99439C14.6705 7.99439 14.6805 7.99741 14.6889 8.00305L18.7685 10.328C19.3915 10.684 19.8992 11.2072 20.2325 11.8368C20.5659 12.4664 20.7111 13.1764 20.6514 13.8843C20.5916 14.5921 20.3294 15.2687 19.8951 15.8352C19.4608 16.4017 18.8724 16.8349 18.1983 17.0843V12.353C18.1946 12.2391 18.1612 12.1281 18.1013 12.0306C18.0414 11.9332 17.957 11.8527 17.8563 11.7968ZM19.554 9.2968L19.4336 9.2218L15.4047 6.9093C15.3047 6.84846 15.1896 6.81624 15.0721 6.81624C14.9547 6.81624 14.8395 6.84846 14.7396 6.9093L9.8111 9.71555V7.75305C9.8061 7.7445 9.80346 7.7348 9.80346 7.72492C9.80346 7.71505 9.8061 7.70535 9.8111 7.6968L13.897 5.37805C14.5222 5.02257 15.2371 4.85003 15.958 4.88059C16.6789 4.91115 17.3762 5.14356 17.9682 5.55064C18.5601 5.95772 19.0225 6.52265 19.301 7.17939C19.5796 7.83614 19.663 8.55755 19.5413 9.2593L19.554 9.2968ZM8.87989 12.7218L7.1695 11.753C7.15339 11.7405 7.1422 11.7228 7.13782 11.703V7.06555C7.13785 6.35289 7.34371 5.65499 7.73128 5.0536C8.11885 4.45222 8.67209 3.97224 9.32619 3.6699C9.98029 3.36756 10.7082 3.25537 11.4246 3.34647C12.141 3.43757 12.8162 3.7282 13.3712 4.1843L13.2636 4.25305L9.21563 6.55305C9.11158 6.60765 9.02504 6.68981 8.96573 6.79029C8.90642 6.89076 8.87669 7.00557 8.87989 7.1218V12.7218ZM9.80476 10.753L11.9966 9.50305L14.1948 10.753V13.253L11.9966 14.503L9.79843 13.253L9.80476 10.753Z"></path>
+                </mask>
+                <path d="M20.6816 10.1843C20.9588 9.34066 21.0063 8.4399 20.8192 7.57245C20.6321 6.70499 20.217 5.90134 19.6157 5.24216C19.0143 4.58298 18.2478 4.09146 17.393 3.81692C16.5382 3.54238 15.6253 3.49449 14.7459 3.67805C14.1453 3.01747 13.379 2.52468 12.524 2.24931C11.669 1.97394 10.7555 1.92571 9.87559 2.10947C8.99568 2.29324 8.18039 2.70252 7.51181 3.29608C6.84323 3.88965 6.34499 4.64654 6.06725 5.49055C5.18642 5.67292 4.3699 6.08122 3.70003 6.67426C3.03017 7.26731 2.53064 8.02413 2.25182 8.86842C1.97299 9.71271 1.92474 10.6146 2.11192 11.4832C2.2991 12.3517 2.71509 13.1562 3.31795 13.8155C3.09309 14.4899 3.01633 15.2037 3.09278 15.9095C3.16924 16.6154 3.39716 17.2971 3.76139 17.9093C4.30169 18.8351 5.12567 19.568 6.11483 20.0027C7.104 20.4373 8.20738 20.5512 9.26631 20.328C9.74353 20.8568 10.3291 21.2796 10.9844 21.5684C11.6396 21.8571 12.3495 22.0053 13.0672 22.003C14.1516 22.003 15.2081 21.6635 16.0847 21.0334C16.9612 20.4034 17.6125 19.5152 17.9449 18.4968C18.649 18.3539 19.3141 18.0649 19.8962 17.6489C20.4784 17.233 20.9642 16.6997 21.3214 16.0843C21.8585 15.1598 22.0858 14.0915 21.9709 13.032C21.856 11.9724 21.4048 10.9758 20.6816 10.1843ZM13.0798 20.6968C12.191 20.6968 11.3302 20.3894 10.6473 19.828L10.7677 19.7593L14.8029 17.4593C14.9069 17.4047 14.9935 17.3225 15.0528 17.2221C15.1121 17.1216 15.1418 17.0068 15.1386 16.8905V11.2655L16.8427 12.2405C16.8517 12.2441 16.8594 12.2501 16.865 12.2579C16.8706 12.2656 16.8739 12.2748 16.8744 12.2843V16.9343C16.876 17.4289 16.7785 17.9189 16.5875 18.3761C16.3964 18.8333 16.1156 19.2488 15.7611 19.5985C15.4067 19.9482 14.9856 20.2253 14.5222 20.4138C14.0588 20.6023 13.5621 20.6984 13.0608 20.6968H13.0798ZM4.90165 17.2593C4.46164 16.5029 4.3026 15.6189 4.45188 14.7593L4.57224 14.828L8.60749 17.128C8.70379 17.1829 8.81303 17.2118 8.92423 17.2118C9.03543 17.2118 9.14467 17.1829 9.24097 17.128L14.1758 14.3218V16.253C14.1797 16.2608 14.1817 16.2694 14.1817 16.278C14.1817 16.2867 14.1797 16.2953 14.1758 16.303L10.0962 18.628C9.66403 18.8748 9.18685 19.0352 8.69188 19.0999C8.19692 19.1647 7.69387 19.1326 7.21148 19.0055C6.72909 18.8784 6.27681 18.6587 5.88048 18.3591C5.48415 18.0595 5.15154 17.6858 4.90165 17.2593ZM3.83741 8.5843C4.28764 7.82089 4.99655 7.23878 5.83919 6.94055V11.6718C5.83595 11.7857 5.86434 11.8983 5.92128 11.9975C5.97823 12.0966 6.06156 12.1785 6.16227 12.2343L11.0717 15.028L9.36766 16.003C9.34918 16.0092 9.32914 16.0092 9.31065 16.003L5.23106 13.678C4.36041 13.1812 3.72487 12.3642 3.46364 11.4059C3.20242 10.4476 3.33682 9.42624 3.83741 8.56555V8.5843ZM17.8563 11.7968L12.9278 8.9718L14.6319 8.00305C14.6403 7.99741 14.6502 7.99439 14.6604 7.99439C14.6705 7.99439 14.6805 7.99741 14.6889 8.00305L18.7685 10.328C19.3915 10.684 19.8992 11.2072 20.2325 11.8368C20.5659 12.4664 20.7111 13.1764 20.6514 13.8843C20.5916 14.5921 20.3294 15.2687 19.8951 15.8352C19.4608 16.4017 18.8724 16.8349 18.1983 17.0843V12.353C18.1946 12.2391 18.1612 12.1281 18.1013 12.0306C18.0414 11.9332 17.957 11.8527 17.8563 11.7968ZM19.554 9.2968L19.4336 9.2218L15.4047 6.9093C15.3047 6.84846 15.1896 6.81624 15.0721 6.81624C14.9547 6.81624 14.8395 6.84846 14.7396 6.9093L9.8111 9.71555V7.75305C9.8061 7.7445 9.80346 7.7348 9.80346 7.72492C9.80346 7.71505 9.8061 7.70535 9.8111 7.6968L13.897 5.37805C14.5222 5.02257 15.2371 4.85003 15.958 4.88059C16.6789 4.91115 17.3762 5.14356 17.9682 5.55064C18.5601 5.95772 19.0225 6.52265 19.301 7.17939C19.5796 7.83614 19.663 8.55755 19.5413 9.2593L19.554 9.2968ZM8.87989 12.7218L7.1695 11.753C7.15339 11.7405 7.1422 11.7228 7.13782 11.703V7.06555C7.13785 6.35289 7.34371 5.65499 7.73128 5.0536C8.11885 4.45222 8.67209 3.97224 9.32619 3.6699C9.98029 3.36756 10.7082 3.25537 11.4246 3.34647C12.141 3.43757 12.8162 3.7282 13.3712 4.1843L13.2636 4.25305L9.21563 6.55305C9.11158 6.60765 9.02504 6.68981 8.96573 6.79029C8.90642 6.89076 8.87669 7.00557 8.87989 7.1218V12.7218ZM9.80476 10.753L11.9966 9.50305L14.1948 10.753V13.253L11.9966 14.503L9.79843 13.253L9.80476 10.753Z" fill="#828282"></path>
+                <path d="M20.6816 10.1843C20.9588 9.34066 21.0063 8.4399 20.8192 7.57245C20.6321 6.70499 20.217 5.90134 19.6157 5.24216C19.0143 4.58298 18.2478 4.09146 17.393 3.81692C16.5382 3.54238 15.6253 3.49449 14.7459 3.67805C14.1453 3.01747 13.379 2.52468 12.524 2.24931C11.669 1.97394 10.7555 1.92571 9.87559 2.10947C8.99568 2.29324 8.18039 2.70252 7.51181 3.29608C6.84323 3.88965 6.34499 4.64654 6.06725 5.49055C5.18642 5.67292 4.3699 6.08122 3.70003 6.67426C3.03017 7.26731 2.53064 8.02413 2.25182 8.86842C1.97299 9.71271 1.92474 10.6146 2.11192 11.4832C2.2991 12.3517 2.71509 13.1562 3.31795 13.8155C3.09309 14.4899 3.01633 15.2037 3.09278 15.9095C3.16924 16.6154 3.39716 17.2971 3.76139 17.9093C4.30169 18.8351 5.12567 19.568 6.11483 20.0027C7.104 20.4373 8.20738 20.5512 9.26631 20.328C9.74353 20.8568 10.3291 21.2796 10.9844 21.5684C11.6396 21.8571 12.3495 22.0053 13.0672 22.003C14.1516 22.003 15.2081 21.6635 16.0847 21.0334C16.9612 20.4034 17.6125 19.5152 17.9449 18.4968C18.649 18.3539 19.3141 18.0649 19.8962 17.6489C20.4784 17.233 20.9642 16.6997 21.3214 16.0843C21.8585 15.1598 22.0858 14.0915 21.9709 13.032C21.856 11.9724 21.4048 10.9758 20.6816 10.1843ZM13.0798 20.6968C12.191 20.6968 11.3302 20.3894 10.6473 19.828L10.7677 19.7593L14.8029 17.4593C14.9069 17.4047 14.9935 17.3225 15.0528 17.2221C15.1121 17.1216 15.1418 17.0068 15.1386 16.8905V11.2655L16.8427 12.2405C16.8517 12.2441 16.8594 12.2501 16.865 12.2579C16.8706 12.2656 16.8739 12.2748 16.8744 12.2843V16.9343C16.876 17.4289 16.7785 17.9189 16.5875 18.3761C16.3964 18.8333 16.1156 19.2488 15.7611 19.5985C15.4067 19.9482 14.9856 20.2253 14.5222 20.4138C14.0588 20.6023 13.5621 20.6984 13.0608 20.6968H13.0798ZM4.90165 17.2593C4.46164 16.5029 4.3026 15.6189 4.45188 14.7593L4.57224 14.828L8.60749 17.128C8.70379 17.1829 8.81303 17.2118 8.92423 17.2118C9.03543 17.2118 9.14467 17.1829 9.24097 17.128L14.1758 14.3218V16.253C14.1797 16.2608 14.1817 16.2694 14.1817 16.278C14.1817 16.2867 14.1797 16.2953 14.1758 16.303L10.0962 18.628C9.66403 18.8748 9.18685 19.0352 8.69188 19.0999C8.19692 19.1647 7.69387 19.1326 7.21148 19.0055C6.72909 18.8784 6.27681 18.6587 5.88048 18.3591C5.48415 18.0595 5.15154 17.6858 4.90165 17.2593ZM3.83741 8.5843C4.28764 7.82089 4.99655 7.23878 5.83919 6.94055V11.6718C5.83595 11.7857 5.86434 11.8983 5.92128 11.9975C5.97823 12.0966 6.06156 12.1785 6.16227 12.2343L11.0717 15.028L9.36766 16.003C9.34918 16.0092 9.32914 16.0092 9.31065 16.003L5.23106 13.678C4.36041 13.1812 3.72487 12.3642 3.46364 11.4059C3.20242 10.4476 3.33682 9.42624 3.83741 8.56555V8.5843ZM17.8563 11.7968L12.9278 8.9718L14.6319 8.00305C14.6403 7.99741 14.6502 7.99439 14.6604 7.99439C14.6705 7.99439 14.6805 7.99741 14.6889 8.00305L18.7685 10.328C19.3915 10.684 19.8992 11.2072 20.2325 11.8368C20.5659 12.4664 20.7111 13.1764 20.6514 13.8843C20.5916 14.5921 20.3294 15.2687 19.8951 15.8352C19.4608 16.4017 18.8724 16.8349 18.1983 17.0843V12.353C18.1946 12.2391 18.1612 12.1281 18.1013 12.0306C18.0414 11.9332 17.957 11.8527 17.8563 11.7968ZM19.554 9.2968L19.4336 9.2218L15.4047 6.9093C15.3047 6.84846 15.1896 6.81624 15.0721 6.81624C14.9547 6.81624 14.8395 6.84846 14.7396 6.9093L9.8111 9.71555V7.75305C9.8061 7.7445 9.80346 7.7348 9.80346 7.72492C9.80346 7.71505 9.8061 7.70535 9.8111 7.6968L13.897 5.37805C14.5222 5.02257 15.2371 4.85003 15.958 4.88059C16.6789 4.91115 17.3762 5.14356 17.9682 5.55064C18.5601 5.95772 19.0225 6.52265 19.301 7.17939C19.5796 7.83614 19.663 8.55755 19.5413 9.2593L19.554 9.2968ZM8.87989 12.7218L7.1695 11.753C7.15339 11.7405 7.1422 11.7228 7.13782 11.703V7.06555C7.13785 6.35289 7.34371 5.65499 7.73128 5.0536C8.11885 4.45222 8.67209 3.97224 9.32619 3.6699C9.98029 3.36756 10.7082 3.25537 11.4246 3.34647C12.141 3.43757 12.8162 3.7282 13.3712 4.1843L13.2636 4.25305L9.21563 6.55305C9.11158 6.60765 9.02504 6.68981 8.96573 6.79029C8.90642 6.89076 8.87669 7.00557 8.87989 7.1218V12.7218ZM9.80476 10.753L11.9966 9.50305L14.1948 10.753V13.253L11.9966 14.503L9.79843 13.253L9.80476 10.753Z" stroke="#828282" stroke-width="0.2" mask="url(#path-1-outside-1_3606_3145)"></path>
+            </svg></div>
+        <div id="yt_article_summary_close_button" class="yt_article_summary_close_button">×</div>
+    </div></body></html>

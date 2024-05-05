@@ -1,0 +1,1393 @@
+@charset "utf-8";
+
+/************************************** 
+** 공통
+***************************************/
+html,body{height:100%; width:100%; overflow: unset !important;}
+button:focus, select:focus, input:focus, label:focus {outline: none;}
+#contents{overflow:auto; position: relative;}
+#contents > .contentSection{margin-top: 157px;}
+
+.contentSection{overflow:hidden; width:100%; min-width: 980px;}
+
+.gnbAdWrap{margin-top: 20px;}
+.gnbAdWrap .gnbAd{margin: auto; width: 980px; }
+.bannerBox.left{float:left; margin-left: -170px !important; }
+.bannerBox.right{float:right; margin-right: -170px !important; }
+
+.ui-datepicker{display:none;}
+.txtE{overflow:hidden; text-overflow:ellipsis; -o-text-overflow:ellipsis; -ms-text-overflow:ellipsis; white-space:nowrap; position:relative; display:inline-block;}
+
+/************************************** 
+** headerBox
+** headerBox
+***************************************/
+/* 공통 */
+.headerBox{ width:100%; position: relative; border-bottom: 1px solid #dfdfdf; height: 31px; }
+
+/* header */
+.headerBox .header{ width: 980px; margin:0px auto;}
+.headerBox .header > ul{ float: left;}
+.headerBox .header > ul > li{ display: inline-block; vertical-align: middle;  position: relative; padding-left:8px; }
+.headerBox .header li img{ vertical-align: middle;}
+.headerBox .header li a{ color:#707070; font-size:12px; line-height: 30px;  font-family:'Noto Sans KR'; font-weight: 500;  }
+.headerBox .header li a i{ display:inline-block; height: 4px; width: 5px; background: url(https://image.thebell.co.kr/thebell10/img/2020/arrow-dt-grey.png) right bottom no-repeat; padding-left: 5px; margin-right: 10px; }
+
+.headerBox .header li.on{ background-color:#cccccc ; }
+.headerBox .header li:last-child{background: none;}
+.headerBox .header li.on a i{ background-position: right top;}
+.headerBox .header li .hearderM{ position: absolute; background: #fff; padding: 5px 0 10px 10px; border: 1px solid #cccccc; z-index: 111; left: 0;}
+.headerBox .header li .hearderM li{ display: block;}
+.headerBox .header li:first-child .hearderM{ width: 111px;}
+.headerBox .header li:nth-child(2) .hearderM{ width: 210px;}
+.headerBox .header li .hearderM li a{ display: block; line-height: 22px;  }
+.headerBox .header li .hearderM li.twoD a{ color: #999; padding-left: 5px;}
+
+.headerBox .header .fr{color:#707070; font-size:12px;  font-family:'Noto Sans KR'; line-height: 30px; font-weight: 300; }
+
+
+/************************************** 
+** gnbBox
+***************************************/
+.gnbBox{ border-bottom: 1px solid #707070; background: #fff; position: fixed; top: 0; left: 0; right: 0; width: 100%; height:157px; box-sizing: border-box;  z-index: 111;}
+.gnbBox .logoBox{ width: 980px; margin: 0 auto; text-align: center; padding: 20px 0; position: relative; border-bottom: 1px solid #dfdfdf;}
+.gnbBox .logoBox .topBanner{ position: absolute; right: 0; top: 18px;}
+
+.gnbBox .gnbWrap{ width: 980px; margin: 0 auto; height: 39px; padding: 10px 0; box-sizing:border-box;  position: relative;}
+.gnbBox .gnbWrap .all{ float: left; margin-right: 20px; }
+.gnbBox .gnbWrap dl{ float: left; display: block; overflow: hidden; }
+.gnbBox .gnbWrap dt{float: left; }
+.gnbBox .gnbWrap dt a{ color: #333; font-family:'Noto Sans KR'; padding-right: 10px; margin-right: 10px; background: url(https://image.thebell.co.kr/thebell10/img/2020/arrow-left-grey.png) right 50% no-repeat;}
+.gnbBox .gnbWrap dd{ float: left; height: 20px; overflow: hidden; }
+.gnbBox .gnbWrap dd a{  font-family:'Noto Sans KR'; font-weight: 500; }
+
+.bxfreetop li, .bx1 li{width: 100% !important;}
+
+/* subM */
+.gnbBox .userM{ position: absolute; right: 0; top: -1px;}
+.gnbBox .userM > li{ float: left; position: relative;}
+.gnbBox .userM > li > a{ display: block; padding: 5px 5px 0px 5px; position:relative; z-index: 111; border-left: 1px solid #fff; border-right: 1px solid #fff; border-top: 1px solid #dfdfdf;}
+.gnbBox .userM > li > .subM{position: absolute; background: #fff; padding: 10px 10px 10px 10px; border: 1px solid #cccccc; z-index: 11; }
+.gnbBox .userM > li > .subM > li{ display: block;}
+.gnbBox .userM li a:hover span.icon{ opacity: 0.7;}
+.gnbBox .userM li span.icon{ height: 24px; width: 24px; display: block; text-indent: -1000000px; padding: 5px 0; }
+.gnbBox .userM li .subM{ border-color: #707070;}
+.gnbBox .userM li .subM a{font-family:'Noto Sans KR'; line-height: 24px;  font-size: 13px;  }
+
+/*login*/
+.gnbBox .userM li.login a{  font-family:'Noto Sans KR'; line-height: 29px; background: url(https://image.thebell.co.kr/thebell10/img/line-d3.png) right 15px no-repeat; margin-right: 3px; padding-right: 7px;}
+
+/* search */
+.gnbBox .userM li.search .icon{  background:url(https://image.thebell.co.kr/thebell10/img/2020/icon-search.png) 0 4px no-repeat; border: 0;}
+.gnbBox .userM li.search.on span.icon{  background:url(https://image.thebell.co.kr/thebell10/img/2020/icon-x5.png) 1px 4px no-repeat; border: 0;}
+.gnbBox .userM li.search.on > a{ border: 1px solid #707070;  border-bottom-color: #fff; }
+.gnbBox .userM li.search .subM{ width: 980px;  margin: 0 auto; padding: 20px 0 30px 0; text-align: center;  border: 1px solid #707070 !important;  border-bottom-color: #fff; top: 40px; right: -74px; box-sizing: border-box;}
+.gnbBox .userM li.search .subM .icon{ text-indent: -10000px;overflow: hidden; height: 35px; width: 50px;}
+.gnbBox .userM li.search .subM .multiOption input[type='text']{ width: 600px; border: 0; border-bottom: 2px solid #3f3f40; background: none;}
+.gnbBox .userM li.search .subM .itemBox{ margin-top: 10px;}
+.gnbBox .userM li.search .subM .itemBox li{ display: inline-block;}
+.gnbBox .userM li.search .subM .itemBox li a{ display: block; padding: 3px 15px;}
+
+.gnbBox.freegnbBox .userM li.search .subM{ right: -36px;}
+
+/* quick */
+.gnbBox .userM li.quick .icon{  background:url(https://image.thebell.co.kr/thebell10/img/2020/icon-quick.png) 1px 4px no-repeat; padding-left: 2px; }
+.gnbBox .userM li.quick.on > a{ border: 1px solid #707070;  border-bottom-color: #fff;  }
+.gnbBox .userM li.quick .subM{ width: 120px; top: 40px; right: 0}
+.gnbBox .userM li.quick .subM li a{ margin:2px 0;}
+
+/* my */
+.gnbBox .userM li.my .icon{  background:url(https://image.thebell.co.kr/thebell10/img/2020/icon-my.png) 1px 3px no-repeat;}
+.gnbBox .userM li.my.on > a{ border: 1px solid #707070;  border-bottom-color: #fff; }
+.gnbBox .userM li.my .subM{ width: 120px; top: 40px; right: 0}
+.gnbBox .userM li.my .subM .service{ border-top: 1px solid #dfdfdf; border-bottom: 1px solid #dfdfdf; padding: 5px 0; margin: 5px 0;}
+.gnbBox .userM li.my .subM .service a{ color: #707070;}
+
+
+/************************************** 
+** lnbBox
+***************************************/
+.lnbWrap { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 11111; width: 270px; min-height: 100%; overflow-y: scroll; -ms-overflow-style:none; }
+.lnbBox { content: ''; overflow: hidden auto; min-height: 100%; background: #fff;  border-right: 1px solid #555555; padding: 20px 0 20px 0; box-sizing: border-box; position: relative; z-index: 11111; }
+.lnbWrap::-webkit-scrollbar{display:none;}
+
+.lnbBox span.close a{ float: right; margin: 8px 25px;}
+.lnbBox span.close a img{ margin-left: 20px;}
+.lnbBox a{ font-family:'Noto Sans KR';}
+.lnbBox a:hover{ opacity: 0.7;}
+.lnbBox h1{ margin:0 20px 20px;}
+.lnbBox h2 a{ font-size: 19px; border-bottom: 2px solid #111111; display: block; padding-bottom: 8px; margin: 0 10px;}
+.lnbBox > ul{ border-bottom: 1px solid #ccc;}
+.lnbBox li dl{ margin: 0 20px;}
+.lnbBox li dl dt{  position: relative; border-bottom: 1px solid #e5e5e5;}
+.lnbBox li dl dt a{ color: #111111; font-size: 15px;  font-weight: 600; display: block; padding: 10px 0 10px 0; margin-right: 25px;}
+.lnbBox li:last-child dl dt a{ border-bottom: none;}
+.lnbBox li.on dl dt{ margin-bottom: 10px;}
+/*.lnbBox li.on:last-child dl dt a{ border-bottom: 1px solid #e5e5e5;}*/
+.lnbBox li dl dt span.icon{ z-index: 1; height: 39px; width: 30px; cursor: pointer;}
+.lnbBox li dl dt span.icon,
+span.icon.down2{ background:url(https://image.thebell.co.kr/thebell10/img/arrow-ud-gy.png) right 14px no-repeat;  position: absolute; right: 0; top: 0;  }
+.lnbBox li.on dl dt span.icon,
+span.icon.up{ background:url(https://image.thebell.co.kr/thebell10/img/arrow-ud-gy.png) right -14px no-repeat; position: absolute; right: 0; top: 0;}
+
+.lnbBox li dl dd li { display: inline-block; margin: 0; background: url(https://image.thebell.co.kr/thebell10/img/line-d3.png) left 50% no-repeat; margin-bottom: 8px; }
+.lnbBox li dl dd li:first-child{ background: none;}
+.lnbBox li dl dd li a{ color: #707070; font-size: 13px; padding:0 6px 0 9px; text-align: left;}
+.lnbBox li dl dd li:first-child a{ padding-left: 0;}
+
+.lnbLink{ margin: 20px 10px 30px 10px;}
+.lnbLink p a{ border: 1px solid #cccccc; padding: 10px; box-sizing: border-box; display: block; margin-bottom: 10px; background:url(https://image.thebell.co.kr/thebell10/img/arrow-left.png) 230px 50% no-repeat;}
+
+.freelnbBox li dl dd li a{ padding: 0 2px 0 6px;}
+.freelnbBox > ul{ border-bottom: none;}
+
+/************************************** 
+** footer
+***************************************/
+.footerBox{width: 100%; min-width: 980px;}
+.footerBox .footerWrap{background: #fff; border-top: 1px solid #555555;}
+.footerBox .footerSitemap{ width:980px; margin:0px auto; }
+.footerBox .footerSitemap h3{ padding:15px 0 10px 0;}
+.footerBox .footerSitemap h3 a .icon{  width: 13px; height: 10px; margin-left: 3px; margin-bottom: 2px;   background:url(https://image.thebell.co.kr/thebell10/img/arrow-du.png) 0 bottom no-repeat; }
+.footerBox .footerSitemap.on h3 a .icon{  background-position: 0 top;  margin-bottom: 0;}
+.footerBox .footerSitemap h3 a{font-family:'Noto Sans KR';}
+
+.footerBox .allmenuBox ul{ padding: 10px 0; height: 220px; overflow: hidden; }
+.footerBox .allmenuBox ul.tp1 > li:nth-child(5) > ul.h20 {height: 20px;}
+.footerBox .allmenuBox ul.tp2{ height: 200px;}
+.footerBox .allmenuBox ul > li{ width: 186px; margin-right: 10px; float: left; }
+.footerBox .allmenuBox a{ font-family:'Noto Sans KR'; font-size: 12px; color: #707070; }
+.footerBox .allmenuBox em{ font-family:'Noto Sans KR'; font-weight: bold;}
+
+
+.footerBox .footerMenu{padding:10px 0 20px 0; overflow:hidden; border-top: 1px solid #dfdfdf; width: 980px; margin: 0 auto;}
+.footerBox .footerMenu .menu li{float:left; margin-right:20px;}
+.footerBox .footerMenu .menu li a{display:block; font-size:13px; font-weight:normal; color:#707070; font-family:'Noto Sans KR'; line-height: 30px; }
+.footerBox .footerMenu .menu li.on a{ color: #111; font-weight: 500;}
+.footerBox .footerMenu .siteBox{float:right; }
+.footerBox .footerMenu .siteBox li{font-size:13px;}
+.footerBox .footerMenu .siteBox select{ background: #fff; border: 1px solid #dfdfdf; color: #363636; -webkit-appearance: auto; padding: 5px; font-family:'Noto Sans KR'; font-size: 13px; width: 160px;}
+
+.footerBox .addressBox{color:#707070; font-size:13px; line-height:22px; letter-spacing:-0.5px; width: 980px; margin: 0 auto; padding-bottom: 70px;}
+.footerBox .addressBox p{color:#707070; font-size:13px; line-height:22px; letter-spacing:-0.5px; font-weight:bold; margin-top:15px;}
+.footerBox .addressBox em{font-weight:bold; color:#111; font-size:13px;}
+.footerBox .addressBox b{color:#555; font-size:13px; background: url('https://image.thebell.co.kr/thebell10/img/line-70.png') right no-repeat ; padding-right: 6px; margin: 0 5px 0 10px; }
+
+
+/************************************** 
+** asideBox
+***************************************/
+/* 공통 */
+.asideLine{background:url('https://image.thebell.co.kr/thebell10/img/line-e0.png') repeat-y 680px;}
+.asideLine2{background:url('https://image.thebell.co.kr/thebell10/img/line-e0.png') repeat-y 650px;}
+.asideBox{float:right; overflow:hidden; padding:40px 0px 50px 10px; width:290px;}
+.asideBox h4 {font-size:18px; line-height:20px; color:#111; font-family:'Noto Sans KR';}
+.asideBox h4 a{font-size:18px; line-height:20px; color:#111; font-family:'Noto Sans KR';}
+.asideBox h4 em{font-size:18px; line-height:20px; color:#c7000c; font-family:'Noto Sans KR';}
+
+.mainContent.asideLine .asideBox{ padding:20px 0px 50px 10px;}
+
+/* infographicBox */
+.asideBox .infographicBox h4{margin-bottom:10px;}
+.asideBox .infographicBox h4 a{background:url('https://image.thebell.co.kr/thebell10/img/arrow-left-000.png') no-repeat right 10px; padding-right:10px;}
+
+
+/* monitorBox */
+.asideBox .monitorBox h4{padding-bottom:10px; border-bottom:1px solid #111; margin-bottom:10px;}
+.asideBox .monitorBox h4 a{ background:url('https://image.thebell.co.kr/thebell10/img/arrow-left-000.png') no-repeat right 10px; padding-right: 10px; }
+.asideBox .monitorBox h4 a.take{font-size:14px; color:#9e560e; background:url('https://image.thebell.co.kr/thebell10/img/icon-pens2.png') no-repeat left 1px; padding-left:20px; font-weight:bold; float:right;}
+.asideBox .monitorBox dt a{font-size:17px; font-weight:bold; color:#111;}
+.asideBox .monitorBox dt .date{font-size:14px; font-weight:normal; color:#5d6eb7; margin-bottom:5px;}
+.asideBox .monitorBox dt.comment{border-bottom:4px solid #c7000c; position:relative; padding-left:30px; color:#c7000c; font-weight:bold; font-size:14px; height:30px; line-height:30px; font-family:'Noto Sans KR'; letter-spacing:-0.8px;}
+.asideBox .monitorBox dt.comment .top{display:inline-block; width:30px; height:16px; background:url('https://image.thebell.co.kr/thebell10/img/icon-top.png') no-repeat; position:absolute; bottom:-4px; left:0px;}
+.asideBox .monitorBox dd{background-color:#f5e6e7; padding:8px;}
+
+/* partnersBox */
+.asideBox .partnersBox{position:relative;}
+.asideBox .partnersBox h4{padding-bottom:7px; border-bottom:1px solid #111; margin-bottom:10px;}
+.asideBox .partnersBox h4 a{font-size:14px; color:#9e560e; background:url('https://image.thebell.co.kr/thebell10/img/icon-pens2.png') no-repeat left 1px; padding-left:20px; font-weight:bold; float:right;}
+.asideBox .partnersBox .list li{overflow:hidden; margin-bottom:8px;}
+.asideBox .partnersBox .photo{float:left; }
+.asideBox .partnersBox .photo a{width:75px;  text-align:center; }
+.asideBox .partnersBox .photo a img{ max-width:75px; max-height:25px; text-align:center;}
+.asideBox .partnersBox .txt{float:left; padding-left:10px; width:220px; overflow:hidden;}
+.asideBox .partnersBox .txt .tit a{font-size:15px; font-weight:bold; color:#111; width:220px; padding-bottom: 2px;}
+.asideBox .partnersBox .txt .user a{font-size:13px; font-weight:normal; color:#5d6eb7;}
+.asideBox .partnersBox .point dt{font-size:17px; font-weight:bold; color:#111; margin-top:15px;}
+.asideBox .partnersBox .point dd{font-size:14px; font-weight:normal; color:#707070; padding:10px 0px;}
+.asideBox .partnersBox .point dd.linkList{border-top:1px solid #ccc;}
+.asideBox .partnersBox .point dd.linkList li{margin-bottom:5px;}
+.asideBox .partnersBox .point dd.linkList a{font-size:15px; font-weight:normal; color:#111; background:url('https://image.thebell.co.kr/thebell10/img/bul-dot.png') no-repeat left 50%; width:290px; padding-left:10px;}
+.asideBox .partnersBox .bx-has-pager{position:absolute; right:47px; top:2px; background-color:#fff;}
+.asideBox .partnersBox .currentBox{position:absolute; right:0px; top:0px; z-index:99; background-color:#fff;}
+.asideBox .partnersBox .currentBox .arrow{display:inline-block; background:url('https://image.thebell.co.kr/thebell10/img/arrow-lr.png') no-repeat; width:20px; height:20px; overflow:hidden; border:1px solid #ccc; margin-left:-1px;}
+.asideBox .partnersBox .currentBox .arrow .bx-next,
+.asideBox .partnersBox .currentBox .arrow .bx-prev{display:inline-block; width:20px; height:20px; overflow:hidden; line-height:100px;}
+.asideBox .partnersBox .currentBox .arrow.L{background-position:5px 5px;}
+.asideBox .partnersBox .currentBox .arrow.R{background-position:-29px 5px;}
+
+/* upcomingBox */
+.asideBox .upcomingBox{background-color:#f5f5f5; padding:10px;}
+.asideBox .upcomingBox h4{margin-bottom:10px;}
+.asideBox .upcomingBox h4 em{color:#5d6eb7;}
+.asideBox .upcomingBox ol{overflow:hidden; background-color:#fff; border:1px solid #ccc;}
+.asideBox .upcomingBox ol li{border-bottom:1px solid #ccc; padding:10px; position:relative; box-sizing:border-box; height:57px; padding-left:36px;}
+.asideBox .upcomingBox ol li:last-child{border-bottom:0px;}
+.asideBox .upcomingBox ol li a{color:#111; font-weight:bold; font-size:17px;}
+.asideBox .upcomingBox ol li .num{position:absolute; left:0px; top:0px; display:inline-block; width:30px; height:30px; line-height:30px; background-color:#999; text-align:center; font-size:17px; font-weight:bold; color:#fff;}
+.asideBox .upcomingBox ol li .num.red{background-color:#c8000b;}
+
+/* popularBox */
+.asideBox .popularBox{margin-top:30px;}
+.asideBox .popularBox h4{padding-bottom:10px; border-bottom:1px solid #111; margin-bottom:10px;}
+.asideBox .popularBox li{margin-bottom:5px;}
+.asideBox .popularBox li a{color:#333; font-size:14px; width:255px;}
+.asideBox .popularBox li.red a{font-weight:bold;}
+.asideBox .popularBox .num{display:inline-block; width:20px; height:20px; line-height:20px; vertical-align:top; text-align:center; font-size:15px; font-weight:bold; color:#999;}
+.asideBox .popularBox .red .num{color:#c8000b;}
+
+/* best clicks */
+.asideBox .bestBox h4{font-size:18px; color:#111; font-family:'Noto Sans KR'; margin-top:30px;  background:url('https://image.thebell.co.kr/thebell10/img/arrow-left-000.png') no-repeat 95px 35%; padding-right:10px; border-bottom: 1px solid #111; padding-bottom: 10px; }
+.asideBox .bestBox .bestSlide .dataList li{margin-bottom:8px; }
+.asideBox .bestBox .bestSlide .dataList li span.num{ color: #c7000c; font-weight: bold; font-size: 17px; margin-right: 5px; line-height: 14px;  vertical-align: text-top; font-family: "Noto Sans KR"; display: inline-block;}
+.asideBox .bestBox .bestSlide .dataList li.gy span.num{ color: #999;}
+.subMainContent .asideBox .bestBox .bestSlide .dataList a{ width:286px; }
+.asideBox .bestBox .bestSlide .dataList a{font-size:14px; color:#231916; width: 262px;}
+.asideBox .bestBox .slidOption{background-color:#f1f1f1; text-align:center; height:30px; margin:10px 0px 20px; position:relative;}
+.asideBox .bestBox .slidOption .slider-prev,
+.asideBox .bestBox .slidOption .slider-next{width:15px; height:30px; overflow:hidden; position:absolute; cursor:pointer; top:0px;}
+.asideBox .bestBox .slidOption .slider-prev{left:0px;}
+.asideBox .bestBox .slidOption .slider-next{right:0px;}
+.asideBox .bestBox .slidOption .slider-prev a , .asideBox .bestBox .slidOption .slider-next a{display:inline-block; line-height:200px;}
+.asideBox .bestBox .slidOption ul{width:248px; overflow:hidden; height:30px; margin:0px auto; white-space:nowrap;}
+.asideBox .bestBox .slidOption li{display:inline-block; padding:0px 8px; background:url('https://image.thebell.co.kr/thebell10/img/line-d3.png') no-repeat left 50%; height:30px; line-height:30px; position:relative;}
+.asideBox .bestBox .slidOption li:first-child{background:none;}
+.asideBox .bestBox .slidOption li a{color:#111; font-size:13px;}
+.asideBox .bestBox .slidOption li a.active{color:#c7000c; font-size:13px; font-weight:bold;}
+.asideBox .bestBox.tp2 .slidOption{background-color:#fff; margin-bottom:0px; border-top:1px solid #111;}
+.asideBox .bestBox.tp2 .slidOption li a.active{color:#fff; font-size:13px; font-weight:bold; background-color:#c7000c; padding:0px 5px;}
+.asideBox .bestBox.tp2 .tabView{ padding:0;}
+
+/* chartBox */
+.asideBox .chartBox{ margin-top:30px;}
+.asideBox .chartBox h4{font-family:'Malgun Gothic';font-size:17px; font-weight:bold; color:#fff; margin-bottom:10px;}
+.asideBox .chartBox .chartWrap{  padding:10px; background-color:#3e3e3e; margin-bottom: 2px;}
+.asideBox .chartBox .chartWrap iframe{ margin-left: 10px;}
+
+/* interviewBox */
+.asideBox .interviewBox{margin-top:30px;}
+.asideBox .interviewBox h4{padding-bottom:10px; border-bottom:1px solid #111; margin-bottom:10px;}
+.asideBox .interviewBox h4 a{font-size:18px; color:#111; font-family:'Noto Sans KR'; background:url('https://image.thebell.co.kr/thebell10/img/arrow-left-000.png') no-repeat right 10px; padding-right:10px;}
+.asideBox .interviewBox li{overflow:hidden; margin-bottom:10px;}
+.asideBox .interviewBox .photo{float:left;}
+.asideBox .interviewBox .photo img{width: 43px; height: 40px; } 
+.asideBox .interviewBox .txt{float:left; padding-left:10px; width:250px; overflow:hidden;}
+.asideBox .interviewBox .txt .tit a{font-size:15px; font-weight:bold; color:#111; width:250px; padding-bottom: 2px;}
+.asideBox .interviewBox .txt .user a{font-size:13px; font-weight:normal; color:#707070; width:250px; }
+
+/* opinionBox */
+.asideBox .opinionBox{margin-top:30px;}
+.asideBox .opinionBox h4{padding-bottom:10px; border-bottom:1px solid #111; background:url('https://image.thebell.co.kr/thebell10/img/arrow-left-000.png') no-repeat 73px 5px; margin-bottom:10px;}
+.asideBox .opinionBox h4 a{font-size:18px; color:#111; font-family:'Noto Sans KR';}
+.asideBox .opinionBox li{overflow:hidden; margin-bottom:5px;}
+.asideBox .opinionBox .photo{float:left;}
+.asideBox .opinionBox .photo img{ width: 43px; height: 40px;}
+.asideBox .opinionBox .txt{float:left; padding-left:10px; width:250px; overflow:hidden;}
+.asideBox .opinionBox .txt .tit a{font-size:15px; font-weight:bold; color:#111; width:250px; padding-bottom: 2px;}
+.asideBox .opinionBox .txt .user a{font-size:13px; font-weight:normal; color:#5d6eb7;width:250px;  }
+
+/* reportBox */
+.asideBox .reportBox{margin-top:30px;}
+.asideBox .reportBox h4{padding-bottom:10px; border-bottom:1px solid #111; background:url('https://image.thebell.co.kr/thebell10/img/arrow-left-000.png') no-repeat 125px 5px; margin-bottom:10px;}
+.asideBox .reportBox li{overflow:hidden; margin-bottom:12px; }
+.asideBox .reportBox li .cate{background-color:#8dc63f; padding:1px 7px; color:#fff; font-size:12px; font-weight:bold; border-radius:3px; margin-right:5px;}
+.asideBox .reportBox li .cate.tp1{background-color:#8dc63f;}
+.asideBox .reportBox li .cate.tp2{background-color:#b3b3b3;}
+.asideBox .reportBox li .cate.tp3{background-color:#5e6277;}
+.asideBox .reportBox li .cate.tp4{background-color:#9e0b0f;}
+.asideBox .reportBox li .cate.tp5{background-color:#8781bd;}
+.asideBox .reportBox li .cate.tp6{background-color:#c69c6d;}
+.asideBox .reportBox li .cate.tp7{background-color:#76bfff;}
+.asideBox .reportBox li .cate.tp8{background-color:#1cbbb4;}
+.asideBox .reportBox li .cate.tp9{background-color:#d257a0;}
+.asideBox .reportBox li .cate.tp10{background-color:#eab600;}
+.asideBox .reportBox li .cate.tp11{background-color:#088c48;}
+.asideBox .reportBox li .cate.tp12{background-color:#0068b7;}
+.asideBox .reportBox li a.txtE{font-size:14px; color:#333; max-width:215px; vertical-align: middle; line-height: 14px;   }
+.asideBox .reportBox li a.down{ margin-left: 2px;}
+
+/* hot issue */
+.asideBox .hotIssue{overflow:hidden; clear:both; margin-top:30px;}
+.asideBox .hotIssue h4{padding-bottom:10px; border-bottom:1px solid #111;}
+.asideBox .hotIssue h4 .tit{display:inline-block; background:url('https://image.thebell.co.kr/thebell10/img/arrow-left.png') 0px 3px no-repeat; padding-left:10px;}
+.asideBox .hotIssue h4 .tit a{font-size:15px; font-weight:bold; color:#231916;}
+.asideBox .hotIssue dl{margin-top:10px;}
+.asideBox .hotIssue dt{font-size:17px; font-weight:bold; color:#111; padding-bottom:10px; line-height:20px;}
+.asideBox .hotIssue dt.photo{position:relative;float:left;display:inline-block;height:auto;margin:1px 5px 0 0;padding:0}
+.asideBox .hotIssue dd{font-size:14px; font-weight:normal; color:#707070; line-height:18px;}
+.asideBox .hotIssue dd.userBox .user{font-size:13px; color:#5d6eb7; padding-right:10px; background:url('https://image.thebell.co.kr/thebell10/img/line-d3.png') no-repeat 95%; font-weight: bold;}
+.asideBox .hotIssue dd.userBox .date{font-size:13px; color:#999;}
+
+/* focusBox */
+.asideBox .focusBox{overflow:hidden; clear:both; margin-top:30px;}
+.asideBox .focusBox h4{padding-bottom:10px; border-bottom:1px solid #111;}
+.asideBox .focusBox h4 .tit{display:inline-block; background:url('https://image.thebell.co.kr/thebell10/img/arrow-left.png') 0px 3px no-repeat; padding-left:10px;}
+.asideBox .focusBox h4 .tit a{font-size:15px; font-weight:bold; color:#231916;}
+.asideBox .focusBox dl{margin-top:10px;}
+.asideBox .focusBox dt{font-size:17px; font-weight:bold; color:#111; padding-bottom:10px; line-height:20px;}
+.asideBox .focusBox dt.photo{position:relative;float:left;display:inline-block;height:auto;margin:1px 5px 0 0;padding:0}
+.asideBox .focusBox dd{font-size:14px; font-weight:normal; color:#707070; line-height:18px;}
+.asideBox .focusBox dd.userBox .user{font-size:13px; color:#5d6eb7; padding-right:10px; background:url('https://image.thebell.co.kr/thebell10/img/line-d3.png') no-repeat 95%; font-weight: bold;}
+.asideBox .focusBox dd.userBox .date{font-size:13px; color:#999;}
+
+/* issueBox */
+.asideBox .issueBox{overflow:hidden; clear:both;}
+.asideBox .issueBox .tit{height:60px; line-height:60px; font-size:17px; font-weight:bold; color:#fff; background-color:#6b767d; padding-left:15px; position:relative; margin-top: 20px; }
+.asideBox .issueBox .tit a{height:60px; line-height:60px; font-size:17px; font-weight:bold; color:#fff; display:inline-block;}
+.asideBox .issueBox .tit .more{position:absolute; top:0px; right:0px; width:39px; height:39px; background:#3f4549 url("https://image.thebell.co.kr/thebell10/img/icon-plus.png") 9px 10px no-repeat; border:0px; overflow:hidden; line-height:200px;}
+.asideBox .issueBox .dataList{ margin-top: 10px;}
+.asideBox .issueBox .dataList li{margin-bottom:5px; padding-left:20px; background:url('https://image.thebell.co.kr/thebell10/img/icon-L.png') 5px 7px no-repeat;}
+.asideBox .issueBox .dataList a{font-size:14px; color:#231916; width: 260px;}
+
+/* primaryBox */
+.asideBox .primaryBox{overflow:hidden; clear:both; margin-top:30px;}
+.asideBox .primaryBox h4{padding-bottom:10px;}
+.asideBox .primaryBox .tit{height:60px; line-height:60px; font-size:17px; font-weight:bold; color:#fff; background-color:#6b767d; padding-left:15px; position:relative; margin-bottom:20px;}
+.asideBox .primaryBox .tit li a{height:60px; line-height:60px; font-size:17px; font-weight:bold; color:#fff; display:inline-block;}
+.asideBox .primaryBox .tit .more{position:absolute; top:0px; right:0px; width:39px; height:39px; background:#3f4549 url("https://image.thebell.co.kr/thebell10/img/icon-plus.png") 9px 10px no-repeat; border:0px; overflow:hidden; line-height:200px;}
+.asideBox .primaryBox .primaySlide .dataList li{margin-bottom:5px; padding-left:20px; background:url('https://image.thebell.co.kr/thebell10/img/icon-L.png') 8px 7px no-repeat;}
+.asideBox .primaryBox .primaySlide .dataList a{font-size:14px; color:#231916; width: 255px;}
+.asideBox .primaryBox .slidOption{background-color:#f1f1f1; text-align:center; height:30px; margin-top:10px;}
+.asideBox .primaryBox .slidOption .slideP{display:inline-block; margin-top:6px;}
+.asideBox .primaryBox .slidOption .slider-prev , .asideBox .primaryBox .slidOption .slider-next{vertical-align:bottom;}
+.asideBox .primaryBox .slidOption .slider-prev a,.asideBox .primaryBox .slidOption .slider-next a{display:inline-block; background:url('https://image.thebell.co.kr/thebell10/img/arrow-lr2.png') no-repeat 7px 8px; width:15px; height:25px; overflow:hidden; line-height:80px;}
+.asideBox .primaryBox .slidOption .slider-next a{background-position:-26px 8px;}
+.asideBox .primaryBox .slidOption .slideP .bx-pager-item{display:inline-block;}
+.asideBox .primaryBox .slidOption .slideP .bx-pager-item a{display:block; width:20px; height:20px; background:url('https://image.thebell.co.kr/thebell10/img/icon-onoff.png') 4px 4px no-repeat; overflow:hidden; line-height:60px;}
+.asideBox .primaryBox .slidOption .slideP .bx-pager-item a.active{background-position:-23px 4px;}
+
+
+/* otherBox */
+.asideBox .otherBox{overflow:hidden; clear:both; margin-top:30px;}
+.asideBox .otherBox h4{padding-bottom:10px;}
+.asideBox .otherBox .tit{height:60px; line-height:60px; font-size:17px; font-weight:bold; color:#fff; background-color:#6b767d; padding-left:15px; position:relative; margin-bottom:20px;}
+.asideBox .otherBox .tit a{height:60px; line-height:60px; font-size:17px; font-weight:bold; color:#fff; display:inline-block;}
+.asideBox .otherBox .tit .more{position:absolute; top:0px; right:0px; width:39px; height:39px; background:#3f4549 url("https://image.thebell.co.kr/thebell10/img/icon-plus.png") 9px 10px no-repeat; border:0px; overflow:hidden; line-height:200px;}
+.asideBox .otherBox .otherSlide .dataList li{margin-bottom:5px; padding-left:20px; background:url('https://image.thebell.co.kr/thebell10/img/icon-L.png') 8px 7px no-repeat;}
+.asideBox .otherBox .otherSlide .dataList a{font-size:14px; color:#231916;  width: 255px;}
+.asideBox .otherBox .slidOption{background-color:#f1f1f1; text-align:center; height:30px; margin-top:10px;}
+.asideBox .otherBox .slidOption .slideP{display:inline-block; margin-top:6px;}
+.asideBox .otherBox .slidOption .slider-prev , .asideBox .otherBox .slidOption .slider-next{vertical-align:bottom;}
+.asideBox .otherBox .slidOption .slider-prev a,.asideBox .otherBox .slidOption .slider-next a{display:inline-block; background:url('https://image.thebell.co.kr/thebell10/img/arrow-lr2.png') no-repeat 7px 8px; width:15px; height:25px; overflow:hidden; line-height:80px;}
+.asideBox .otherBox .slidOption .slider-next a{background-position:-26px 8px;}
+.asideBox .otherBox .slidOption .slideP .bx-pager-item{display:inline-block;}
+.asideBox .otherBox .slidOption .slideP .bx-pager-item a{display:block; width:20px; height:20px; background:url('https://image.thebell.co.kr/thebell10/img/icon-onoff.png') 4px 4px no-repeat; overflow:hidden; line-height:60px;}
+.asideBox .otherBox .slidOption .slideP .bx-pager-item a.active{background-position:-23px 4px;}
+
+
+/************************************** 
+** FORM 디자인
+***************************************/
+/* 인풋 박스 */
+input::-webkit-outer-spin-button,  
+input::-webkit-inner-spin-button {-webkit-appearance: none;  margin: 0; }
+input[type='text'],
+input[type='email'],
+input[type='password']{border:solid 1px #ccc; padding:5px 10px; background:#fff; height:19px; line-height:19px; vertical-align:middle; -webkit-appearance:none; outline:none;}
+textarea:focus,
+select:focus,
+input:focus{border:solid 1px #c7000c}
+
+input:disabled{background-color:#E9E9E9 !important; }
+input.disabled{background-color:#E9E9E9 !important; }
+select:disabled{background-color:#E9E9E9 !important; }
+select.disabled{background-color:#E9E9E9 !important; }
+
+label{vertical-align:middle;}
+textarea{border:solid 1px #ccc; padding:5px 10px; background:#fff; vertical-align:middle; -webkit-appearance:none; outline:none; width:100%; box-sizing:border-box;}
+
+/* placholder */
+::-webkit-input-placeholder{color:#707070}
+::-moz-placeholder{color:#707070} /* firefox 19+ */
+:-ms-input-placeholder{color:#707070} /* ie */
+input:-moz-placeholder{color:#707070}
+
+/* 체크박스 */
+.chk-tp1 {position:relative; display:inline-block;}
+/*
+.chk-tp1 input[type=checkbox] {position:absolute; top:0; left:0; width:0; height:0; opacity:0; filter:alpha(opacity=0);}
+.chk-tp1 input[type=checkbox] + label {padding:0 0 0 30px; color:#666; font-size:14px; line-height:24px; background:url("https://image.thebell.co.kr/thebell10/img/chk01.png") 0px -33px no-repeat; cursor:pointer; color:#333;}
+.chk-tp1 input[type=checkbox]:checked + label {background-position:0px -4px;}
+*/
+
+/* 라디오박스 */
+.radio-tp1 {position:relative; display:inline-block; line-height:32px;}
+/*
+.radio-tp1 input[type=radio] {position:absolute; top:0; left:0; width:0; height:0; opacity:0; filter:alpha(opacity=0);}
+.radio-tp1 input[type=radio] + label {color:#666; font-size:14px; cursor:pointer; color:#333;}
+.radio-tp1 input[type=radio] + label:before {content:""; display:inline-block; margin-right:7px; width:20px; height:20px; vertical-align:middle; background:url("https://image.thebell.co.kr/thebell10/img/chk02.png") 0px -33px no-repeat;}
+.radio-tp1 input[type=radio]:checked + label:before {background-position:0px -4px;}
+*/
+
+/* 셀렉트 */
+.sel.tp1 select{border:none;  background:#707070 url('https://image.thebell.co.kr/thebell10/img/arrow-down-fff.png') 175px 10px no-repeat; padding:5px 10px 5px 10px; text-indent:3px; vertical-align: middle;height:30px; color:#fff; -moz-appearance:none; -webkit-appearance:none; appearance:none;}
+.sel.tp2 select{font-size:14px; /*background:#fff url('https://image.thebell.co.kr/thebell10/img/sel-dwon2.png') no-repeat 99% 50%; -webkit-appearance:none; -moz-appearance:none;  -o-appearance:none;  appearance:none; padding:5px 15px 5px 10px;*/  text-indent:3px; vertical-align: middle;height:35px; color:#707070;}
+
+.selectBox{position:relative; border:1px solid #111; display:inline-block;}
+.selectBox label{display:none;}
+.selectBox select{width:100%; height:30px; border:0px; letter-spacing:-1px; padding:0 0 0 5px;/*background:#fff url("https://image.thebell.co.kr/thebell10/img/sel-dwon.png") no-repeat 90% 50%; -webkit-appearance:none; -moz-appearance:none;  -o-appearance:none;  appearance:none;*/}
+.selectBox.grey{/*background:#fff url("https://image.thebell.co.kr/thebell10/img/sel-dwon2.png") no-repeat 90% center;*/ border:1px solid #ccc;}
+.selectBox.grey label{color:#707070;}
+.selectBox.fff{border:1px solid #fff; /*background:url('https://image.thebell.co.kr/thebell10/img/arrow-down-fff.png') no-repeat 92% 50%;*/}
+.selectBox.fff label{color:#fff;}
+
+
+/************************************** 
+** button 디자인
+***************************************/
+/* 공통 */
+button:hover{cursor:pointer;}
+.btn{display:inline-block; zoom:1; height:31px; line-height:31px; font-size:14px; padding:0px 10px; vertical-align:top; border:0px; cursor:pointer; opacity:1 !important;}
+.btn:hover{ opacity:0.7 !important; text-decoration:none !important;}
+.btn.m2:hover{background-color:#ebebeb !important; }
+.btn:hover{ text-decoration: none !important;}
+
+/* 크기 */
+.btn.s{height:20px; line-height:19px; padding:0px 8px 0 10px; font-size:12px; vertical-align:top; text-align:center; }
+.btn.s2{height:22px; line-height:20px; padding:0px 8px 0 10px; font-size:12px; vertical-align:top; text-align:center; }
+a.btn.s{height:20px; line-height:19px; text-align:center; box-sizing:border-box;}
+a.btn.s.grey{ line-height: 15px;}
+.btn.m{height:27px; line-height:27px; padding:0px 10px; font-size:13px; vertical-align:top; text-align:center; }
+.btn.m2{height:30px; line-height:30px; padding:0px 10px; font-size:13px; vertical-align:top; text-align:center; }
+.btn.b{height:38px; line-height:38px; padding:0px 10px; font-size:15px; vertical-align:top; text-align:center; }
+.btn.b2{height:45px; line-height:45px; padding:0px 10px; font-size:15px; vertical-align:top; text-align:center;}
+
+/* 칼라 */
+.btn.white{background-color:#fff; color:#111; border:1px solid #fff;}
+.btn.grey{background-color:#707070; color:#fff; border:1px solid #707070; }
+.btn.grey2{background-color:#999; color:#fff; border:1px solid #999;}
+.btn.greyLine{background-color:#fff; color:#707070 !important; border:1px solid #707070;}
+.btn.red{background-color:#c7000c; border:1px solid #c7000c; color:#fff;}
+.btn.red:hover{background-color:#6f1c21 !important;}
+.btn.red2{background-color:#a1430d; border:1px solid #a1430d; color:#fff;}
+.btn.redLine{background-color:#fff; border:1px solid #c7000c; color:#c7000c;}
+.btn.redLine2{background-color:#fff; border:1px solid #a1430d; color:#a1430d;}
+.btn.bg565Line{background-color:#fff; border:1px solid #565448; color:#565448;}
+.btn.bg565{background-color:#565448; border:1px solid #565448; color:#fff;}
+.btn.off{background-color:#f5f5f5; border:1px solid #ccc; color:#999;}
+.btn.black{background-color:#111; color:#fff; border:1px solid #111;}
+.btn.blackLine{background-color:#fff; color:#111; border:1px solid #111;}
+.btn.blueLine{background-color:#fff; color:#5d6eb7 !important; border:1px solid #5d6eb7;}
+.btn.blue{background-color:#5d6eb7; color:#fff; border:1px solid #5d6eb7;}
+
+
+/* 아이콘 */
+.icon{display:inline-block; vertical-align:middle;}
+.arrowD{background:url('https://image.thebell.co.kr/thebell10/img/arrow-down-fff2.png') no-repeat 50%; width:7px; height:7px;}
+.icon.arrow{position:relative; top:-1px}
+.icon.arrow.L1{background:url('https://image.thebell.co.kr/thebell10/img/arrow-left-000.png') no-repeat 50%; width:7px; height:7px;}
+.icon.arrow.L2{background:url('https://image.thebell.co.kr/thebell10/img/arrow-left-grey.png') no-repeat 50%; width:7px; height:7px;}
+.icon.arrow.L3{background:url('https://image.thebell.co.kr/thebell10/img/arrow-left-red.png') no-repeat 50%; width:7px; height:7px;}
+.icon.arrow.L4{background:url('https://image.thebell.co.kr/thebell10/img/arrow-left-fff.png') no-repeat 50%; width:7px; height:7px;}
+.icon.arrow.T1{background:url('https://image.thebell.co.kr/thebell10/img/arrow-dt.png') no-repeat; width:15px; height:10px;}
+.icon.arrow{background:url('https://image.thebell.co.kr/thebell10/img/icon-arrow2.png') no-repeat; width:17px; height:17px;}
+.icon.x{background:url('https://image.thebell.co.kr/thebell10/img/icon-x2.png') no-repeat; width:15px; height:15px;}
+.icon.x2{background:url('https://image.thebell.co.kr/thebell10/img/icon-x.png') no-repeat; width:15px; height:15px;}
+.icon.re{background:url('https://image.thebell.co.kr/thebell10/img/icon-re.png') no-repeat; width:25px; height:25px;}
+.icon.com{background:url('https://image.thebell.co.kr/thebell10/img/icon-com.png') no-repeat; width:21px; height:19px;}
+.icon.pens{background:url('https://image.thebell.co.kr/thebell10/img/icon-pens.png') no-repeat; width:19px; height:19px;}
+.icon.book{background:url('https://image.thebell.co.kr/thebell10/img/icon-book2.png') no-repeat; width:13px; height:15px;}
+.icon.mail{background:url('https://image.thebell.co.kr/thebell10/img/icon-mail.png') no-repeat; width:17px; height:14px;}
+.icon.mail2{background:url('https://image.thebell.co.kr/thebell10/img/icon-mail2.png') no-repeat; width:17px; height:14px;}
+.icon.new{background:url('https://image.thebell.co.kr/thebell10/img/icon-new.png') no-repeat; width:13px; height:13px;}
+.icon.down{background:url('https://image.thebell.co.kr/thebell10/img/icon-down.png') no-repeat; width:13px; height:13px;}
+.icon.down1{background:url('https://image.thebell.co.kr/thebell10/img/icon-down1.png') no-repeat; width:13px; height:13px;}
+.icon.print{background:url('https://image.thebell.co.kr/thebell10/img/icon-view.png') no-repeat -30px 0px; width:22px; height:20px;}
+.icon.info{background:url('https://image.thebell.co.kr/thebell10/img/icon-info.png') no-repeat; width:25px; height:22px; vertical-align: text-top; }
+
+.icon.list{display:inline-block; width:30px; height:30px; border:1px solid #ccc; line-height:200px; overflow:hidden; background:url('https://image.thebell.co.kr/thebell10/img/icon-list.png') no-repeat 4px -27px;}
+.icon.list.listZine{background-position:-36px -27px;}
+.icon.list.listPhoto{background-position:-75px -27px;}
+.icon.list.listClassic.on{background-position:4px 8px;}
+.icon.list.listZine.on{background-position:-36px 8px;}
+.icon.list.listPhoto.on{background-position:-75px 8px;}
+
+/* 국가 아이콘 */
+.icon.flag{display:inline-block; width:22px; height:13px; background:url('https://image.thebell.co.kr/thebell10/img/icon-flag.png') no-repeat; line-height:100px; overflow:hidden;}
+.flag.tp1{background-position:0px 0px;}
+.flag.tp2{background-position:-26px 0px;}
+.flag.tp3{background-position:-52px 0px;}
+.flag.tp4{background-position:-79px 0px;}
+.flag.tp5{background-position:-105px 0px;}
+.flag.tp6{background-position:-131px 0px;}
+.flag.tp7{background-position:0px -22px;}
+.flag.tp8{background-position:-26px -22px;}
+.flag.tp9{background-position:-52px -22px;}
+.flag.tp10{background-position:-79px -22px;}
+.flag.tp11{background-position:-105px -22px;}
+.flag.tp12{background-position:-131px -22px;}
+.flag.tp13{background-position:0px -43px;}
+.flag.tp14{background-position:-26px -43px;}
+.flag.tp15{background-position:-52px -43px;}
+.flag.tp16{background-position:-79px -43px;}
+.flag.tp17{background-position:-105px -43px;}
+.flag.tp18{background-position:-131px -43px;}
+
+.btnBox{overflow:hidden; clear: both;}
+.btnBox2{text-align: center; margin: 20px 0;}
+
+/************************************** 
+** 기본 레이아웃
+***************************************/
+.contentBox{float:left; width:800px;}
+.shadowBox{border-bottom:3px solid #e5e5e5;}
+
+/* 박스 */
+.boxRed{border:1px solid #999; border-top:3px solid #c7000c; padding:20px;}
+.boxBlack{border:1px solid #999; border-top:3px solid #000; padding:20px;}
+
+.boxGrey{border:1px solid #999; padding:20px;}
+.boxGrey .tit{font-size: 17px;  margin-bottom:15px; color:#c7000c; font-weight:bold; }
+.boxGrey .inputBox{padding:20px 0 5px 0; }
+.boxGrey .inputBox em{font-weight:bold; color:#111; font-size:15px; display:inline-block; width:150px;}
+.boxGrey .btn{ margin-top:15px;}
+.boxGrey .inputBox p{margin-bottom:15px;}
+
+
+/* 태그박스 */
+.tagBox em{display:inline-block; padding:0px 5px; background-color:#fff;}
+.tagBox em.bule{border:1px solid #5d6eb7; color:#5d6eb7;}
+.tagBox em.red{border:1px solid #c7000c; color:#c7000c;}
+.tagBox em.sepia{border:1px solid #a0410d; color:#a0410d;}
+.tagBox em.pdf{border:1px solid #999; color:#fff; background-color:#999;}
+
+/* 검색 박스 */
+.searchBox.tp1{background-color:#f1f1f1; padding:10px 15px;}
+.searchBox.tp2{padding:10px 0px;}
+.searchBox.tp2 .searchTxt{position:relative; display:inline-block;}
+.searchBox.tp2 .searchTxt .btn{position:absolute; right:2px; top:4px; background:#fff url('https://image.thebell.co.kr/thebell10/img/icon-sh-grey.png') no-repeat; overflow:hidden; height:25px; width:25px; line-height:100px;}
+
+/* 카테고리 */
+.categoryBox{overflow:hidden; padding:15px 0px;}
+.categoryBox li{background:url('https://image.thebell.co.kr/thebell10/img/line-d3.png') no-repeat left 50%; float:left;}
+.categoryBox li a{display:block; padding:0px 15px; font-size:14px; color:#333; line-height:25px;}
+.categoryBox li a:hover{color:#c7000c;}
+.categoryBox li.on a{background-color:#c7000c; color:#fff;}
+
+/* 팁박스 */
+.tip{background-color:#f5f5f5; padding:10px; font-size:14px; color:#333; position:relative;}
+.tipLine{background-color:#f5f5f5; border:1px solid #ddd; padding:10px; font-size:14px; color:#6c6c6c; position:relative;}
+.tip li{margin-bottom:7px; font-weight:normal; color:#333; background:url('https://image.thebell.co.kr/thebell10/img/bul-dot.png') no-repeat left 50%; padding-left:6px;}
+.tip em{color:#c7000c;}
+
+/* 그룹 폴더 */
+.groupWrap{border:2px solid #111; padding:0px 10px; overflow:hidden;}
+.groupWrap .groupSection{overflow:hidden; padding:10px 0px;}
+.groupWrap .groupSection ul{margin-left:-15px; }
+.groupWrap .groupSection li{float:left; padding:0px 10px; background:url('https://image.thebell.co.kr/thebell10/img/line-d3.png') no-repeat left 5px;}
+.groupWrap .groupSection a{font-size:15px; color:#111; font-weight:bold; background:url('https://image.thebell.co.kr/thebell10/img/icon-folder.png') no-repeat 0px 4px; padding-left:25px;}
+.groupWrap .groupSection li.all a{background:none; text-decoration:underline; padding-left:10px;}
+.groupWrap .groupSection li.on a{background-position:6px -26px; text-decoration:underline; padding-left:30px;}
+.groupWrap .itemSection{overflow:hidden; border-top:1px solid #ccc; padding:10px 0px;}
+.groupWrap .itemSection ul{margin-left:-15px; }
+.groupWrap .itemSection li{float:left; margin-left:15px;}
+.groupWrap .itemSection a{font-size:15px; color:#5d6eb7; text-decoration:underline;}
+
+/* 헤드라인 */
+.headLineBox{border:1px solid #ccc; overflow:hidden; height:35px; position:relative; background-color:#fff; }
+.headLineBox .headTit{border-right:1px solid #ccc; background:#ebebeb url('https://image.thebell.co.kr/thebell10/img/icon-newpop.png') 100px 10px no-repeat; font-size:15px; color:#111; display:block; float:left; padding-left: 10px;  width:120px; height:35px; line-height:35px; font-family:'Noto Sans KR'; font-weight:bold;}
+.headLineBox .tit{height:35px; line-height:35px; margin-left:50px; margin-right:36px; border-bottom:1px solid #e5e5e5; margin-left:-1px;}
+.headLineBox .txt{padding-left:10px;}
+.headLineBox.on{overflow:visible;}
+.headLineBox.on ul{position:absolute; z-index:999; width:100%; top:36px;}
+.headLineBox.on li{height:35px; line-height:35px; width:100%; background-color:#fff; border-bottom:1px solid #e5e5e5; border-left:1px solid #ccc; border-right:1px solid #ccc; margin-left:-1px;}
+.headLineBox.on li:last-child{border-bottom:1px solid #ccc;}
+.headLineBox.on li.on a{font-weight:bold;}
+.headLineBox .time{float:right; background:url('https://image.thebell.co.kr/thebell10/img/icon-time.png') 0px 10px no-repeat; padding:0px 20px;}
+.headLineBox .sel{display:block; width:35px; height:35px; border:0px; border-left:1px solid #e0e0e0; background:url('https://image.thebell.co.kr/thebell10/img/arrow-ud.png') 8px 13px no-repeat; position:absolute; right:0px; top:0px;}
+.headLineBox.on .sel{background-position:8px -14px;}
+
+/* 레프트 메뉴 */
+.asideLnb{overflow:hidden; width:150px; margin-right:30px; float:left;}
+.asideLnb .tit{font-size:28px; color:#111; font-family:'Noto Sans KR'; font-weight:bold; height:50px; line-height:45px; border-bottom:2px solid #111; text-align:center;}
+.asideLnb > ul > li{border-bottom:1px solid #ccc;}
+.asideLnb > ul > li > a{display:block; height:40px; line-height:40px; padding-left:15px; font-family:'Noto Sans KR'; font-size:14px; color:#333;}
+.asideLnb > ul > li:hover > a,.asideLnb > ul > li.on > a{background-color:#c7000c; color:#fff;}
+.asideLnb > ul  ul{border-top:1px solid #ccc; padding:10px 0px;}
+.asideLnb  li li a{ font-weight:normal; color:#333; display:block; background:url('https://image.thebell.co.kr/thebell10/img/arrow-left-000.png') no-repeat 8px 8px; padding:5px 0px; padding-left:20px; }
+.asideLnb  li li a:hover,.asideLnb  li li.on a{color:#c7000c; text-decoration:underline;}
+.asideLnb .serviceNum{border:1px solid #999; width:150px; height:140px; box-sizing:border-box; padding:15px 10px; background:url('https://image.thebell.co.kr/thebell10/img/icon-phon.png') no-repeat right bottom; margin-top:20px;}
+.asideLnb .serviceNum .txt{font-size:14px; font-weight:bold; color:#111;}
+.asideLnb .serviceNum .num{font-size:24px; font-weight:bold; color:#216fce; letter-spacing:-2px; font-family:'Noto Sans KR'; margin:10px 0px;}
+
+/* headBox */
+.headBox{overflow:hidden; border-bottom:2px solid #231916; background: #fff; position: relative; padding-bottom: 5px;}
+.headBox.noLine{overflow:hidden; border-bottom:0px;}
+
+.headBox h3{font-size:26px; float:left; overflow:hidden; vertical-align:middle; height:35px; line-height:35px; font-family:'Noto Sans KR';  }
+
+.subMain .headBox h3{ overflow: hidden;}
+/*20200714 수정*/
+
+.headBox .cate{float:left; background:url('https://image.thebell.co.kr/thebell10/img/line-d3.png') no-repeat 94% 5px; padding-right:15px; font-size:18px; font-family:'Noto Sans KR'; font-weight:bold; color:#111; margin-top:10px;}
+.headBox .cate em{font-size:18px; font-family:'Noto Sans KR'; font-weight:bold; color:#c7000c;}
+.headBox .location{ position: absolute; top: 0; right: 0; margin-top: 10px; }
+.headBox .location li{float:left; }
+
+
+.headBox .location li a,.headBox .location li span{font-size:13px; color:#999; font-weight: normal;  background:url('https://image.thebell.co.kr/thebell10/img/arrow-left.png') no-repeat 7px 5px; padding-left:20px;}
+.headBox .location li:first-child a{background:none;}
+.headBox .location li.b a,.headBox .location li.b span{ color:#111; font-weight: bold; }
+
+
+.headBox.addcal h3{  margin-right: 7px}
+.headBox.addcal .dateBox{margin-top: 10px;}
+.headBox.addcal .location{ margin-top: 10px;}
+
+/* 페이징 tp1 */
+.paging.tp1 {text-align:center; padding:50px 0px 35px 1px; font-size:13px; overflow:hidden;}
+.paging.tp1 li {float:left; width:33px; height:33px; line-height:34px; margin-left:-1px; border:1px solid #d7d5d5; background:#fff;}
+.paging.tp1 .cur {color:#fff; background-color:#392e2c; border:1px solid #392e2c; font-weight:bold;}
+.paging.tp1 li a {display:block;width:100%;height:100%;color:#353535; font-weight:bold;}
+.paging.tp1 li.btn_left {}
+.paging.tp1 li.btn_right {}
+.paging.tp1 li.btn_front, .paging li.btn_last {letter-spacing:-0.3571428571428571em;}
+.paging.tp1 li.off a {color:#c7c7c7;}
+.paging.tp1 li.on a {color:#555;}
+
+/* 페이징 tp2 */
+.paging.tp2{text-align:center; padding:30px 0px 35px 1px; font-size:13px; overflow:hidden;}
+.paging.tp2 a{width:33px; height:33px; line-height:34px; margin-left:-1px; border:1px solid #d7d5d5; background:#fff; color:#353535; font-weight:bold; display:inline-block; text-align:center; vertical-align:top;}
+.paging.tp2 .cur{width:33px; height:33px; line-height:33px; color:#fff; background-color:#392e2c; border:1px solid #392e2c; font-weight:bold; display:inline-block; vertical-align:top;}
+.paging.tp2 a.arrow{background:url('https://image.thebell.co.kr/thebell10/img/arrow-lr.png') no-repeat 11px 11px; overflow:hidden; line-height:100px;}
+.paging.tp2 a.left.arrowOn{background:url('https://image.thebell.co.kr/thebell10/img/arrow-lrOn.png') no-repeat 11px 11px;}
+.paging.tp2 a.right.arrowOn{background:url('https://image.thebell.co.kr/thebell10/img/arrow-lrOn.png') no-repeat -23px 11px;}
+.paging.tp2 a.arrow.right{background-position:-23px 11px;}
+
+/* 페이징 tp3 */
+.paging.tp3{text-align:center; padding:10px 0px; font-size:13px; overflow:hidden;}
+.paging.tp3 a{width:18px; height:17px; line-height:17px; border-left:1px solid #d7d5d5; background:#fff; color:#111; display:inline-block; text-align:center; vertical-align:top;}
+.paging.tp3 .cur{width:18px; height:17px; line-height:17px; color:#c7000c; font-weight:bold; display:inline-block; vertical-align:top;}
+.paging.tp3 a.arrow{background:url('https://image.thebell.co.kr/thebell10/img/arrow-lr.png') no-repeat 2px 3px; border:0px; overflow:hidden; line-height:100px;}
+.paging.tp3 a.arrow.r{background-position:-32px 3px;}
+
+/* 달력 */
+.dateBox{float:left; margin:16px 15px 5px 0; position:relative;}
+.dateBox input{border:0px; font-size:15px; font-weight:bold; color:#231916; padding:0px; width:90px;  text-align:center; vertical-align:top;}
+.dateBox img{margin-right: 4px;}
+.dateBox .btn.left,.dateBox .btn.right{border:1px solid #ccc; background:#fff url("https://image.thebell.co.kr/thebell10/img/arrow-lr.png") no-repeat 10px; width:20px; height:20px; }
+.dateBox .btn.left{background-position:5px 3px;}
+.dateBox .btn.right{background-position:-28px 3px;}
+.dateBox .btn.dal{background:#fff url("https://image.thebell.co.kr/thebell10/img/icon-cal.png") no-repeat; border:1px solid #fff; width:22px; height:22px; overflow:hidden; margin-left:5px;}
+.dateBox .today{font-size:15px; color:#5d6eb7; font-weight:bold; cursor:pointer; vertical-align:top; margin-left:5px;}
+.dateBox .ui-datepicker-trigger{}
+.dateBox .ui-datepicker-trigger:hover{cursor:pointer;}
+
+.dateBox.tp2{position:relative; margin:0px;}
+.dateBox.tp2 input{border:1px solid #ccc; height:28px; line-height:28px; padding:0px 5px; font-size:14px;}
+.dateBox.tp2 .ui-datepicker-trigger{position:initial; margin-left:5px; margin-top:6px; vertical-align:middle;}
+
+/* 탭리스트 */
+.tabList{background:white; border-bottom:solid 1px #111; text-align:right; height:32px; position:relative;}
+.tabList.left{text-align:left !important;}
+.tabList.left li{right:0px;}
+.tabList .tit{position:absolute; top:5px; left:0px; background:url('https://image.thebell.co.kr/thebell10/img/icon-link.png') no-repeat right;}
+.tabList .tit a{font-size:17px; font-weight:bold; color:#111;  padding-right:20px;}
+.tabList:after {display:block; content:""; clear:both;}
+.tabList li{display:inline-block; text-align:center; top:0px; position:relative; margin-right:-6px; right:6px}
+.tabList li a:hover,.tabList li span:hover{ text-decoration: none !important; color: #111 !important;}
+.tabList li span{display:block; height:30px; line-height:30px; font-size:14px; font-family:'Malgun Gothic'; color:#999; border:1px solid #ccc; background:#f7f7f7; border-bottom:none; padding:0px 15px; cursor: pointer;}
+.tabList li span a{color:#999;}
+.tabList li .tabList li span:hover{background:white; border:1px solid #111; border-bottom:none; position:relative; box-sizing:border-box; z-index:1; height:32px; cursor:pointer; }
+.tabList li.off span{background-color:#e5e5e5;}
+.tabList li.off span:hover{background-color:#e5e5e5; cursor:normal; border:1px solid #ccc; color:#999!important;}
+.tabList li.on span{background:white; border:1px solid #111;  border-bottom:none; position:relative; box-sizing:border-box; font-weight:bold; color:#111; padding:0px 15px; z-index:1; height:33px;}
+.tabList li#a1 span{border-left:1px solid #ccc;}
+.tabList li#a2 span{border-right:1px solid #ccc;}
+.tabList li#a3 span{border-left:1px solid #ccc;}
+.tabList li#a4 span{border-right:1px solid #ccc;}
+.tabList li.on span a{color:#111;}
+.tabList li.on span:hover{height:33px; text-decoration: none !important;}
+
+.tabList.tp2{border-bottom:0px;}
+.tabList.tp2 li span{background-color:#fff; color:#111; border:1px solid #111;}
+.tabList.tp2 li:hover span{background-color:#f4f4f4;}
+.tabList.tp2 li.on span{background-color:#111; color:#fff; height:32px;}
+.tabList.tp2 li.on:hover span{color:#ccc !important;}
+
+.tabList.tp3{border-bottom:0px;}
+.tabList.tp3 li span{background-color:#fff; color:#111; border:1px solid #ccc;}
+.tabList.tp3 li:hover span{background-color:#f4f4f4;}
+.tabList.tp3 li.on span{background-color:#f1f1f1; color:#111; height:32px; font-weight:bold;}
+
+.tabList.tp4{border-bottom:0px; height:inherit;}
+.tabList.tp4 li{float:left; background-color:#fff; color:#111; border:1px solid #111; box-sizing:border-box; margin-right:-1px;}
+.tabList.tp4 li.on{background-color:#111; color:#fff; }
+.tabList.tp4 li a{background-color:#fff; color:#111; display:block; height:45px; line-height:45px; padding:0px 10px;}
+.tabList.tp4 li a:hover{background-color:#f4f4f4;}
+.tabList.tp4 li.on a{background-color:#111; color:#fff; display:block; height:45px; line-height:45px;}
+.tabList.tp4 li.on a:hover{ color:#fff !important; background-color:#333;}
+
+.tabList.tp5{border-bottom:0px; height:inherit;}
+.tabList.tp5 li{float:left;  color:#111; border:1px solid #111;   box-sizing:border-box; margin-right:-1px; position: relative; }
+.tabList.tp5 li.on{background-color:#111; color:#fff; }
+.tabList.tp5 li img{ position: absolute; right: -9px; top: 0; z-index: 1111;}
+.tabList.tp5 li a{background-color:#fff; color:#111; display:block; height:45px; line-height:45px; padding:0px 10px; width:223px;}
+.tabList.tp5 li a:hover{background-color:#f4f4f4;}
+.tabList.tp5 li.on a{background-color:#111; color:#fff; display:block; height:45px; line-height:45px;}
+
+
+.tabCon{position:relative;}
+.tabCon .list{overflow:hidden;}
+.tabCon .list li{float:left; margin-left:-1px;}
+.tabCon .list li:first-child{margin-left:0px;}
+.tabCon .list li span{display:inline-block; border:1px solid #ccc; border-bottom:0px; background-color:#fff; padding:0px 10px; height:35px; line-height:35px; color:#999; font-weight:bold;}
+.tabCon .list li.on span{color:#111; padding-bottom:1px;}
+.tabCon .list li span:hover{cursor:pointer; background-color:#f3f3f3;}
+.tabCon .view{border:1px solid #ccc; background-color:#fff; margin-top:-1px; padding:15px;}
+.tabView{overflow:hidden;}
+
+/* 슬라이드 옵션 */
+.slidOption{background-color:#f1f1f1; text-align:center; height:30px; margin-top:10px;}
+.slidOption .slideP{display:inline-block; margin-top:6px;}
+.slidOption .slider-prev , .slidOption .slider-next{vertical-align:bottom;}
+.slidOption .slider-prev a,.slidOption .slider-next a{display:inline-block; background:url('https://image.thebell.co.kr/thebell10/img/arrow-lr2.png') no-repeat 7px 9px; width:15px; height:25px; overflow:hidden; line-height:80px;}
+.slidOption .slider-next a{background-position:-26px 9px;}
+.slidOption .slideP .bx-pager-item{display:inline-block;}
+.slidOption .slideP .bx-pager-item a{display:block; width:20px; height:20px; background:url('https://image.thebell.co.kr/thebell10/img/icon-onoff.png') 4px 4px no-repeat; overflow:hidden; line-height:60px;}
+.slidOption .slideP .bx-pager-item a.active{background-position:-23px 4px;}
+
+/* 상세검색 */
+.searchOption .tipBox{display:inline-block; clear:both; font-size:12px; color:#111; margin-top:10px; }
+.searchOption .tipBox em{color:#c7000c; text-decoration:underline;font-size:12px; }
+.tipTxt img{ position:absolute; z-index: 11111; left: 20px; top: 186px;}
+.searchOption{border:1px solid #999; overflow:hidden; height:124px; position:relative;}
+.searchOption.on{height:278px;}
+.searchOption .multiOption{border-bottom:1px solid #999; background-color:#f1f1f1; overflow:hidden; padding:10px 20px 30px;}
+.searchOption .multiOption li{float:left; margin-right:10px;}
+.searchOption .multiOption li em{font-size:14px; font-weight:bold; color:#333;  margin-bottom:5px; display:block;}
+.searchOption .searchTxt{position:relative; display:inline-block;}
+.searchOption .searchTxt .btn{position:absolute; right:2px; top:4px; background:#fff url('https://image.thebell.co.kr/thebell10/img/icon-sh-grey.png') no-repeat; overflow:hidden; height:25px; width:25px; line-height:100px;}
+.searchOption .searchTxt input{width:260px;}
+.searchOption .selectBox{width:100px;}
+.searchOption .inputBox{padding:10px 20px;}
+.searchOption .inputBox li{float:left; margin-right:10px;}
+.searchOption .inputBox li em{font-size:14px; font-weight:bold; color:#333; display:block; margin-bottom:5px;}
+.searchOption .inputBox{border-bottom:1px solid #999; overflow:hidden;}
+.searchOption .inputBox ul{overflow:hidden;}
+.searchOption .btnBox{text-align:right; padding:10px 10px;}
+.searchOption .btn.option{position:absolute; right:0px; bottom:0px;}
+
+.searchOption.tp2{height:52px;}
+.searchOption.tp2.on{height:inherit;}
+.searchOption.tp2 .multiOption{padding-bottom:10px;}
+.searchOption.tp2 .inputBox{padding:10px 20px;}
+.searchOption.tp2 .inputBox li{float:left; margin-right:10px; margin-bottom:10px;}
+.searchOption.tp2 .inputBox li em{font-size:14px; font-weight:bold; color:#333; display:block; margin-bottom:5px;}
+.searchOption.tp2 .inputBox{border-bottom:1px solid #999; overflow:hidden;}
+.searchOption.tp2 .inputBox ul{overflow:hidden;}
+.searchOption.tp2 .checkBox{border-bottom:1px solid #ccc; padding:10px 0px; overflow:hidden;}
+.searchOption.tp2 .checkBox.classBox{border:0px;}
+.searchOption.tp2 .checkBox .check{float:left; margin-left:15px; width:800px;}
+.searchOption.tp2 .checkBox .tit{color:#ccc; float:left;}
+.searchOption.tp2 .checkBox .tit{font-weight:bold; color:#111;}
+.searchOption.tp2 .checkBox .tit span{cursor:pointer;}
+.searchOption.tp2 .checkBox .tit .all{font-weight:normal; font-size:13px; text-decoration:underline;}
+.searchOption.tp2 .checkBox .tit .reset{font-weight:normal; font-size:13px; text-decoration:underline; color:#c7000c;}
+
+/* 뉴스 리스트 */
+.newsList.tp1 > ul > li{overflow:hidden; padding:15px 0px; border-bottom:1px solid #ccc;}
+.newsList.tp1 .groupBox{margin-bottom:5px;}
+.newsList.tp1 .groupBox em{ margin-right:3px; font-size:14px; font-weight:bold; color:#c7000c; }
+.newsList.tp1 .groupBox em a{font-size:14px; font-weight:bold; color:#c7000c !important; }
+.newsList.tp1 .groupBox i,.newsList.tp1 .groupBox i a{text-decoration:normal; font-size:14px; font-weight:bold; color:#a67c52 !important; font-style:normal;}
+
+.newsList.tp1 dt a{padding-bottom:10px; display: block;}
+.newsList.tp1 dt a,.newsList.tp1 dt{font-size:17px; font-weight:bold; color:#111; line-height:19px; }
+.newsList.tp1 dt.photo{width:136px; height:100px; overflow: hidden;border: 1px solid #e0e0e0; float:left; display:block; vertical-align: middle; text-align: center; line-height: 94px;  margin:1px 14px 0 0; padding-bottom: 0; }
+.newsList.tp1 dt.photo img{ width: auto; max-width: 136px;  height: auto; vertical-align: middle;}
+/*.newsList.tp1 dt.photo{position:relative;float:left;display:inline-block;margin:1px 14px 10px 0;padding:0;  height: 95px; overflow: hidden;border: 1px solid #e0e0e0; box-sizing: border-box; } 
+.newsList.tp1 dt.photo img{  max-width: 100%; height:auto !important;  position: relative; top: 50%; margin-top: -45px;}*/
+.newsList.tp1 dd{font-size:14px; font-weight:normal; color:#707070; line-height:18px;}
+.newsList.tp1 dd a{font-size:14px; font-weight:normal; color:#707070; line-height:18px;  }
+.newsList.tp1 .userBox{padding-top:5px;}
+.newsList.tp1 .userBox .user{padding-right:5px; margin-right: 3px; background:url('https://image.thebell.co.kr/thebell10/img/line-d3.png') no-repeat right; display: inline-block;  font-size:13px; color:#5d6eb7;font-weight:bold;}
+.newsList.tp1 .userBox .user a{font-size:13px; color:#5d6eb7;font-weight:bold; }
+.newsList.tp1 .userBox .date{font-size:13px; color:#999;}
+.newsList.tp1 dd.linkNews{padding:8px 0px;}
+.newsList.tp1 dd.linkNews li{margin-bottom:5px;}
+.newsList.tp1 dd.linkNews li:last-child{margin-bottom:0px;}
+.newsList.tp1 dd.linkNews li a{display:inline-block; width:460px; box-sizing:border-box; padding-left:20px; background:url('https://image.thebell.co.kr/thebell10/img/icon-L.png') 8px 7px no-repeat; color:#111;}
+
+.newsList.tp2 > ul > li{overflow:hidden; padding:15px 0px 0px; border-bottom:1px solid #ccc;}
+.newsList.tp2 dt a.txtE{font-size:17px; font-weight:bold; color:#111; width:490px; padding-bottom: 10px;}
+.newsList.tp2 dt.photo{width:136px; height:90px; overflow: hidden;border: 1px solid #e0e0e0; float:left; display:block; vertical-align: middle; text-align: center; line-height: 84px;  margin:1px 14px 0 0;}
+.newsList.tp2 dt.photo img{  width: auto; max-width: 136px;  height: auto;vertical-align: middle; }
+/*.newsList.tp2 dt.photo{position:relative;float:left;display:inline-block;margin:1px 14px 0 0;padding:0; height: 90px; overflow: hidden;border: 1px solid #e0e0e0; box-sizing: border-box; }
+.newsList.tp2 dt.photo img{position: relative; top: 50%; margin-top: -45px;}*/
+.newsList.tp2 dd{padding-bottom:10px;}
+.newsList.tp2 dd a{font-size:14px; font-weight:normal; color:#707070; line-height:18px;}
+.newsList.tp2 dd.newsList{border-top:1px dashed #ccc; padding: 10px 0;}
+.newsList.tp2 dd.newsList li{margin-bottom:5px; background:url('https://image.thebell.co.kr/thebell10/img/icon-L.png') 8px 7px no-repeat;}
+.newsList.tp2 dd.newsList li:last-child{margin-bottom:0px;}
+.newsList.tp2 dd.newsList li a.txtE{display:inline-block; width:460px; box-sizing:border-box; padding-left:20px; color:#111;}
+.newsList.tp2 dd.newsList .userBox{float:right; padding-top:0;}
+.newsList.tp2 dd.bannerBox{border-top:1px solid #ccc; overflow:hidden;}
+.newsList.tp2 dd.bannerBox .banner{width:330px; height:70px; background-color:#eee; float:left;}
+.newsList.tp2 dd.bannerBox.tp1 .banner.tp1{margin-right:10px;}
+.newsList.tp2 dd.bannerBox.tp2 .banner{width:100%; height:170px;}
+.newsList.tp2 .groupBox{margin-bottom:5px;}
+.newsList.tp2 .groupBox i{text-decoration:normal; font-size:14px; font-weight:bold; color:#a67c52; font-style:normal;}
+.newsList.tp2 .groupBox em{ margin-right:10px;}
+.newsList.tp2 .groupBox em a{font-size:14px; font-weight:bold; color:#c7000c; }
+.newsList.tp2 .userBox{padding-top:5px;}
+.newsList.tp2 .userBox .user{padding-right:10px; background:url('https://image.thebell.co.kr/thebell10/img/line-d3.png') no-repeat 95%; font-size:13px; color:#5d6eb7;font-weight:bold;}
+.newsList.tp2 .userBox .user a{font-size:13px; color:#5d6eb7;font-weight:bold; cursor: pointer;}
+.newsList.tp2 .userBox .date{font-size:13px; color:#999;}
+.newsList.tp2 .cate{display:inline-block; padding:0px 5px; border:1px solid #ccc; vertical-align:top; margin-right:10px; margin-bottom:5px; height:18px; line-height:18px; font-size:13px;}
+.newsList.tp2 .cate:hover{ text-decoration:none !important; opacity:0.7;}
+.newsList.tp2 .cate.red{border:1px solid #c7000c; color:#c7000c;}
+.newsList.tp2 .cate.blue{border:1px solid #0054a6; color:#0054a6;}
+.newsList.tp2 .cate.green{border:1px solid #5f9714; color:#5f9714;}
+
+/* 뉴스 -  viewBox */
+.newsView .headBox .cate{ background: none; margin-top: 0;}
+.viewBox .viewHead{border-bottom:1px solid #ccc; padding-bottom:15px; position:relative;}
+.viewBox .viewHead .tit{font-size:32px; color:#111; line-height:32px;  letter-spacing:-3.5px; font-weight:bold; margin-top:10px;}
+/*.viewBox .viewHead .tit{font-size:32px; color:#111; line-height:32px; font-family:'Noto Sans KR'; letter-spacing:-1px; font-weight:500; margin-top:10px;}*/
+.viewBox .viewHead .tit em{font-size:17px; color:#707070; display:block; letter-spacing: -1px; font-weight: normal;}
+.viewBox .viewHead .groupBox{margin-top:20px;}
+.viewBox .viewHead .groupBox i a{text-decoration:normal; font-size:14px; font-weight:bold; color:#a67c52; font-style:normal;}
+.viewBox .viewHead .groupBox em{font-size:14px; font-weight:bold; color:#c7000c; }
+.viewBox .viewHead .groupBox em a{font-size:14px; font-weight:bold; color:#c7000c; margin-right:10px;}
+.viewBox .viewHead .userBox{margin-top:30px;}
+.viewBox .viewHead .userBox .user{font-size:13px; color:#5d6eb7; padding-right:7px; background:url('https://image.thebell.co.kr/thebell10/img/line-d3.png') right no-repeat; font-weight:bold; display: inline-block;}
+.viewBox .viewHead .userBox .date{font-size:13px; color:#999;}
+.viewBox .viewHead .optionIcon{position:absolute; bottom:-1px; right:0px;}
+.viewBox .viewHead .optionIcon li{float:left; margin-left:-1px;}
+.viewBox .viewHead .optionIcon li a{display:block; width:30px; height:30px; line-height:130px; overflow:hidden; border:1px solid #ccc; background:url('https://image.thebell.co.kr/thebell10/img/icon-view.png') no-repeat;}
+.viewBox .viewHead .optionIcon li.op1 a{background-position:5px 4px;}
+.viewBox .viewHead .optionIcon li.op2 a{background-position:-26px 4px;}
+.viewBox .viewHead .optionIcon li.op3 a{background-position:-59px 4px;}
+.viewBox .viewHead .optionIcon li.op4 a{background-position:-91px 4px;}
+
+
+/* Print-- */
+/* 뉴스프린트 -  viewBoxPrint  */
+.viewBox .viewHeadPrint{border-bottom:1px solid #ccc; padding-bottom:15px; }
+.viewBox .viewHeadPrint .tit{font-size:32px; color:#111; line-height:32px;  letter-spacing:-3.5px; font-weight:bold; margin-top:10px; }
+.viewBox .viewHeadPrint .tit em{font-size:17px; color:#707070; display:block; letter-spacing: -1px; font-weight: normal;}
+.viewBox .viewHeadPrint .groupBox{margin-top:20px;}
+.viewBox .viewHeadPrint .groupBox i {text-decoration:normal; font-size:14px; font-weight:bold; color:#a67c52; font-style:normal;}
+.viewBox .viewHeadPrint .groupBox i a{text-decoration:normal; font-size:14px; font-weight:bold; color:#a67c52; font-style:normal;}
+.viewBox .viewHeadPrint .groupBox em{font-size:14px; font-weight:bold; color:#c7000c; margin-right: 3px; }
+.viewBox .viewHeadPrint .groupBox em a{font-size:14px; font-weight:bold; color:#c7000c; margin-right:10px;}
+.viewBox .viewHeadPrint .userBox{margin-top:30px;}
+.viewBox .viewHeadPrint .userBox .user{font-size:13px; color:#5d6eb7; padding-right:7px; background:url('https://image.thebell.co.kr/thebell10/img/line-d3.png') right no-repeat; font-weight:bold; display: inline-block;}
+.viewBox .viewHeadPrint .userBox .date{font-size:13px; color:#999;}
+.viewBox .viewHeadPrint .optionIcon{  position:absolute; top: 12px; left: 659px; }
+.viewBox .viewHeadPrint  .optionIcon li{float:left; margin-left:-1px;}
+.viewBox .viewHeadPrint  .optionIcon li a{display:block; width:30px; height:30px; line-height:130px; overflow:hidden; border:1px solid #ccc; background:url('https://image.thebell.co.kr/thebell10/img/icon-view.png') no-repeat;}
+.viewBox .viewHeadPrint  .optionIcon li.op2 a{background-position:-26px 4px; border-top: none;}
+
+
+
+/*-------------*/
+
+.viewBox .viewSection a{color:#00479d;font-weight: bold;text-decoration: underline;}
+.viewBox .viewSection{font-size:17px; color:#333; overflow:hidden; padding:30px 0px; line-height:25px;  }
+.viewBox .viewSection div{font-size:17px; color:#333; line-height:25px; }
+.viewBox .viewSection strong{font-size:17px;}
+.viewBox .viewSection .imglink{position:relative;  display:inline-block;}
+.viewBox .viewSection .imglink .link{position:absolute; right:0px; bottom:0px;}
+.viewBox .viewSection img {padding:5px; margin:10px 15px 10px 0; border:1px solid #ccc; max-width: 640px; box-sizing: border-box;  }
+.viewBox .viewSection figure.image img{ border: none; margin: 0; padding: 0;}
+.viewBox .viewSection .image figcaption{ font-size: 13px; color: #707070; line-height: 17px; padding-bottom: 3px; max-width: 640px; text-align: left; text-indent:10px;}
+
+
+.viewBox .reference {margin:30px 0px; color:#1c6e99;}
+
+.viewBox .linkBox{overflow:hidden; padding:0px 0px 30px;}
+.viewBox .linkBox li{float:left; margin-right:8px; margin-bottom:5px;}
+.viewBox .linkBox li a{display:block; height:30px; line-height:30px; padding:0px 8px; background-color:#f1f1f1; color:#a67c52; font-size:14px; letter-spacing:-1px;}
+
+.viewBox .linkNews{clear:both; margin-top:30px;}
+.viewBox .linkNews .tit{font-size:17px; color:#111; padding-bottom:10px; margin-bottom:20px; border-bottom:1px solid #111; font-weight:bold;}
+.viewBox .linkNews li{margin-bottom:8px; padding-left:20px; background:url('https://image.thebell.co.kr/thebell10/img/icon-L.png') 8px 7px no-repeat;}
+.viewBox .linkNews li a{font-size:14px; color:#231916;}
+
+.pageBox .tabView li{display:none;}
+
+.viewBox .newsADBox{margin:20px 0px; text-align:center;}
+.viewBox .newsADBox img{width:570px; height:170px;}
+
+
+
+.viewBox .sponbox img.sponicon{ margin:0 3px 29px 0;}
+
+.img_RSize{ max-width: 535px; vertical-align: baseline; border: 0 !important; margin: 0 !important;  }
+.img_MSize{width: 250px;  vertical-align: baseline; border: 0 !important;    margin: 0 !important; }
+.img_LSize{ width: 535px; vertical-align: baseline;   border: 0 !important;   margin: 0 !important; }
+.img_SSize{ width: 120px; vertical-align: baseline; border: 0 !important;   margin: 0 !important; }
+.table_SSize,.table_MSize,.table_LSize{border: 1px solid #ccc; table-layout: inherit; padding:5px; margin: 10px 0; display: inline-table; text-align: center;}
+.table_SSize{max-width: 120px;}
+.table_MSize{max-width: 250px; }
+.table_LSize{max-width: 535px;}
+.table_right{ margin-left: 15px;}
+.table_left{ margin-right: 15px;}
+/*.table_SSize td,.table_MSize td,.table_LSize td{ background: url('https://image.thebell.co.kr/thebell10/img/img-link.png') no-repeat bottom right; background-attachment:scroll; background-clip: content-box;}*/
+.imgcaption,.imgcaption strong{ font-size:13px !important; color: #707070 !important; line-height: 17px; padding: 0 5px 5px 5px; text-align: center;  }
+
+/* 첨부파일 */
+.article_file table{ border: 1px solid #ccc; padding: 5px; display: inline-block; margin-top: 10px; width: 640px;}
+.article_file table td{ width: 640px;  }
+
+
+
+/************************************** 
+** TABLE
+***************************************/
+/* 공통 */
+.tUp{padding-right:15px; background:url('https://image.thebell.co.kr/thebell10/img/icon-ud.png') no-repeat 95% 6px;}
+.tDown{padding-right:15px; background:url('https://image.thebell.co.kr/thebell10/img/icon-ud.png') no-repeat 95% -17px;}
+
+/* 기본 */
+.dfTable {overflow:hidden; padding:0px 1px; background-color:#fff; clear:both;}
+.dfTable table {border-collapse:collapse; width:100%; border-top:3px solid #c5000c;}
+.dfTable table th:first-child{border-left:0px;}
+.dfTable table th:last-child{border-right:0px;}
+.dfTable table td:last-child{border-right:0px;}
+.dfTable table th:last-child{border-left:0px;}
+.dfTable table td:first-child{border-left:0px;}
+.dfTable table .bdt{border-right:1px solid #e6e6e6 !important;}
+.dfTable table thead th {font-size:14px; border-bottom:1px solid #e6e6e6; border-right:1px solid #e6e6e6; height:40px; vertical-align:middle; background-color:#fdf5f5; text-align:center; padding:0px 5px; box-sizing:border-box;}
+.dfTable table tbody th{font-size:14px; border:1px solid #ddd; height:40px; vertical-align:middle; text-align:center; padding:0px 7px; background-color:#fdf5f5; box-sizing:border-box;}
+.dfTable table tbody td {font-size:14px; border:1px solid #e6e6e6; height:40px; vertical-align:middle; text-align:center; padding:5px; box-sizing:border-box;}
+.dfTable table tbody tr:hover{background-color:#f5f5f5; }
+.dfTable table tbody td .a_up,.dfTable table thead th .a_up{ color: #e14040;}
+.dfTable table tbody td .a_down,.dfTable table thead th .a_down{ color: #1c6eca;}
+.dfTable table tbody td a{ cursor: pointer; }
+.dfTable table tbody td a:hover{ color: #c7000c;}
+/*.dfTable table tbody td a{ color: #586cfb !important; cursor: pointer; }*/
+.dfTable table tfoot{background-color:#f5f5f5;}
+.dfTable table tfoot th,
+.dfTable table tfoot td {font-size:14px; border:1px solid #e6e6e6; border-top:1px solid #999; border-bottom:1px solid #999; height:40px; vertical-align:middle; text-align:center; padding:5px; box-sizing:border-box;}
+.dfTable table tbody td.premium{color:#5d6eb7 ;}
+.dfTable table tbody .premium:hover{ text-decoration: underline;}
+.dfTable table tbody .premium:hover{ text-decoration: underline;}
+.dfTable .add{ margin-top: 10px; font-size: 13px; color: #707070;}
+
+.scrollTable {overflow-y: auto; overflow-x: hidden; height: 330px; clear: both; margin-left: -1px; }
+.scrollTable table{border-top: none;}
+
+.dfTable.TABLED_COM{ width: 100%;}
+.dfTable.fs13 table tbody td,.dfTable.fs13 table tbody td span{font-size:13px;}
+
+.weeklyBox .dfTable table tfoot th,
+.weeklyBox .dfTable table tfoot td {font-size:13px;}
+
+.hedgefundBox .dfTable table tbody td{ font-size: 13px;}
+
+.dfTable table.tl td,
+.dfTable table.tl th{text-align:left;}
+.dfTable table.tr th,
+.dfTable table.tr td{text-align:right;}
+.bluedfTable .dfTable table{border-top:2px solid #315b93;}
+.bluedfTable .dfTable thead th{background-color:#f6f9fc; padding:7px 5px; color:#274975;}
+.dfTable.black table{border-top:2px solid #111;}
+.dfTable.black thead th{background-color:#fbfbfb; padding:7px 5px;}
+.dfTable.white table{border-top:0px; background-color:#fff;}
+.dfTable.white thead th{background-color:#fff; padding:5px; border:0px; height:inherit; font-size:12px;}
+.dfTable.white tbody th,
+.dfTable.white tbody td{padding:4px 5px; height:inherit; font-size:12px;}
+
+.dfTable td.blank,.dfTable.odd tbody tr:nth-child(odd){background-color:#f7f7f7;}
+
+.dfTable.white table.table_dealdata thead th{padding:8px 5px;}
+.dfTable.white table.table_dealdata tbody td{padding:6px 5px;}
+.dfTable.white.tp2 table.table_dealdata thead th{padding:11px 5px 12px 5px;}
+.dfTable.white.tp2 table.table_dealdata tbody td{padding:7px 5px;}
+
+.dfTable.qna .viewT{background-color:#f5f5f5; display:none;}
+.dfTable.qna .viewT.on{display:table-row;}
+.dfTable.qna .viewT td{padding:0px;}
+.dfTable.qna .viewT .content{display:none;}
+.dfTable.qna .viewT.on .content{min-height:40px; border-top:1px solid #999; border-bottom:1px solid #999; padding:10px; display:block;}
+.dfTable.qna .listT .arrow{background:url('https://image.thebell.co.kr/thebell10/img/arrow-dt.png') 100% -19px no-repeat; display:inline-block; padding-right:20px;}
+.dfTable.qna .listT.on .arrow{background-position:100% 8px;}
+
+/* 레이아웃용 */
+.layTable {overflow:hidden; clear:both; border-bottom:3px solid #e5e5e5;}
+.layTable table {border-collapse:inherit; width:100%; border:1px solid #999;}
+.layTable table tbody th { font-size:14px; border-bottom:1px solid #e5e5e5; vertical-align:middle; background-color:#f1f1f1; padding:10px; color:#333;}
+.layTable table tbody td { font-size:13px; border-bottom:1px solid #e5e5e5; height:30px; vertical-align:middle; padding:8px 10px;}
+
+.layTable.tp2{border-bottom:0px;}
+.layTable.tp2 table{border:0px;}
+
+.boardView{overflow:hidden;}
+.boardView .head h3{font-size:24px; color:#333; line-height: 26px;  font-weight:normal; border-top:3px solid #c7000c; padding:15px 10px;}
+.boardView .head .option{border-bottom:1px solid #e6e6e6; border-top:1px solid #e6e6e6; overflow:hidden; padding:10px 0 10px 10px;}
+.boardView .head .option .divi{float:left;}
+.boardView .head .option .divi a{ text-decoration: underline; display: inline-block; float: left; width: 670px;}
+.boardView .head .option .divi a:hover{ color: #c7000c;}
+.boardView .head .option .date{float:right; width:500px;}
+.boardView .head p{font-size:13px; font-weight:normal; color:#999;}
+.boardView .head p em{font-size:14px; font-weight:bold; color:#333; padding-right:15px; background:url('https://image.thebell.co.kr/thebell10/img/line-d3.png') no-repeat right 50%; margin-right:10px; float: left;}
+.boardView .boardCon{clear:both; min-height:200px; overflow:hidden; padding:15px 0px;}
+.boardView .down p{font-size:13px; font-weight:normal; color:#999;}
+.boardView .down p em{font-size:14px; font-weight:bold; color:#333; padding-right:15px; background:url('https://image.thebell.co.kr/thebell10/img/line-d3.png') no-repeat right 50%; margin-right:10px;}
+.boardView .down{border-bottom:1px solid #e6e6e6; border-top:1px solid #e6e6e6; overflow:hidden; padding:10px 0 10px 10px;}
+
+
+/************************************** 
+** DATEPICKER
+***************************************/
+.datepicker{background:url('https://image.thebell.co.kr/thebell10/img/calendar.png') no-repeat 95% 5px !important; padding-right:30px !important;}
+.ui-datepicker {width: 216px; height: auto; margin:5px auto 0; border:1px solid #bbb; background-color:#fff;}
+.ui-datepicker a{text-decoration: none;}
+.ui-datepicker table{width:100%;}
+.ui-datepicker-header{background-color:#525252; border:1px solid #353535; color:#fff; font-weight:bold; line-height:30px;}
+.ui-datepicker-title{text-align:center; color:#fff;}
+.ui-datepicker-title span{color:#fff;}
+.ui-datepicker-prev, .ui-datepicker-next {display: inline-block;width: 30px;height: 30px;text-align: center;cursor: pointer;background-image: url('https://image.thebell.co.kr/thebell10/img/arrow.png');background-repeat: no-repeat;line-height: 600%;overflow: hidden;}
+.ui-datepicker-prev {float:left; background-position:center -30px;}
+.ui-datepicker-next {float:right; background-position:center 0px;}
+.ui-datepicker thead {background-color:#f7f7f7; border-bottom: 1px solid #bbb;}
+.ui-datepicker th {text-transform:uppercase; font-size:9pt; padding:5px 0; color:#666666;}
+.ui-datepicker tbody td {padding: 0;border-right: 1px solid #bbb;}
+.ui-datepicker tbody td:last-child {border-right: 0px;}
+.ui-datepicker tbody tr {border-bottom: 1px solid #bbb;}
+.ui-datepicker tbody tr:last-child {border-bottom: 0px;}
+.ui-datepicker td span, 
+.ui-datepicker td a {display: inline-block;font-weight: bold;text-align: center;width: 30px;height: 30px;line-height: 30px;color: #666666;text-shadow: 1px 1px 0px #fff;}
+.ui-datepicker-calendar .ui-state-default {background:#ededed;}
+.ui-datepicker-unselectable .ui-state-default {background: #f4f4f4; color:#b4b3b3;}
+.ui-datepicker-calendar .ui-state-hover {background:#f7f7f7;}
+.ui-datepicker-calendar .ui-state-active {background:#6eafbf; color:#e0e0e0; border:1px solid #55838f; position: relative; margin:-1px;}
+.ui-datepicker-calendar td:first-child .ui-state-active {width:29px;margin-left: 0;}
+.ui-datepicker-calendar td:last-child .ui-state-active {width:29px;margin-right: 0;}
+.ui-datepicker-calendar tr:last-child .ui-state-active {height:29px;margin-bottom: 0;}
+
+
+/*footerInfo*/
+
+.footerInfoWrap{ padding:20px 0;}
+.footerInfoWrap h4{ font-size:17px; padding-bottom:20px;}
+.footerInfoWrap p span{ display:block; color:#333; line-height:20px;}
+.footerInfoWrap p span a{ text-decoration:underline;}
+.footerInfoWrap .footerInfoh5 h5{ padding-bottom:10px;}
+.footerInfoWrap .footerInfoh5 span{ display:block; color:#707070; font-size:13px; padding-bottom:20px; line-height:20px;}
+/*.footerInfoWrap .footerInfoh5 span ul { padding-top: 20px; }*/
+.footerInfoWrap .footerInfoh5 span ul li{ color:#707070; font-size:13px; }
+
+.footerInfoBox{ clear:both; overflow:hidden; padding:10px 0; background:#fdf5f5;}
+.footerInfoBox .footerInfoMan{ float:left; padding:0 20px;}
+.footerInfoBox .footerInfoMan dt{ font-weight:bold; padding-bottom:10px; color:#c7000c;}
+.footerInfoBox .footerInfoMan dd{ padding:0 0 5px 7px; background:url(https://image.thebell.co.kr/thebell10/img/bul-dot.png) 0 8px no-repeat;}
+.footerInfoBox .footerInfoMan dd strong{ display:inline-block; width:70px; }
+
+/*사이트맵*/
+.footerInfoWrap .allmenuBox{ display: block;}
+.footerInfoWrap .allmenuBox em{font-size:18px; color:#252525; font-weight:bold; height:43px; display:block; font-family:'Noto Sans KR';}
+.footerInfoWrap .allmenuBox > ul{overflow:hidden; padding:20px 0;  border-bottom:1px solid #ccc;}
+.footerInfoWrap .allmenuBox > ul.tp1 > li{float:left; width:143px; padding-left:20px; min-height:360px;}
+.footerInfoWrap .allmenuBox > ul.tp2 > li{float:left; width:143px; padding-left:20px; min-height:235px;}
+.footerInfoWrap .allmenuBox > ul > li:last-child{border:0px;}
+.footerInfoWrap .allmenuBox > ul > li li{margin-bottom:8px;}
+.footerInfoWrap .allmenuBox > ul > li li a{font-size:14px; color:#363636; letter-spacing:0px;}
+
+
+/* 20210317 추가내용 txt_area1 */
+.txt_area1 {position:relative; padding: 15px; background: #f5f5f5;}
+.txt_area1 ul {margin-left: 15px;}
+.txt_area1 ul li {padding: 2px 0; font-size:14px; line-height:24px; letter-spacing:-0.1px; color:#222;}
+.txt_area1 ul li .num{margin-left: -15px;}
+/* 20210317 추가내용 txt_area1 */
+
+/* 20210112 추가내용 txt_area2 */
+.txt_area2 {position:relative;}
+.txt_area2.bg1 {padding:26px 0 27px 59px; background:#eee; border:1px solid #ccc;}
+.txt_area2 h3 {font-size:18px; line-height:29px; letter-spacing:-0.1px; color:#222;}
+.txt_area2 h4 {font-size:15px; line-height:35px; letter-spacing:-0.1px; color:#222; margin-top: 15px; padding-bottom: 5px;}
+.txt_area2 h4 strong {font-weight:400;}
+.ie8 .txt_area2 h4 {font-weight:600;} 
+.ie8 .txt_area2 h4 strong {font-weight:600;} 
+.txt_area2 h5 {font-size:15px;font-weight: 400; line-height:29px; margin-top: 5px; letter-spacing:-0.1px; color:#222;}
+.txt_area2 ul {}
+.txt_area2 ul li {font-size:14px; line-height:23px; letter-spacing:-0.1px; color:#222;}
+.ie8 .txt_area2 ul li {letter-spacing:-1.5px;}
+.txt_area2 ol {}
+.txt_area2 ol li {font-size:14px; line-height:23px; letter-spacing:-0.1px; color:#222;}
+.txt_area2 p {font-size:14px; line-height:23px; letter-spacing:-0.1px; color:#222;}
+.txt_area2 .t1 {text-align:center; border:1px solid #c9d7ea;}
+.txt_area2 .t1 th {font-weight:300; color:#222; border:1px solid #c9d7ea;}
+.txt_area2 .t1 td {color:#2470d8; border:1px solid #c9d7ea;}
+.txt_area2 .t2 {text-align:center; border:1px solid #c9d7ea;}
+.txt_area2 .t2 th {font-weight:500; color:#222; border:1px solid #c9d7ea;}
+.ie8 .txt_area2 .t2 th {font-weight:600;}
+.txt_area2 .t2 td {padding:9px 35px 16px; line-height:26px; text-align:left; color:#2470d8;}
+.txt_area2 .t2 td strong {font-weight:300;}
+.txt_area2 .btn {position:relative; display:inline-block; padding:0 42px 0 24px; height:38px; background:#eee; font-size:16px; line-height:36px; color:#222; border:1px solid #dedede;}
+.txt_area2 .btn:after {content:' '; position:absolute; top:11px; right:19px; width:11px; height:15px; background:url(https://image.thebell.co.kr/thebell10/img/2020/arrow-left.png) no-repeat 5px;}
+.txt_area2 .btn:hover {text-decoration:none;}
+
+.txt_area2 .t3 {width:100%; text-align:center; border:1px solid #d9d9d9;}
+.txt_area2 .t3 th {height:48px; font-weight:300; color:#222; background:#f3f3f3; border:1px solid #d9d9d9;}
+.txt_area2 .t3 td {height:38px; padding:10px; color:#333; border:1px solid #d9d9d9;}
+.txt_area2 .t3 td.ta_left{text-align:left;}
+/* 20210112 추가내용 txt_area2 */
+
+
+/************************************** 
+** company - 회사소개
+***************************************/
+/*infoBox*/
+.infoBox{ position: relative;}
+.infoBox  h4{ font-size:18px; font-weight:normal; background:url('https://image.thebell.co.kr/thebell10/img/bul-px3.png') no-repeat 0 0; padding-top:15px; clear:both;}
+.infoBox .tit > i{font-family:'Noto Sans KR'; font-size:24px; line-height:24px; font-weight:lighter; font-style: normal;}
+.infoBox .tit > strong{ display:block; font-family:'Noto Sans KR'; font-size:24px; line-height:34px; font-weight:normal;}
+.infoBox .tit > strong.txl{ display:inline-block !important ; }
+.infoBox .tit > span{ line-height: 21px; font-weight: normal; }
+.infoBox .txt{ color:#707070;  line-height:21px;}
+.infoBox .txt > strong{ display:block; font-size:18px; font-weight:normal; }
+.infoBox .txt > strong span{ font-size:18px; line-height:27px; }
+.infoBox .tit > strong > em{font-family:'Noto Sans KR'; font-size:24px; line-height:34px; font-weight:normal;}
+.infoBox ul li ul li{margin-bottom:8px; padding-left:10px; background:url('https://image.thebell.co.kr/thebell10/img/bul-dot.png') 0 9px no-repeat; color:#707070;  line-height:21px;}
+
+.infoBox .txtNotice{color:#707070;  font-size:13px; padding: 10px 0;  }
+.infoBox .txtBox{ background:#f5f5f5; line-height: 24px; padding: 10px 20px;}
+.infoBox .btBox{text-align: center;}
+.infoBox .btBox > a.btn{  margin: 0 2px;}
+.infoBox .downBtn{margin-left: 280px;}
+
+.infoBox .btn img{ margin-right: 3px;}
+
+.infoBox .greyBox{ padding: 20px; background: #f5f5f5;}
+
+.infoBox .academyinfo img{ float: left; margin-right: 25px; }
+.infoBox .ceo{ position:relative; padding-bottom:70px; }
+.infoBox .ceo img{ position:absolute; right:0; bottom:0; z-index:-1;}
+
+.infoBox .plusinfo{ clear: both; overflow: hidden;}
+.infoBox .plusinfo div{float: left; margin: 20px 0; width: 490px;}
+.infoBox .plusinfo div img{ width: 248px; float: left; margin-right: 10px;}
+.infoBox .plusinfo div ul{float: left; width: 232px;}
+.infoBox .plusinfo div ul > li{margin:0 0 2px 0; padding-left:10px; background:url('https://image.thebell.co.kr/thebell10/img/bul-dot.png') 0px 9px no-repeat; color: #707070;}
+.infoBox .plusinfo div ul > li.tit{ color: #c7000c; font-family:'Noto Sans KR'; font-size:21px; line-height:21px;  margin-bottom:10px;  background:none; padding-left:0;}
+
+
+/*idpwBox*/
+.mainContent.memberBox .idpwBox .shadowBox{ margin:0; float:left; width:460px; margin:20px 0;}
+
+/*chargeBox*/
+.chargeBox .shadowBox{ width: 480px; margin: 0 auto; text-align: center;}
+.chargeBox h5{ display: block; background:#c7000c; color: #ffffff; font-family:'Noto Sans KR'; font-size:28px; padding: 15px 0;  }
+.chargeBox .chargeinBox{border: 1px solid #999; padding: 20px; }
+.chargeBox .chargeinBox ul{ display: block; text-align: left; background: #f5f5f5; padding: 10px;}
+.chargeBox .chargeinBox ul li{ padding: 2px 0;}
+.chargeBox .chargeinBox p.txtTit{font-family:'Noto Sans KR'; font-size:28px; font-weight:bold;}
+.chargeBox .chargeinBox p img{ margin: 20px 0;}
+
+
+/*agreementBox*/
+.agreementBox{border: 1px solid #999; padding: 20px 20px 10px 20px; background:#f1f1f1;}
+.agreementBox h5{ margin-bottom: 10px;}
+.agreementBox .agreementtxtBox{ overflow: auto; height: 190px; padding: 0 10px; background: #ffffff; border: 1px solid #f1f1f1; color: #707070; line-height:21px; box-sizing: border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; ;}
+.agreementBox .agreementtxtBox strong{ display: block; margin: 10px 0 5px 0; color: #111;}
+
+/*companymapBox*/
+.companymapBox .googleMap{ width:800px; height:400px; overflow:hidden; background:#f7f7f7; border:1px solid #ccc; box-sizing: border-box;}
+.companymapBox li{ padding-bottom:10px;}
+.companymapBox li .btn.redLine{ width:85px; text-align:center; margin-right:10px; }
+.companymapBox li span{ color:#707070;}
+
+/*companyhistoryBox*/
+.companyhistoryBox .tabyear{ clear:both; overflow:hidden; margin:10px 0 20px 0; }
+.companyhistoryBox .tabyear li{ float:left; padding:0 20px 0 10px;  background:url('https://image.thebell.co.kr/thebell10/img/arrow-left.png') no-repeat 0 5px;}
+.companyhistoryBox .tabyear li.on a{ text-decoration:underline;  color:#c7000c;}
+.companyhistoryBox .yearWrap{display:none;}
+.companyhistoryBox .yearWrap.on{display:inherit;}
+.companyhistoryBox .yearBox{ clear:both; overflow:hidden;}
+.companyhistoryBox .yearBox p { color:#c7000c; text-align:center; margin:0 auto;  border-top:1px solid #c7000c;  border-bottom:1px solid #c7000c; padding:7px 10px 10px; width:100px; font-size:30px; font-family:'Noto Sans KR';}
+.companyhistoryBox .yearBox > ul{ clear:both; overflow:hidden; padding:20px 0 40px 0;}
+.companyhistoryBox .yearBox > ul > li > ul li{ color:#707070;}
+
+.companyhistoryBox .yearBox.r > ul{ text-align:left; margin-left:400px; border-left:1px solid #c7000c; }
+.companyhistoryBox .yearBox.r > ul > li{ padding:20px 0 0 20px; clear:both;}
+.companyhistoryBox .yearBox.r > ul > li > ul{ float:left; width:310px;}
+.companyhistoryBox .yearBox.r > ul > li span{ width:50px; display:block; float:left; color:#333333; font-family:'Noto Sans KR'; font-size:24px; line-height:24px; }
+
+.companyhistoryBox .yearBox.l > ul{margin-right:400px;border-right:1px solid #c7000c;   }
+.companyhistoryBox .yearBox.l > ul > li{ padding:20px 20px 0 0; clear:both;}
+.companyhistoryBox .yearBox.l > ul > li > ul{ float:right; width:310px; text-align:right;}
+.companyhistoryBox .yearBox.l > ul > li span{ width:50px; display:block; float:right; color:#333333; font-family:'Noto Sans KR'; font-size:24px; line-height:24px; text-align:right; }
+
+/**/
+.contentBox .payOk .tit strong{font-family:'Noto Sans KR';  font-size:28px; line-height:32px; font-weight:normal;}
+.contentBox .payOk .txt{ display:block; color:#707070;}
+/************************************** 
+** service - 서비스
+***************************************/
+.goodmorninginfoBox .btn.redLine{ width: 85px; margin-right: 10px;}
+.goodmorninginfoBox li{ padding-bottom:10px;}
+
+.thebellplusinfoBox .plusinfo > div{ width: 400px;}
+.thebellplusinfoBox .plusinfo > div > ul{ float: inherit; width: auto; clear: both;}
+.thebellplusinfoBox .plusinfo > div > img{ width:auto; margin-bottom: 10px; float: inherit;}
+
+
+.infoBox.thebellsmartinfoBox .plusinfo > div{ width: 265px; height: 290px;}
+.infoBox.thebellsmartinfoBox .plusinfo > div > ul{ float: inherit; width: auto; clear: both;}
+.infoBox.thebellsmartinfoBox .plusinfo > div > ul > li{ background: none; padding-left: 0;}
+.infoBox.thebellsmartinfoBox .plusinfo > div > img{ width:auto; margin-bottom: 10px; float: inherit;}
+.infoBox.thebellsmartinfoBox .greyTable{ margin: 20px 0;}
+.infoBox.thebellsmartinfoBox .greyTable th{ text-align: left;  border: 1px solid #ddd; background: #f7f7f7; padding: 10px;}
+.infoBox.thebellsmartinfoBox .greyTable td{ border: 1px solid #ddd; padding: 10px;}
+.infoBox.thebellsmartinfoBox .greyTable td a{ margin: 0 5px;}
+
+.infoBox.thebellsmartinfoBox .imgRight{ position: absolute; right: 0; top: 40px;}
+
+.infoBox.thebelllauncherinfoBox .imgRight{ position: absolute; right: 10px; top: -20px;}
+.infoBox.thebelllauncherinfoBox .greyTable{ margin: 20px 0;}
+.infoBox.thebelllauncherinfoBox .plusinfo > div{  width: auto;}
+.infoBox.thebelllauncherinfoBox .plusinfo > div > img{ margin-right: 20px;}
+.infoBox.thebelllauncherinfoBox .plusinfo > div > ul{   width: 520px;}
+.infoBox.thebelllauncherinfoBox .plusinfo > div > ul > li{ background: none; padding-left: 0;}
+
+.dataInfoBox .infoBox div h5{ font-size: 17px; padding-bottom: 10px;}
+.dataInfoBox .infoBox div .introduction_txt{ font-size: 15px; line-height: 20px; padding:0  0 10px 20px; } 
+.dataInfoBox .infoBox div ul.in{padding:0  0 20px 20px }
+.dataInfoBox .infoBox div ul.in li { color: #707070; line-height: 23px; font-size: 15px; }
+.dataInfoBox .infoBox div ul.in li strong { color: #555;  font-size: 15px; }
+
+.launcherfaqBox h4{ margin-bottom: 30px;}
+.launcherfaqBox div.launcher_faq_cont{ border: 1px solid #ccc; border-top: none; padding: 20px 10px;}
+.launcherfaqBox ul li.launcher_faq_list{margin-bottom: 5px; }
+.launcherfaqBox ul li.launcher_faq_list a{ border: 1px solid #ccc; padding: 10px; display: block;}
+.launcherfaqBox ul li.launcher_faq_list a em{ font-family:'Noto Sans KR'; font-weight: bold; margin-right: 3px; font-size: 16px;}
+.launcherfaqBox ul li.launcher_faq_list a span.sel{ width: 15px; display: block; float: right;  overflow: hidden; text-indent: -100000px; background: url('https://image.thebell.co.kr/thebell10/img/arrow-ud.png') 0 5px no-repeat; }
+.launcherfaqBox ul li.launcher_faq_list a.launcher_faq_on{ background-color: #f1f1f1; border-color: #999;}
+.launcherfaqBox ul li.launcher_faq_list a.launcher_faq_on span.sel{ background: url('https://image.thebell.co.kr/thebell10/img/arrow-ud.png') 0 -22px no-repeat; }
+
+.launcherfaqBox ul li.launcher_faq_list ul.bulno li{ background: none; padding-left: 0;}
+
+
+.launcherfaqBox ul li.launcher_faq_list ul li span.btn.s{ margin-right: 3px; height: 18px; line-height: 18px; border-radius: 3px; } 
+.launcherfaqBox ul li.launcher_faq_list ul li .tc{ margin: 30px 0;}
+.launcherfaqBox ul li.launcher_faq_list .tip{ font-size: 12px;}
+
+
+
+.videoBox{ margin: 20px 0 10px 0; position: relative;}
+.videoBox .forum_img{ border-bottom: 1px solid #d7d7d7; height: 120px;}
+.videoBox .tabList{ margin-bottom: 7px;}
+.videoBox .tabyear{ clear:both; overflow:hidden; margin:10px 0; }
+.videoBox .tabyear li{ float:left; padding:0 15px 0 10px;  background:url('https://image.thebell.co.kr/thebell10/img/arrow-left.png') no-repeat 0 5px;}
+.videoBox .tabyear li a{font-family:'Noto Sans KR';}
+.videoBox .tabyear li.on a{ text-decoration:underline;  color:#c7000c;}
+
+.videoBox .tit{ background: #f1f1f1; padding: 10px 15px; line-height: 21px; margin-bottom: 20px;}
+.videoBox .tit a{ text-decoration: underline; color: #3f63bf;}
+
+.videoList .videoLi{ border-bottom: 1px solid #d7d7d7; clear: both; overflow: hidden; padding: 15px 0;}
+.videoList .videoLi .imgBox{ width: 194px; height: 110px; float: left; margin-right: 20px;}
+.videoList .videoLi .imgBox img{ width: 100%; height: 100%;}
+.videoList .videoLi .txtBox strong{ display: block; font-family:'Noto Sans KR'; font-size: 16px; margin:5px 0 18px 0;}
+.videoList .videoLi .txtBox li{  font-size: 13px; margin-bottom: 3px; letter-spacing: -0.7px; color: #333;}
+.videoList .videoLi .txtBox li em{ font-weight: bold; font-size: 11px; line-height: 12px; display: inline-block; width: 48px; box-sizing: border-box; border: 1px solid #111; padding: 2px 4px; text-align: center; letter-spacing: 0; margin-right: 3px;}
+
+
+.serviceInfoBox .videoBox{ margin-top: -10px;}
+  
+/************************************** 
+** EVENT - 이벤트
+***************************************/
+/* 공통 */
+.mainContent.eventBox{overflow:hidden;}
+.mainContent.eventBox .eventContentBox{width:670px; overflow:hidden; padding:40px 10px 50px 0px; float:left;}
+.mainContent.eventBox .eventContentBox .topBookBox{overflow:hidden; margin:30px 0px;}
+.mainContent.eventBox .eventContentBox .tabView.book1{margin-top:20px; background-color:#f5f5f5; padding:15px;}
+.mainContent.eventBox .eventContentBox .bookImg{float:left;}
+.mainContent.eventBox .eventContentBox .bookImg .img{background-color:#fff; border:3px solid #ccc; width:100px; height:120px; margin-bottom:5px; text-align:center; box-sizing:border-box; padding-top:15px;}
+.mainContent.eventBox .eventContentBox .bookImg .btn{box-sizing:border-box; width:100%;}
+.mainContent.eventBox .eventContentBox .exBox{float:left; width:500px; margin-left:20px;}
+.mainContent.eventBox .eventContentBox .exBox .tit{font-size:17px; font-weight:bold; color:#111;}
+.mainContent.eventBox .eventContentBox .exBox .num{font-size:14px; color:#001111;}
+.mainContent.eventBox .eventContentBox .exBox .txt{font-size:14px; color:#707070;}
+
+.mainContent.eventBox .eventContentBox .bookList{overflow:hidden;}
+.mainContent.eventBox .eventContentBox .bookList h4{font-size:18px; color:#111; border-bottom:1px solid #111; padding-bottom:10px; margin-bottom:10px; font-family:'Noto Sans KR';}
+.mainContent.eventBox .eventContentBox .bookList li .img{border:0px;}
+.mainContent.eventBox .eventContentBox .bookList li{overflow:hidden; border-bottom:1px solid #ccc; padding:15px; box-sizing:border-box;}
+
+.mainContent.eventBox .eventContentBox .relationBox{overflow:hidden;}
+.mainContent.eventBox .eventContentBox .relationBox .tit{border-bottom:1px solid #111; font-size:17px; font-weight:bold; padding-bottom:5px;}
+.mainContent.eventBox .eventContentBox .relationBox li{width:50%; float:left; border-top:1px solid #e5e5e5; padding:10px 0px; padding-left:20px; box-sizing:border-box; background:url('https://image.thebell.co.kr/thebell10/img/icon-L2.png') no-repeat 5px 50%;}
+
+
+#rightArea_content #tabmenu{  overflow: hidden; box-sizing: border-box; height: 36px; width: 560px; border-bottom: 1px solid #d8dde1; margin: 20px 0 10px 20px;}
+#rightArea_content #tabmenu li{ float: left; height: 35px; line-height: 34px;  min-width: 140px; border-top: 1px solid #d8dde1; border-right: 1px solid #d8dde1; text-align: center; position: relative; }
+#rightArea_content #tabmenu li a{ display: block; background: #fff; }
+#rightArea_content #tabmenu li:first-child{border-left: 1px solid #d8dde1;}
+
+#rightArea_content #tabmenu li.on a{ background: #1e75d6; color: #ffffff; }
+
+/************************************** 
+** 마스크 뛰우기 
+***************************************/
+#mask {  
+	position:absolute;  
+	z-index:9000;  
+	background-color:#000;  
+	display:none;  
+	left:0;
+	top:0;
+} 
+/************************************** 
+** 팝업으로 뜨는 윈도우 css  
+***************************************/
+.window{
+	display: none;
+	position:absolute;  
+	background-color:#FFF;
+	z-index:10000;   
+ }
+ 
+
+/* 20203_영상 */
+.videoBox .tabSection{ margin-top: 20px;  overflow: hidden;}
+.videoBox .tabSection ul{border-bottom: 2px solid #333333;  height: 38px; }
+.videoBox .tabSection li{ float: left; height: 38px; background: #eeeeee; border: 1px solid #cccccc; border-bottom: none;  box-sizing: border-box; }
+.videoBox .tabSection li.on{ border: 2px solid #333333; border-bottom: none;   background: #fff; height: 40px; }
+.videoBox .tabSection li.on a{  color: #333; }
+.videoBox .tabSection li a{ display: block; line-height: 30px; padding: 5px 15px; font-size: 12px; text-decoration: none; color: #555;}
+
+
+.videoBox .video{ margin-top: 20px;}
+
+.videoBox .videologinBox{ margin: 0 auto; margin-top: 40px; text-align: center;}
+.videoBox .videologinBox p{ margin: 15px 0; line-height: 21px; font-family: 'Noto Sans KR'; font-size: 15px; letter-spacing: -0.2px; color: #111;}
+.videoBox .videologinBox p strong{ color: #c7000c; font-weight: 500; font-size: 15px; letter-spacing: -0.2px;}
+.videoBox .videologinBox div label{  margin-right: 5px; font-weight: bold; }
+.videoBox .videologinBox div input{ background: #eeeeee; border: 1px solid #d2d2d2; height: 32px; width:280px; padding: 0 10px; font-size: 13px; }
+.videoBox .videologinBox div button{ border: 0; background: none;}
+.videoBox .videologinBox div button img{ vertical-align: middle; margin-top: -1px;}
+.videoBox .videologinBox span{ display: block;  margin-top: 20px; }
+.videoBox .videologinBox span em{ text-decoration: underline;}
+.videoBox .videologinBox span.warning{color: #c7000c; margin-top: 10px; text-decoration: underline;}
+
+/*sub_검색박스*/
+
+.headBox .searchinBox{ background: #edeff2; clear: both; overflow: hidden;  padding: 15px 20px 20px 20px; margin-top: 15px;}
+.headBox .searchinBox li{ float: left; margin-right: 14px; }
+.headBox .searchinBox em{ font-weight: bold; padding:0 3px 5px 0; display: block; color:  #494d56; }
+.headBox .searchinBox .selectBox.grey{border: 3px solid #777;}
+.headBox .searchinBox li select{ width: 125px; height: 28px;  line-height: 28px; padding:0 0 0 5px; }
+
+.headBox .searchinBox .searchTxt input{ border: 3px solid #525f78; background: #fff; width: 260px;}
+.headBox .searchinBox .searchTxt .btn{ background:#525f78; color: #fff; height: 35px; }
+.headBox h4{ padding:20px 0 8px 0; font-size: 17px; }
+.headBox h4 span{font-size: 17px;}
+
+ .listBox dt .tcR{ font-size: 17px}
