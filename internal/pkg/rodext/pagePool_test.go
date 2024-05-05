@@ -25,3 +25,12 @@ func (ts *PagePoolSuite) TearDownTest() {
 func TestPagePoolSuite(t *testing.T) {
 	suite.Run(t, new(PagePoolSuite))
 }
+
+func (ts *PagePoolSuite) TestPagePool_newPagePool() {
+	ts.Run("All pages should be nil after initialization", func() {
+		for i := 0; i < 16; i++ {
+			page := <-ts.pool.pool
+			ts.Nil(page)
+		}
+	})
+}
