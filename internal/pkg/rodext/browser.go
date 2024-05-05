@@ -19,6 +19,7 @@ type Browser struct {
 
 // NewBrowser initializes a new Browser. After initialization, it runs methods defined in BrowserOptions.
 // A Cleanup function is returned to close the Browser and all pages in the pagePool.
+// Check the Browser's Cleanup method for more details.
 func NewBrowser(options BrowserOptions) (b *Browser, cleanup func(), err error) {
 	ctx, cancel := context.WithCancel(context.Background())
 
@@ -50,7 +51,8 @@ func NewBrowser(options BrowserOptions) (b *Browser, cleanup func(), err error) 
 	}
 
 	numberOfPages := options.PagePoolSize
-	pp := newPagePool(ctx, numberOfPages)
+	// Cleanup is going to be handled by the Browser's Cleanup function
+	pp, _ := newPagePool(ctx, numberOfPages)
 
 	b = &Browser{
 		ctx:        ctx,
@@ -71,8 +73,9 @@ type BrowserOptions struct {
 }
 
 // Cleanup
-// 1. Closes all Pages in pagePool
+// 1. Closes all Pages in pagePool by running pagePool's cleanup function
 // 2. Closes the Browser
+// You don't have to manually run cleanup functions for each page and pagePool, they're all called here.
 func (b *Browser) Cleanup() {
 	// Need to run cancel before closing pagPool to make sure no new pages are put back to the pool
 	b.cancel()

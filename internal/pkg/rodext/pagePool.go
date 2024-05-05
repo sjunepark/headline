@@ -12,7 +12,8 @@ type pagePool struct {
 
 // newPagePool initializes a new pagePool.
 // The pool is filled with nil values.
-func newPagePool(ctx context.Context, size int) *pagePool {
+// A cleanup function is returned to close the pool and clean up all the Pages in the pool.
+func newPagePool(ctx context.Context, size int) (pool *pagePool, cleanup func()) {
 	p := &pagePool{
 		ctx:  ctx,
 		pool: make(chan *Page, size),
@@ -26,7 +27,7 @@ func newPagePool(ctx context.Context, size int) *pagePool {
 	for i := 0; i < size; i++ {
 		p.pool <- nil
 	}
-	return p
+	return p, p.cleanup
 }
 
 // cleanup closes the pool and cleans up all the Pages in the pool.
