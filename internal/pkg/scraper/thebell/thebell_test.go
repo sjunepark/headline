@@ -1,4 +1,4 @@
-package scraper
+package thebell
 
 import (
 	"github.com/stretchr/testify/assert"

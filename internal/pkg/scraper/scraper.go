@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// sourceScraper
+// baseScraper
 //
 // fetchArticles should return a channel of ArticleMetadata for a given keyword.
 // It should close the returning channel when there are no more articles to scrape.
@@ -13,18 +13,18 @@ import (
 //
 // fetchArticle should return an article for a given url, and should be thread-safe.
 //
-// cleanup should clean up any resources used by the sourceScraper, such as closing the browser.
-type sourceScraper interface {
+// cleanup should clean up any resources used by the baseScraper, such as closing the browser.
+type baseScraper interface {
 	cleanup()
 	fetchArticles(keyword string, startDate time.Time) (<-chan *model.ArticleMetadata, error)
 	String() string
 }
 
 type Scraper struct {
-	sourceScraper
+	baseScraper
 }
 
-func NewScraper(s sourceScraper) (scraper *Scraper, cleanup func()) {
+func NewScraper(s baseScraper) (scraper *Scraper, cleanup func()) {
 	scraper = &Scraper{s}
 	return scraper, s.cleanup
 }
