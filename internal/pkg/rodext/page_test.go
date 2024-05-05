@@ -45,7 +45,7 @@ func (ts *PageSuite) SetupSubTest() {
 	ts.page = p
 	ts.putPage = putPage
 
-	err = ts.page.navigate(ts.wikipediaURL)
+	err = ts.page.Navigate(ts.wikipediaURL)
 	ts.NoErrorf(err, "failed to navigate: %v", err)
 }
 

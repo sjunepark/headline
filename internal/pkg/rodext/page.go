@@ -55,9 +55,9 @@ func (p *Page) cleanup() {
 	}
 }
 
-// navigate navigates the Page to the given url.
+// Navigate navigates the Page to the given url.
 // It waits for the NetworkAlmostIdle event before returning.
-func (p *Page) navigate(url string) error {
+func (p *Page) Navigate(url string) error {
 	var err error
 	// A more conservative approach would be to wait for the onLoad event using the WaitLoad method.
 	wait := p.rodPage.WaitNavigation(proto.PageLifecycleEventNameNetworkAlmostIdle)

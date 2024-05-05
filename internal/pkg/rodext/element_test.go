@@ -40,7 +40,7 @@ func (ts *ElementSuite) SetupTest() {
 	ts.page = p
 	ts.putPage = putPage
 
-	err = ts.page.navigate(ts.wikipediaURL)
+	err = ts.page.Navigate(ts.wikipediaURL)
 	ts.NoErrorf(err, "failed to navigate: %v", err)
 
 	ts.ulElement, err = ts.page.Element("ul")

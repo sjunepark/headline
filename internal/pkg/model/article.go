@@ -1,35 +1,38 @@
 package model
 
 import (
+	"github.com/sejunpark/headline/internal/pkg/util"
 	"net/url"
 	"time"
 )
 
 type Article struct {
-	Title           string
-	CreatedDateTime time.Time
-	UpdatedDateTime time.Time
-	Source          string
-	Url             *url.URL
-	Summary         string
-	Content         string
-	Keywords        map[string]bool
-	ScrapeStatus    ScrapeStatus
+	ArticleMetadata
+	Content string
 }
 
-// ScrapeStatus is an enum for the status of scraping process
-// 1. UrlScraped: the url has been scraped, which would be from scraping the list of articles
-// 2. ListItemParsed: the list item element has been parsed,
-// which would usually have parsed the title, url, and datetime, etc.
-// 3. ArticleParsed: the article has been parsed, which would have parsed the text content
-type ScrapeStatus int
+func (a *Article) IsContentScraped() bool {
+	return a.Content != ""
+}
 
-const (
-	UrlScraped ScrapeStatus = iota
-	ListItemParsed
-	ArticleParsed
-)
+type ArticleMetadata struct {
+	Keywords        map[string]bool // set implementation of keywords used to search this article
+	Title           string
+	Summary         string
+	CreatedDateTime time.Time
+	UpdateDateTime  time.Time
+	Url             *url.URL
+	Source          string
+	SourceUrl       *url.URL
+}
 
-func (a *Article) IsUrlValid() bool {
-	return a.Url.Scheme != "" && a.Url.Host != ""
+func (a *ArticleMetadata) IsValid() bool {
+	keywordsNotEmpty := len(a.Keywords) > 0
+	titleNotEmpty := a.Title != ""
+	createdDateTimeNotEmpty := a.CreatedDateTime != time.Time{}
+	urlIsValid := util.IsUrlValid(a.Url)
+	sourceNotEmpty := a.Source != ""
+	sourceUrlIsValid := util.IsUrlValid(a.SourceUrl)
+
+	return keywordsNotEmpty && titleNotEmpty && createdDateTimeNotEmpty && urlIsValid && sourceNotEmpty && sourceUrlIsValid
 }
