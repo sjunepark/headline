@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/sejunpark/headline/internal/pkg/model"
 	"github.com/sejunpark/headline/internal/pkg/rodext"
-	"log/slog"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -35,59 +35,161 @@ func (s *ThebellScraper) cleanup() {
 	s.browser.Cleanup()
 }
 
-func (s *ThebellScraper) fetchArticles(keyword string, startDate time.Time) (<-chan *model.ArticleMetadata, error) {
-	page, putPage, err := s.browser.Page()
-	if err != nil {
-		return nil, err
-	}
-	defer putPage()
-
-	fullUrl := fmt.Sprintf("https://thebell.co.kr/free/content/Search.asp?page=1&period=360&part=A&keyword=%s", keyword)
-	err = page.Navigate(fullUrl)
-	if err != nil {
-		return nil, err
-	}
-
-	parsedFullUrl, err := url.Parse(fullUrl)
-	if err != nil {
-		return nil, err
-	}
-	sourceUrl := &url.URL{Host: parsedFullUrl.Host, Scheme: parsedFullUrl.Scheme}
-
-	articleElementsToScrape, err := page.Elements("div.listBox>ul>li>dl")
-	if err != nil {
-		return nil, err
-	}
-
-	articles := make(chan *model.ArticleMetadata)
-	go func() {
-		defer close(articles)
-		for _, articleElementToScrape := range articleElementsToScrape {
-			articleMetadata, parseErr := parseArticleElementToScrape(articleElementToScrape)
-			if parseErr != nil {
-				slog.Error("failed to parse article element", "error", parseErr)
-				continue
-			}
-
-			articles <- &model.ArticleMetadata{
-				Keywords:        map[string]bool{keyword: true},
-				Title:           articleMetadata.title,
-				Summary:         articleMetadata.summary,
-				CreatedDateTime: articleMetadata.datetime,
-				UpdateDateTime:  articleMetadata.datetime,
-				Url:             sourceUrl.ResolveReference(articleMetadata.relativeUrl),
-				Source:          "thebell",
-				SourceUrl:       sourceUrl,
-			}
-			slog.Info("scraped and sent article to channel", "title", articleMetadata.title)
-		}
-	}()
-	return articles, nil
+func (s *ThebellScraper) String() string {
+	return "ThebellScraper"
 }
 
-// cleanThebellUrl removes unnecessary query parameters from thebell article url,
+type thebellUrl struct {
+	baseUrl    *url.URL
+	keywordUrl *url.URL
+}
+
+func newThebellUrl(keyword string) (*thebellUrl, error) {
+	baseUrlString := "https://thebell.co.kr"
+	baseUrl, err := url.Parse(baseUrlString)
+	if err != nil {
+		return nil, err
+	}
+
+	keywordRelUrl := fmt.Sprintf("/free/content/Search.asp?page=1&period=360&part=A&keyword=%s", keyword)
+	keywordUrl := baseUrl.ResolveReference(&url.URL{Path: keywordRelUrl})
+
+	return &thebellUrl{
+		baseUrl:    baseUrl,
+		keywordUrl: keywordUrl,
+	}, nil
+}
+
+func (u *thebellUrl) getAbsoluteUrl(relativeUrl *url.URL) *url.URL {
+	return u.baseUrl.ResolveReference(relativeUrl)
+}
+
+type thebellArticleMetadata struct {
+	title       string
+	summary     string
+	relativeUrl *url.URL
+	datetime    time.Time
+}
+
+func (m *thebellArticleMetadata) getArticleMetadata(u *thebellUrl, keyword string) *model.ArticleMetadata {
+	return &model.ArticleMetadata{
+		Keywords:        map[string]bool{keyword: true},
+		Title:           m.title,
+		Summary:         m.summary,
+		CreatedDateTime: m.datetime,
+		UpdateDateTime:  m.datetime,
+		Url:             u.getAbsoluteUrl(m.relativeUrl),
+		Source:          "thebell",
+		SourceUrl:       u.baseUrl,
+	}
+}
+
+type articleElementToScrape struct {
+	aTag *rodext.Element
+}
+
+func newArticleElementToScrape(el *rodext.Element) (*articleElementToScrape, error) {
+	aTag, err := el.Element("a")
+	if err != nil {
+		return nil, err
+	}
+	return &articleElementToScrape{
+		aTag: aTag,
+	}, nil
+}
+
+func (el *articleElementToScrape) relativeUrl() (*url.URL, error) {
+	href := el.aTag.Attribute("href")
+	relativeUrl, err := url.Parse(href)
+	if err != nil {
+		return nil, err
+	}
+	return relativeUrl, nil
+}
+
+func (el *articleElementToScrape) title() (string, error) {
+	title := el.aTag.Attribute("title")
+	if title == "" {
+		return "", fmt.Errorf("title attribute not found")
+	}
+	return title, nil
+}
+
+func (el *articleElementToScrape) summary() (string, error) {
+	summaryEl, err := el.aTag.Element("dd")
+	if err != nil {
+		return "", err
+	}
+	return summaryEl.Text(), nil
+}
+
+func (el *articleElementToScrape) datetime() (time.Time, error) {
+	datetimeEl, err := el.aTag.Element("dd>.date")
+	if err != nil {
+		return time.Time{}, err
+	}
+	koreanDatetime := datetimeEl.Text()
+
+	// Replace Korean AM/PM with standard AM/PM
+	replacements := map[string]string{
+		"오전": "AM",
+		"오후": "PM",
+	}
+	for k, v := range replacements {
+		koreanDatetime = strings.Replace(koreanDatetime, k, v, 1)
+	}
+
+	// Define the layout and parse the time
+	// Note: "2006-01-02 3:04:05 PM" is the reference time format used by Go
+	const layout = "2006-01-02 3:04:05 PM"
+	parsedTime, err := time.Parse(layout, koreanDatetime)
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	// Set timezone, assuming you want to convert it to KST (Korea Standard Time)
+	location, err := time.LoadLocation("Asia/Seoul")
+	if err != nil {
+		return time.Time{}, err
+	}
+	kstTime := parsedTime.In(location)
+
+	return kstTime, nil
+}
+
+func (el *articleElementToScrape) articleMetadata(u *thebellUrl, keyword string) (*model.ArticleMetadata, error) {
+	relativeUrl, err := el.relativeUrl()
+	if err != nil {
+		return nil, err
+	}
+	title, err := el.title()
+	if err != nil {
+		return nil, err
+	}
+	summary, err := el.summary()
+	if err != nil {
+		return nil, err
+	}
+	datetime, err := el.datetime()
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.ArticleMetadata{
+		Keywords:        map[string]bool{keyword: true},
+		Title:           title,
+		Summary:         summary,
+		CreatedDateTime: datetime,
+		UpdateDateTime:  datetime,
+		Url:             u.getAbsoluteUrl(relativeUrl),
+		Source:          "thebell",
+		SourceUrl:       u.baseUrl,
+	}, nil
+}
+
+// cleanThebellArticleUrl removes unnecessary query parameters from thebell article url,
 // leaving only the 'key' parameter
-func cleanThebellUrl(u string) (string, error) {
+func cleanThebellArticleUrl(u string) (string, error) {
 	parsedUrl, err := url.Parse(u)
 	if err != nil {
 		return "", err
@@ -101,52 +203,4 @@ func cleanThebellUrl(u string) (string, error) {
 	parsedUrl.RawQuery = query.Encode()
 	u = parsedUrl.String()
 	return u, nil
-}
-
-func (s *ThebellScraper) String() string {
-	return "ThebellScraper"
-}
-
-type thebellArticleMetadata struct {
-	title       string
-	summary     string
-	relativeUrl *url.URL
-	datetime    time.Time
-}
-
-func parseArticleElementToScrape(el *rodext.Element) (*thebellArticleMetadata, error) {
-	a, elParseErr := el.Element("a")
-	if elParseErr != nil {
-		return nil, elParseErr
-	}
-
-	href := a.Attribute("href")
-	relativeUrl, urlParseErr := url.Parse(href)
-	if urlParseErr != nil {
-		return nil, urlParseErr
-	}
-	title := a.Attribute("title")
-
-	summaryEl, summaryParesErr := a.Element("dd")
-	if summaryParesErr != nil {
-		return nil, summaryParesErr
-	}
-	summary := summaryEl.Text()
-
-	datetimeEl, datetimeElParseErr := el.Element("dd>.date")
-	if datetimeElParseErr != nil {
-		return nil, datetimeElParseErr
-	}
-
-	datetime, err := parseThebellKoreanDatetime(datetimeEl.Text())
-	if err != nil {
-		return nil, err
-	}
-
-	return &thebellArticleMetadata{
-		title:       title,
-		summary:     summary,
-		relativeUrl: relativeUrl,
-		datetime:    datetime,
-	}, nil
 }

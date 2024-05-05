@@ -1,63 +1,9 @@
 package scraper
 
 import (
-	"fmt"
-	"github.com/sejunpark/headline/internal/pkg/model"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/suite"
 	"testing"
-	"time"
 )
-
-type ScraperSuite struct {
-	suite.Suite
-	keywords []string
-	scrapers []*Scraper
-	cleanups []func()
-}
-
-func (ts *ScraperSuite) SetupTest() {
-	ts.keywords = []string{"삼성전자", "SK하이닉스"}
-
-	// cleanup will be handled by the Scraper
-	thebellSourceScraper, _, err := NewThebellScraper()
-	ts.NoErrorf(err, "failed to initialize thebellSourceScraper: %v", err)
-	thebellScraper, thebellCleanup := NewScraper(thebellSourceScraper)
-	ts.scrapers = append(ts.scrapers, thebellScraper)
-	ts.cleanups = append(ts.cleanups, thebellCleanup)
-}
-
-func (ts *ScraperSuite) TearDownTest() {
-	for _, cleanup := range ts.cleanups {
-		cleanup()
-	}
-}
-
-func TestScraperSuite(t *testing.T) {
-	suite.Run(t, new(ScraperSuite))
-}
-
-func (ts *ScraperSuite) TestScraper_fetchArticles() {
-	for _, scraper := range ts.scrapers {
-		ts.Run(fmt.Sprintf("fetchArticles for %s", scraper), func() {
-			var articles chan *model.ArticleMetadata
-
-			for _, keyword := range ts.keywords {
-				go func(keyword string) {
-					articlesToSend, err := scraper.fetchArticles(keyword, time.Time{})
-					ts.NoErrorf(err, "failed to fetch articles for keyword %s: %v", keyword, err)
-					for article := range articlesToSend {
-						articles <- article
-					}
-				}(keyword)
-			}
-
-			for article := range articles {
-				ts.Truef(article.IsValid(), "invalid article metadata: %v", article)
-			}
-		})
-	}
-}
 
 func Test_cleanThebellUrl(t *testing.T) {
 	tests := []struct {
@@ -80,12 +26,12 @@ func Test_cleanThebellUrl(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := cleanThebellUrl(tt.u)
+			got, err := cleanThebellArticleUrl(tt.u)
 			assert.Equal(t, tt.want, got)
 			if tt.shouldError {
-				t.Error(err)
+				assert.Errorf(t, err, "expected an error")
 			} else {
-				assert.NoError(t, err)
+				assert.NoErrorf(t, err, "expected no error")
 			}
 		})
 	}
