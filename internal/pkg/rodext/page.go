@@ -57,19 +57,28 @@ func (p *Page) cleanup() {
 }
 
 // Navigate navigates the Page to the given url.
-// It waits for the NetworkAlmostIdle event before returning.
-func (p *Page) Navigate(url string) error {
-	// WaitNavigation(proto.PageLifecycleEventNameNetworkAlmostIdle) is a more relaxed version of WaitLoad().
-	// WaitLoad() sometimes only returns the head tag, not the full body.
-	wait := p.rodPage.WaitNavigation(proto.PageLifecycleEventNameNetworkAlmostIdle)
-	err := p.rodPage.Navigate(url)
+// It returns a function that waits for the element to be loaded.
+// Make sure to call this function to ensure the elements are loaded before applying selectors.
+func (p *Page) Navigate(url string) (waitElement func(string) error, err error) {
+	// This wait is enough in most cases.
+	waitNavigation := p.rodPage.WaitNavigation(proto.PageLifecycleEventNameNetworkAlmostIdle)
+	err = p.rodPage.Navigate(url)
 	if err != nil {
-		return err
+		return nil, errors.Wrapf(err, "p.rodPage.Navigate(%s) failed", url)
 	}
-	wait()
-	p.rodPage.MustWaitLoad()
+	waitNavigation()
 
-	return nil
+	// Using WaitLoad is the safest way to ensure the page is fully loaded,
+	// but can be very slow in many cases.
+	waitElement = func(selector string) error {
+		waitErr := p.rodPage.WaitElementsMoreThan(selector, 0)
+		if waitErr != nil {
+			return errors.Wrapf(waitErr, "p.rodPage.WaitElementsMoreThan(%s, 1) failed", selector)
+		}
+		return nil
+	}
+
+	return waitElement, nil
 }
 
 func (p *Page) Element(selector string) (*Element, error) {

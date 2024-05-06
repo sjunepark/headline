@@ -36,6 +36,7 @@ type BasePageSuite struct {
 	Page         *Page
 	PutPage      func()
 	WikipediaURL string
+	Wait         func(string) error
 }
 
 func (ts *BasePageSuite) SetupBasePageSuite() {
@@ -57,7 +58,7 @@ func (ts *BasePageSuite) SetupBasePageSubTest() {
 	ts.Page = p
 	ts.PutPage = putPage
 
-	err = ts.Page.Navigate(ts.WikipediaURL)
+	ts.Wait, err = ts.Page.Navigate(ts.WikipediaURL)
 	ts.NoError(err, "failed to navigate")
 }
 

@@ -43,11 +43,17 @@ func (b *ScraperBuilder) FetchArticlesPage(keyword string, _ time.Time) (*scrape
 	if err != nil {
 		return nil, errors.Wrap(err, "browser.Page() failed")
 	}
-	err = page.Navigate(keywordUrl.String())
+	wait, err := page.Navigate(keywordUrl.String())
 	if err != nil {
 		return nil, errors.Wrapf(err, "page.Navigate(%s) failed", keywordUrl.String())
 	}
-	el, err := page.Element(".newsBox")
+
+	selector := ".newsBox"
+	err = wait(selector)
+	if err != nil {
+		return nil, err
+	}
+	el, err := page.Element(selector)
 	if err != nil {
 		return nil, err
 	}
@@ -76,14 +82,19 @@ func (b *ScraperBuilder) FetchNextPage(currentPage *scraper.ArticlesPage) (nextP
 		slog.Error("failed to get browser page.", "function", functionName, "error", err)
 		return nil, false
 	}
-	err = p.Navigate(nextPageUrl.String())
+	wait, err := p.Navigate(nextPageUrl.String())
 	if err != nil {
 		slog.Error("failed to navigate to next page.", "function", functionName, "error", err)
 		return nil, false
 	}
 	slog.Debug("navigated to next page.", "function", functionName, "keyword", currentPage.Keyword, "pageNo", nextPageNo)
 
-	nextPageEl, err := p.Element(".newsBox")
+	selector := ".newsBox"
+	err = wait(selector)
+	if err != nil {
+		return nil, false
+	}
+	nextPageEl, err := p.Element(selector)
 	if err != nil {
 		slog.Error("failed to get newsBox element.", "function", functionName, "error", err)
 		return nil, false
