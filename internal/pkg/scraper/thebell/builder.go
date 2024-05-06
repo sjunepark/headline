@@ -1,6 +1,7 @@
 package thebell
 
 import (
+	"github.com/cockroachdb/errors"
 	"github.com/sejunpark/headline/internal/pkg/model"
 	"github.com/sejunpark/headline/internal/pkg/rodext"
 	"github.com/sejunpark/headline/internal/pkg/scraper"
@@ -32,23 +33,23 @@ func (b *ScraperBuilder) FetchArticlesPage(keyword string, _ time.Time) (*scrape
 
 	keywordUrl, err := b.util.getKeywordUrl(keyword)
 	if err != nil {
-		return nil, err
+		return nil, errors.Newf("failed to get keyword url: %w", err)
 	}
 	pageNo, err := b.util.getPageNo(keywordUrl)
 	if err != nil {
-		return nil, err
+		return nil, errors.Newf("failed to get page no: %w", err)
 	}
 	page, _, err := b.browser.Page()
 	if err != nil {
-		return nil, err
+		return nil, errors.Newf("failed to get browser page: %w", err)
 	}
 	err = page.Navigate(keywordUrl.String())
 	if err != nil {
-		return nil, err
+		return nil, errors.Newf("failed to navigate to keyword url: %w", err)
 	}
 	el, err := page.Element(".newsBox")
 	if err != nil {
-		return nil, err
+		return nil, errors.Newf("failed to get newsBox element: %w", err)
 	}
 	ap := scraper.NewArticlesPage(keyword, el, keywordUrl, pageNo)
 	slog.Debug("fetched articles page.", "function", functionName, "keyword", keyword, "pageNo", pageNo)
