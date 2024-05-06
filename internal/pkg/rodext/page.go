@@ -71,7 +71,7 @@ func (p *Page) Navigate(url string) error {
 }
 
 var MultipleElementsFoundError = errors.New("multiple elements found")
-var ElementNotFoundError = errors.New("element not found")
+var NotFoundError = errors.New("element not found")
 
 func (p *Page) Element(selector string) (*Element, error) {
 	elements, err := p.rodPage.Elements(selector)
@@ -85,7 +85,7 @@ func (p *Page) Element(selector string) (*Element, error) {
 
 	element := elements.First()
 	if element == nil {
-		return nil, ElementNotFoundError
+		return nil, NotFoundError
 	}
 
 	return &Element{rodElement: element}, nil

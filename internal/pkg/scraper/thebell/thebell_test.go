@@ -3,7 +3,6 @@ package thebell
 import (
 	"github.com/sejunpark/headline/internal/pkg/scraper"
 	"github.com/stretchr/testify/suite"
-	"net/url"
 	"testing"
 	"time"
 )
@@ -28,10 +27,14 @@ func (ts *ThebellScraperSuite) TearDownSuite() {
 }
 
 func (ts *ThebellScraperSuite) TestScrape() {
-	articleInfos, err := ts.scraper.Scrape("삼성전자", time.Time{})
-	ts.NoErrorf(err, "failed to scrape: %v", err)
-	// todo: implement assertion logic
+	articleInfos, err := ts.scraper.Scrape("보령바이오파마", time.Time{})
+	ts.NoError(err, "failed to scrape")
 	ts.NotEmpty(articleInfos)
+	for _, articleInfo := range articleInfos {
+		ts.Truef(articleInfo.IsValid(), "expected valid articleInfo, got %v", articleInfo)
+		ts.T().Logf("articleInfo: %v", articleInfo)
+	}
+
 }
 
 func TestThebellScraperSuite(t *testing.T) {
@@ -80,7 +83,7 @@ func (ts *ThebellBuilderSuite) Test_fetchArticlesPage() {
 	})
 }
 
-func (ts *ThebellBuilderSuite) Test_fetchNextPage() {
+func (ts *ThebellBuilderSuite) Test_FetchNextPage() {
 	ts.Run("when nextPage exits should return true and a different next page", func() {
 		initialPage, err := ts.builder.FetchArticlesPage("삼성전자", time.Time{})
 		ts.NoError(err, "failed to fetch articles page")
@@ -99,6 +102,21 @@ func (ts *ThebellBuilderSuite) Test_fetchNextPage() {
 		nextPage, exists := ts.builder.FetchNextPage(p)
 		ts.False(exists)
 		ts.Nil(nextPage)
+	})
+}
+
+func (ts *ThebellBuilderSuite) Test_parseArticlesPage() {
+	p, err := ts.builder.FetchArticlesPage("삼성전자", time.Time{})
+	ts.NoError(err, "failed to fetch articles page")
+
+	ts.Run("when page has articles it should return ArticleInfos", func() {
+		articleInfos, err := ts.builder.ParseArticlesPage(p)
+		ts.NoError(err, "failed to parse articles page")
+		ts.NotEmpty(articleInfos)
+
+		for _, articleInfo := range articleInfos {
+			ts.Truef(articleInfo.IsValid(), "expected valid articleInfo, got %v", articleInfo)
+		}
 	})
 }
 
@@ -131,9 +149,8 @@ func (ts *TheBellUrlUtilSuite) Test_getAbsoluteUrl() {
 	}
 	for _, tt := range tests {
 		ts.Run(tt.name, func() {
-			relativeUrl, err := url.Parse(tt.u)
-			ts.NoError(err, "failed to parse url")
-			got := ts.urlUtil.getAbsoluteUrl(relativeUrl)
+			got, err := ts.urlUtil.getAbsoluteUrl(tt.u)
+			ts.NoError(err, "expected no error")
 			ts.Equalf(tt.want, got.String(), "expected %s, got %s", tt.want, got)
 		})
 	}

@@ -5,6 +5,7 @@ import (
 	"github.com/sejunpark/headline/internal/pkg/model"
 	"github.com/sejunpark/headline/internal/pkg/rodext"
 	"github.com/sejunpark/headline/internal/pkg/scraper"
+	"log/slog"
 	"net/url"
 	"strconv"
 	"time"
@@ -50,7 +51,7 @@ func (b *ScraperBuilder) FetchArticlesPage(keyword string, startDate time.Time) 
 	if err != nil {
 		return nil, err
 	}
-	ap := scraper.NewArticlesPage(el, keywordUrl, pageNo)
+	ap := scraper.NewArticlesPage(keyword, el, keywordUrl, pageNo)
 	return ap, nil
 }
 
@@ -77,12 +78,86 @@ func (b *ScraperBuilder) FetchNextPage(currentPage *scraper.ArticlesPage) (nextP
 		return nil, false
 	}
 
-	return scraper.NewArticlesPage(nextPageEl, nextPageUrl, currentPage.PageNo+1), true
+	return scraper.NewArticlesPage(currentPage.Keyword, nextPageEl, nextPageUrl, currentPage.PageNo+1), true
 }
 
-func (b *ScraperBuilder) ParseArticlesPage(p *scraper.ArticlesPage) ([]*model.ArticleInfos, error) {
-	//TODO implement me
-	panic("implement me")
+func (b *ScraperBuilder) ParseArticlesPage(p *scraper.ArticlesPage) ([]*model.ArticleInfo, error) {
+	dlTags, err := p.Elements("ul>li>dl")
+	if err != nil {
+		return nil, err
+	}
+
+	var articleInfos []*model.ArticleInfo
+	for _, dlTag := range dlTags {
+		articleInfo := &model.ArticleInfo{
+			Keywords:        map[string]bool{p.Keyword: true},
+			Title:           "",
+			Summary:         "",
+			CreatedDateTime: time.Time{},
+			UpdateDateTime:  time.Time{},
+			Url:             nil,
+			Source:          "thebell",
+			SourceUrl:       b.util.base,
+		}
+
+		aTag, elErr := dlTag.Element("a")
+		if elErr != nil {
+			slog.Error("failed to get aTag", "error", elErr)
+			continue
+		}
+
+		// articleInfo.Title
+		title, attrErr := aTag.Attribute("title")
+		if attrErr != nil {
+			slog.Error("failed to get title attribute", "error", attrErr)
+			continue
+		}
+		if title == "" {
+			slog.Error("title is empty")
+			continue
+		}
+		articleInfo.Title = title
+
+		// articleInfo.Summary
+		summaryTag, elErr := aTag.Element("dd")
+		var summary string
+		if elErr != nil {
+			summary = ""
+		} else {
+			summary = summaryTag.Text()
+		}
+		articleInfo.Summary = summary
+
+		// articleInfo.CreatedDateTime, articleInfo.UpdateDateTime
+		dateTag, elErr := dlTag.Element(".date")
+		if elErr != nil {
+			slog.Error("failed to get dateTag", "error", elErr)
+			continue
+		}
+		datetime, dateErr := parseDatetime(dateTag.Text())
+		if dateErr != nil {
+			slog.Error("failed to parse datetime", "error", dateErr)
+			return nil, dateErr
+		}
+		articleInfo.CreatedDateTime = datetime
+		articleInfo.UpdateDateTime = datetime
+
+		// articleInfo.Url
+		relUrlStr, elErr := aTag.Attribute("href")
+		if elErr != nil || relUrlStr == "" {
+			slog.Error("failed to get href attribute", "error", elErr)
+			continue
+		}
+		absUrl, urlErr := b.util.getAbsoluteUrl(relUrlStr)
+		if urlErr != nil {
+			slog.Error("failed to get absolute url", "error", urlErr)
+			continue
+		}
+		articleInfo.Url = absUrl
+
+		articleInfos = append(articleInfos, articleInfo)
+	}
+	return articleInfos, nil
 }
 
 type thebellUrlUtil struct {
@@ -98,8 +173,13 @@ func newThebellUrlUtil() (*thebellUrlUtil, error) {
 	return &thebellUrlUtil{base: baseUrl}, nil
 }
 
-func (util *thebellUrlUtil) getAbsoluteUrl(relativeUrl *url.URL) *url.URL {
-	return util.base.ResolveReference(relativeUrl)
+// getAbsoluteUrl returns an error if it fails to parse the relativeUrl
+func (util *thebellUrlUtil) getAbsoluteUrl(relativeUrl string) (*url.URL, error) {
+	u, err := url.Parse(relativeUrl)
+	if err != nil {
+		return nil, err
+	}
+	return util.base.ResolveReference(u), nil
 }
 
 func (util *thebellUrlUtil) getKeywordUrl(keyword string) (*url.URL, error) {
@@ -125,20 +205,20 @@ func (util *thebellUrlUtil) getKeywordUrl(keyword string) (*url.URL, error) {
 
 // cleanArticleUrl removes unnecessary query parameters from thebell article url,
 // leaving only the 'key' parameter
-func (util *thebellUrlUtil) cleanArticleUrl(u string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+func (util *thebellUrlUtil) cleanArticleUrl(articleUrl string) (string, error) {
+	parsedUrl, err := url.Parse(articleUrl)
 	if err != nil {
 		return "", err
 	}
 	query := parsedUrl.Query()
 	key := query.Get("key")
 	if key == "" {
-		return "", fmt.Errorf("parameter 'key' not found in url: %s", u)
+		return "", fmt.Errorf("parameter 'key' not found in url: %s", articleUrl)
 	}
 	query = url.Values{"key": []string{key}}
 	parsedUrl.RawQuery = query.Encode()
-	u = parsedUrl.String()
-	return u, nil
+	articleUrl = parsedUrl.String()
+	return articleUrl, nil
 }
 
 func (util *thebellUrlUtil) getPageNo(u *url.URL) (uint, error) {

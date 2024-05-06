@@ -25,7 +25,7 @@ func Test_parseDate(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
-			got, err := parseDate(tc.thebellDate)
+			got, err := parseDatetime(tc.thebellDate)
 			if tc.shouldError {
 				assert.Error(t, err)
 				assert.Equal(t, time.Time{}, got)

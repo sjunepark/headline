@@ -1,13 +1,14 @@
 package model
 
 import (
+	"fmt"
 	"github.com/sejunpark/headline/internal/pkg/util"
 	"net/url"
 	"time"
 )
 
 type Article struct {
-	ArticleInfos
+	ArticleInfo
 	Content string
 }
 
@@ -15,7 +16,7 @@ func (a *Article) IsContentScraped() bool {
 	return a.Content != ""
 }
 
-type ArticleInfos struct {
+type ArticleInfo struct {
 	Keywords        map[string]bool // set implementation of keywords used to search this article
 	Title           string
 	Summary         string
@@ -26,7 +27,7 @@ type ArticleInfos struct {
 	SourceUrl       *url.URL
 }
 
-func (a *ArticleInfos) IsValid() bool {
+func (a *ArticleInfo) IsValid() bool {
 	keywordsNotEmpty := len(a.Keywords) > 0
 	titleNotEmpty := a.Title != ""
 	createdDateTimeNotEmpty := a.CreatedDateTime != time.Time{}
@@ -35,4 +36,8 @@ func (a *ArticleInfos) IsValid() bool {
 	sourceUrlIsValid := util.IsUrlValid(a.SourceUrl)
 
 	return keywordsNotEmpty && titleNotEmpty && createdDateTimeNotEmpty && urlIsValid && sourceNotEmpty && sourceUrlIsValid
+}
+
+func (a *ArticleInfo) String() string {
+	return fmt.Sprintf("Title: %s\nSummary: %s\b", a.Title, a.Summary)
 }

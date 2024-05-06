@@ -5,9 +5,9 @@ import (
 	"time"
 )
 
-// parseDate parses the date string from thebell.co.kr
+// parseDatetime parses the date string from thebell.co.kr
 // thebellDate format: "2023-10-04 오전 7:34:13"
-func parseDate(thebellDate string) (time.Time, error) {
+func parseDatetime(thebellDate string) (time.Time, error) {
 	translated := strings.Replace(thebellDate, "오전", "AM", 1)
 	translated = strings.Replace(translated, "오후", "PM", 1)
 
