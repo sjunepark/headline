@@ -27,7 +27,7 @@ func NewThebellScraperBuilder() (builder *ScraperBuilder, cleanup func(), err er
 	return &ScraperBuilder{browser: browser, util: util}, cleanup, nil
 }
 
-func (b *ScraperBuilder) FetchArticlesPage(keyword string, startDate time.Time) (*scraper.ArticlesPage, error) {
+func (b *ScraperBuilder) FetchArticlesPage(keyword string, _ time.Time) (*scraper.ArticlesPage, error) {
 	functionName := "FetchArticlesPage"
 
 	keywordUrl, err := b.util.getKeywordUrl(keyword)
