@@ -60,7 +60,7 @@ func TestThebellBuilderSuite(t *testing.T) {
 }
 
 func (ts *ThebellBuilderSuite) Test_fetchArticlesPage() {
-	ts.Run("happy path", func() {
+	ts.Run("when keyword is valid it should return a page with newsList and paging", func() {
 		p, err := ts.builder.FetchArticlesPage("삼성전자", time.Time{})
 		ts.NoError(err, "failed to fetch articles page")
 
@@ -73,7 +73,7 @@ func (ts *ThebellBuilderSuite) Test_fetchArticlesPage() {
 		ts.NotNil(paging)
 	})
 
-	ts.Run("when keyword is empty, it should return an error", func() {
+	ts.Run("when keyword is empty it should return an error", func() {
 		p, err := ts.builder.FetchArticlesPage("", time.Time{})
 		ts.Error(err, "expected an error")
 		ts.Nil(p, "expected nil")
@@ -81,7 +81,7 @@ func (ts *ThebellBuilderSuite) Test_fetchArticlesPage() {
 }
 
 func (ts *ThebellBuilderSuite) Test_fetchNextPage() {
-	ts.Run("when next page exists, it should return exists=true, and should be able to navigate to the next page, and should have different text content", func() {
+	ts.Run("when nextPage exits should return true and a different next page", func() {
 		initialPage, err := ts.builder.FetchArticlesPage("삼성전자", time.Time{})
 		ts.NoError(err, "failed to fetch articles page")
 
@@ -92,7 +92,7 @@ func (ts *ThebellBuilderSuite) Test_fetchNextPage() {
 		ts.NotEqual(initialPage.Text(), nextPage.Text())
 	})
 
-	ts.Run("when there is no next page, it should return exists=false", func() {
+	ts.Run("when nextPage does not exist should return false and error", func() {
 		p, err := ts.builder.FetchArticlesPage("청호나이스", time.Time{})
 		ts.NoError(err, "failed to fetch articles page")
 
@@ -159,13 +159,13 @@ func (ts *TheBellUrlUtilSuite) Test_getKeywordUrl() {
 			shouldError: false,
 		},
 		{
-			name:        "when keyword is empty, it should return an error",
+			name:        "when keyword is empty it should return an error",
 			keyword:     "",
 			want:        "",
 			shouldError: true,
 		},
 		{
-			name:        "when there are no search results, it should still return a url",
+			name:        "when there are no search results it should still return a url",
 			keyword:     "하가자다아차사",
 			want:        "https://thebell.co.kr/free/content/Search.asp?keyword=%ED%95%98%EA%B0%80%EC%9E%90%EB%8B%A4%EC%95%84%EC%B0%A8%EC%82%AC&page=1&part=A&period=360",
 			shouldError: false,
