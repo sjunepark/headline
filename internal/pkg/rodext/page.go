@@ -60,13 +60,14 @@ func (p *Page) cleanup() {
 // It waits for the NetworkAlmostIdle event before returning.
 func (p *Page) Navigate(url string) error {
 	// WaitNavigation(proto.PageLifecycleEventNameNetworkAlmostIdle) is a more relaxed version of WaitLoad().
-	// However, it didn't work in GitHub actions
+	// WaitLoad() sometimes only returns the head tag, not the full body.
 	wait := p.rodPage.WaitNavigation(proto.PageLifecycleEventNameNetworkAlmostIdle)
 	err := p.rodPage.Navigate(url)
 	if err != nil {
 		return err
 	}
 	wait()
+	p.rodPage.MustWaitLoad()
 
 	return nil
 }
