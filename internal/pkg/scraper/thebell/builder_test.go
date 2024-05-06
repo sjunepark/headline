@@ -43,7 +43,7 @@ func (ts *theBellScraperBuilderSuite) Test_fetchArticlesPage() {
 }
 
 func (ts *theBellScraperBuilderSuite) Test_FetchNextPage() {
-	ts.Run("when nextPage exits should return true and a different next page", func() {
+	ts.Run("when nextPage exists should return true and a different next page", func() {
 		initialPage, err := ts.Builder.FetchArticlesPage("삼성전자", time.Time{})
 		ts.NoError(err, "failed to fetch articles page")
 
