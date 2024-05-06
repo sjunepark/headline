@@ -85,7 +85,7 @@ func (ts *PageSuite) TestPage_Element() {
 
 	ts.Run("Element should return an error when no elements are found", func() {
 		el, err := ts.page.Element(".nonexistent-element")
-		ts.ErrorIsf(err, NotFoundError, "should return NotFoundError when no elements are found, got: %v", err)
+		ts.ErrorIsf(err, ElementNotFoundError, "should return ElementNotFoundError when no elements are found, got: %v", err)
 		ts.Nil(el, "element should be nil: %v", el)
 	})
 }
