@@ -3,18 +3,27 @@ package thebell
 import (
 	"github.com/sejunpark/headline/internal/pkg/scraper/testutil"
 	"github.com/stretchr/testify/suite"
+	"log/slog"
 	"testing"
 	"time"
 )
 
 type theBellScraperBuilderSuite struct {
 	testutil.BaseScraperBuilderSuite
+	logLevel slog.Level
 }
 
 func (ts *theBellScraperBuilderSuite) SetupSuite() {
+	ts.logLevel = slog.SetLogLoggerLevel(slog.LevelDebug)
+
 	builder, cleanup, err := NewThebellScraperBuilder()
 	ts.NoErrorf(err, "failed to initialize TheBellScraperBuilder: %v", err)
 	ts.SetupScraperBuilderSuite(builder, cleanup)
+}
+
+func (ts *theBellScraperBuilderSuite) TearDownSuite() {
+	ts.SetupTearDownSuite()
+	slog.SetLogLoggerLevel(ts.logLevel)
 }
 
 func TestThebellScraperBuilderSuite(t *testing.T) {
