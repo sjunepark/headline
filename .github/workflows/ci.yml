@@ -22,7 +22,7 @@ jobs:
           install-dependencies: true
 
       - name: Verify Chrome Installation
-        run: ${{ steps['setup-chrome'].outputs.chrome-path }} --version
+        run: ${{ steps.setup-chrome.outputs.chrome-path }} --version
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -49,5 +49,5 @@ jobs:
 
       - name: Test
         env:
-          ROD_BROWSER_BIN: ${{ steps['setup-chrome'].outputs.chrome-path }}
+          ROD_BROWSER_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
         run: make test
