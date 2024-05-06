@@ -36,7 +36,9 @@ func NewBrowser(options BrowserOptions) (b *Browser, cleanup func(), err error) 
 		rodBrowser = rodBrowser.Trace(true).SlowMotion(2 * time.Second).ControlURL(l)
 	}
 
-	if os.Getenv("CI") == "true" {
+	isCI := os.Getenv("CI")
+	slog.Debug("CI", "isCI", isCI)
+	if isCI == "true" {
 		binPath := os.Getenv("ROD_BROWSER_BIN")
 		fileInfo, statErr := os.Stat(binPath)
 		if statErr != nil {
