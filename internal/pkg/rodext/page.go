@@ -15,18 +15,18 @@ type Page struct {
 // newPage initializes a new Page. After initialization, it runs methods defined in pageOptions.
 func newPage(b *Browser, options pageOptions) (p *Page, cleanup func(), err error) {
 	if b.ctx.Err() != nil {
-		return nil, nil, errors.New("cancelled context")
+		return nil, nil, errors.Wrap(b.ctx.Err(), "context cancelled in newPage")
 	}
 
 	opts := proto.TargetCreateTarget{}
 	rodPage, err := b.rodBrowser.Page(opts)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, errors.Wrap(err, "b.rodBrowser.Page() failed")
 	}
 
 	err = setScreenSize(rodPage, options.windowFullscreen)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, errors.Wrap(err, "setScreenSize() failed")
 	}
 
 	p = &Page{rodPage: rodPage}
@@ -49,10 +49,11 @@ type pageOptions struct {
 
 // cleanup closes the Page
 func (p *Page) cleanup() {
+	functionName := "Page.cleanup"
 	err := p.rodPage.Close()
-	slog.Debug("page closed", "address", p)
+	slog.Debug("Page closed.", "function", functionName, "address", p)
 	if err != nil {
-		slog.Error("failed to close Page", "error", err)
+		slog.Error("failed to close Page.", "function", functionName, "error", err)
 	}
 }
 
@@ -104,7 +105,8 @@ func (p *Page) Element(selector string) (*Element, error) {
 func (p *Page) Elements(selector string) ([]*Element, error) {
 	elements, err := p.rodPage.Elements(selector)
 	if err != nil {
-		return nil, err
+		html, _ := p.rodPage.HTML()
+		return nil, errors.Wrapf(err, "p.rodPage.Elements(%s) failed for html %s", selector, html)
 	}
 	return newElements(elements), nil
 }

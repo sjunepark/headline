@@ -1,6 +1,7 @@
 package rodext
 
 import (
+	"github.com/cockroachdb/errors"
 	"github.com/go-rod/rod"
 	"github.com/sejunpark/headline/internal/pkg/util"
 )
@@ -20,13 +21,16 @@ func newElements(elements rod.Elements) []*Element {
 func (e *Element) Element(selector string) (*Element, error) {
 	elements, err := e.rodElement.Elements(selector)
 	if err != nil {
-		return nil, err
+		html, _ := e.rodElement.HTML()
+		return nil, errors.Wrapf(err, "e.rodElement.Elements(%s) failed for html %s", selector, util.TrimLog(html))
 	}
 	if len(elements) > 1 {
-		return nil, MultipleElementsFoundError
+		html, _ := e.rodElement.HTML()
+		return nil, errors.Wrapf(MultipleElementsFoundError, "multiple elements found for selector %s in html %s", selector, util.TrimLog(html))
 	}
 	if len(elements) == 0 {
-		return nil, ElementNotFoundError
+		html, _ := e.rodElement.HTML()
+		return nil, errors.Wrapf(ElementNotFoundError, "element not found for selector %s in html %s", selector, util.TrimLog(html))
 	}
 	return &Element{rodElement: elements[0]}, nil
 }
@@ -34,26 +38,30 @@ func (e *Element) Element(selector string) (*Element, error) {
 func (e *Element) Elements(selector string) ([]*Element, error) {
 	elements, err := e.rodElement.Elements(selector)
 	if err != nil {
-		return nil, err
+		html, _ := e.rodElement.HTML()
+		return nil, errors.Wrapf(err, "e.rodElement.Elements(%s) failed for html %s", selector, util.TrimLog(html))
 	}
 
 	if len(elements) == 0 {
-		return nil, ElementNotFoundError
+		html, _ := e.rodElement.HTML()
+		return nil, errors.Wrapf(ElementNotFoundError, "element not found for selector %s in html %s", selector, util.TrimLog(html))
 	}
 
 	return newElements(elements), nil
 }
 
 // Attribute returns the value of the attribute with the given name.
-// If the attribute is not found, it returns a ElementNotFoundError.
+// If the attribute is not found, it returns an ElementNotFoundError.
 // If the attribute is found but the value is empty, it returns an empty string.
 func (e *Element) Attribute(name string) (string, error) {
 	attribute, err := e.rodElement.Attribute(name)
 	if err != nil {
-		return "", err
+		html, _ := e.rodElement.HTML()
+		return "", errors.Wrapf(err, "e.rodElement.Attribute(%s) failed for html %s", name, util.TrimLog(html))
 	}
 	if attribute == nil {
-		return "", ElementNotFoundError
+		html, _ := e.rodElement.HTML()
+		return "", errors.Wrapf(ElementNotFoundError, "attribute not found for name %s in html %s", name, util.TrimLog(html))
 	}
 	return *attribute, nil
 }
@@ -68,27 +76,32 @@ func (e *Element) Text() string {
 	return text
 }
 
-// Equal returns true if the text content of the two elements is the same.
-// It returns true even when both elements are nil.
+// Equal returns true if the text content of the two elements' html content are the same.
 // If one of them is nil, it returns a util.NilError.
 func (e *Element) Equal(other *Element) (bool, error) {
-	if e == nil && other == nil {
-		return true, nil
-	}
 	if e == nil || other == nil {
-		return false, util.NilError
+		return false, errors.Wrapf(util.NilError, "e.Equal(other), e: %v, other: %v", e, other)
+	}
+
+	eHTML, err := e.HTML()
+	if err != nil {
+		return false, errors.Wrapf(err, "e.HTML() failed for element %v", e)
+	}
+	otherHTML, err := other.HTML()
+	if err != nil {
+		return false, errors.Wrapf(err, "other.HTML() failed for element %v", other)
 	}
 
 	// You can't use rod's Equal method directly
 	// because it's only available when two elements are in the same javascript world.
-	equal := e.Text() == other.Text()
+	equal := eHTML == otherHTML
 	return equal, nil
 }
 
 func (e *Element) HTML() (string, error) {
 	html, err := e.rodElement.HTML()
 	if err != nil {
-		return "", err
+		return "", errors.Wrapf(err, "e.rodElement.HTML() failed for element %v", e)
 	}
 	return html, nil
 }

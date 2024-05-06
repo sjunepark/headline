@@ -23,34 +23,35 @@ type Browser struct {
 // A Cleanup function is returned to close the Browser and all pages in the pagePool.
 // Check the Browser's Cleanup method for more details.
 func NewBrowser(options BrowserOptions) (b *Browser, cleanup func(), err error) {
+	functionName := "NewBrowser"
 	ctx, cancel := context.WithCancel(context.Background())
-
 	rodBrowser := rod.New()
 
 	if options.Debug {
 		l, launchErr := launcher.New().Headless(false).Devtools(true).Launch()
 		if launchErr != nil {
 			cancel()
-			return nil, nil, errors.Wrap(launchErr, "failed to launch browser")
+			return nil, nil, errors.Wrap(launchErr, "launcher.*Launcher.Launch() failed")
 		}
 		rodBrowser = rodBrowser.Trace(true).SlowMotion(2 * time.Second).ControlURL(l)
 	}
 
-	isCI := os.Getenv("CI")
-	slog.Debug("CI", "isCI", isCI)
-	if isCI == "true" {
+	CI := os.Getenv("CI")
+	slog.Debug("got environment variable.", "function", functionName, "CI", CI)
+	if CI == "true" {
 		binPath := os.Getenv("ROD_BROWSER_BIN")
+		slog.Debug("got environment variable.", "function", functionName, "ROD_BROWSER_BIN", binPath)
 		fileInfo, statErr := os.Stat(binPath)
 		if statErr != nil {
 			cancel()
 			return nil, nil, errors.Wrapf(statErr, "failed to get browser binary from path %s", binPath)
 		}
-		slog.Debug("Using browser binary from path", "path", binPath, "fileInfo", fileInfo.Name())
+		slog.Debug("using browser binary.", "path", binPath, "fileInfo", fileInfo.Name())
 
 		l, launchErr := launcher.New().Bin(binPath).Launch()
 		if launchErr != nil {
 			cancel()
-			return nil, nil, errors.Wrap(launchErr, "failed to launch browser")
+			return nil, nil, errors.Wrap(launchErr, "launcher.*Launcher.Launch() failed")
 		}
 		rodBrowser = rodBrowser.ControlURL(l)
 	}
@@ -58,7 +59,7 @@ func NewBrowser(options BrowserOptions) (b *Browser, cleanup func(), err error) 
 	err = rodBrowser.Connect()
 	if err != nil {
 		cancel()
-		return nil, nil, err
+		return nil, nil, errors.Wrap(err, "rodBrowser.Connect() failed")
 	}
 	if options.NoDefaultDevice {
 		rodBrowser = rodBrowser.NoDefaultDevice()
@@ -67,7 +68,7 @@ func NewBrowser(options BrowserOptions) (b *Browser, cleanup func(), err error) 
 		rodBrowser, err = rodBrowser.Incognito()
 		if err != nil {
 			cancel()
-			return nil, nil, err
+			return nil, nil, errors.Wrap(err, "rodBrowser.Incognito() failed")
 		}
 	}
 
@@ -98,6 +99,8 @@ type BrowserOptions struct {
 // 2. Closes the Browser
 // You don't have to manually run cleanup functions for each page and pagePool, they're all called here.
 func (b *Browser) Cleanup() {
+	functionName := "Browser.Cleanup"
+
 	// Need to run cancel before closing pagPool to make sure no new pages are put back to the pool
 	b.cancel()
 
@@ -105,7 +108,7 @@ func (b *Browser) Cleanup() {
 
 	browserCloseErr := b.rodBrowser.Close()
 	if browserCloseErr != nil {
-		slog.Error("failed to close Browser", "error", browserCloseErr)
+		slog.Error("failed to close Browser", "function", functionName, "error", browserCloseErr)
 	}
 }
 
