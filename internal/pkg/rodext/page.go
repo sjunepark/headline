@@ -1,7 +1,7 @@
 package rodext
 
 import (
-	"errors"
+	"github.com/cockroachdb/errors"
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/proto"
 	"log/slog"
@@ -95,4 +95,8 @@ func (p *Page) Elements(selector string) ([]*Element, error) {
 		return nil, err
 	}
 	return newElements(elements), nil
+}
+
+func (p *Page) HTML() (string, error) {
+	return p.rodPage.HTML()
 }
