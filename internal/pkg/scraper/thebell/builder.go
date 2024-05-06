@@ -19,7 +19,7 @@ func NewThebellScraperBuilder() (builder *ScraperBuilder, cleanup func(), err er
 		return nil, nil, err
 	}
 
-	browser, cleanup, err := rodext.NewBrowser(scraper.DefaultBrowserOptions)
+	browser, cleanup, err := rodext.NewBrowser(rodext.DefaultBrowserOptions)
 	if err != nil {
 		return nil, nil, err
 	}

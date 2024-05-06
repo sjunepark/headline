@@ -3,7 +3,24 @@ package rodext
 import (
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/proto"
+	"github.com/sejunpark/headline/internal/pkg/constant"
 )
+
+func init() {
+	DefaultBrowserOptions = defaultBrowserOptions()
+}
+
+var DefaultBrowserOptions BrowserOptions
+
+func defaultBrowserOptions() BrowserOptions {
+	options := &BrowserOptions{
+		Debug:           false,
+		NoDefaultDevice: true,
+		Incognito:       true,
+		PagePoolSize:    constant.PAGE_POOL_SIZE,
+	}
+	return *options
+}
 
 func setScreenSize(rodPage *rod.Page, windowFullscreen bool) error {
 	var err error
