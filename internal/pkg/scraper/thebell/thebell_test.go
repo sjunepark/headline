@@ -1,6 +1,7 @@
-package scraper
+package thebell
 
 import (
+	"github.com/sejunpark/headline/internal/pkg/scraper"
 	"github.com/stretchr/testify/suite"
 	"net/url"
 	"testing"
@@ -9,16 +10,16 @@ import (
 
 type ThebellScraperSuite struct {
 	suite.Suite
-	scraper *Scraper
+	scraper *scraper.Scraper
 	cleanup func()
 }
 
 func (ts *ThebellScraperSuite) SetupSuite() {
-	builder, cleanup, err := newThebellScraperBuilder()
+	builder, cleanup, err := NewThebellScraperBuilder()
 	ts.NoErrorf(err, "failed to initialize TheBellScraperBuilder: %v", err)
-	scraper, cleanup, err := NewScraper(builder, cleanup)
+	s, cleanup, err := scraper.NewScraper(builder, cleanup)
 	ts.NoErrorf(err, "failed to initialize Scraper: %v", err)
-	ts.scraper = scraper
+	ts.scraper = s
 	ts.cleanup = cleanup
 }
 
@@ -27,7 +28,7 @@ func (ts *ThebellScraperSuite) TearDownSuite() {
 }
 
 func (ts *ThebellScraperSuite) TestScrape() {
-	articleInfos, err := ts.scraper.scrape("삼성전자", time.Time{})
+	articleInfos, err := ts.scraper.Scrape("삼성전자", time.Time{})
 	ts.NoErrorf(err, "failed to scrape: %v", err)
 	// todo: implement assertion logic
 	ts.NotEmpty(articleInfos)
@@ -39,12 +40,12 @@ func TestThebellScraperSuite(t *testing.T) {
 
 type ThebellBuilderSuite struct {
 	suite.Suite
-	builder *thebellScraperBuilder
+	builder *ScraperBuilder
 	cleanup func()
 }
 
 func (ts *ThebellBuilderSuite) SetupSuite() {
-	builder, cleanup, err := newThebellScraperBuilder()
+	builder, cleanup, err := NewThebellScraperBuilder()
 	ts.NoErrorf(err, "failed to initialize TheBellScraperBuilder: %v", err)
 	ts.builder = builder
 	ts.cleanup = cleanup
@@ -60,7 +61,7 @@ func TestThebellBuilderSuite(t *testing.T) {
 
 func (ts *ThebellBuilderSuite) Test_fetchArticlesPage() {
 	ts.Run("happy path", func() {
-		p, err := ts.builder.fetchArticlesPage("삼성전자", time.Time{})
+		p, err := ts.builder.FetchArticlesPage("삼성전자", time.Time{})
 		ts.NoError(err, "failed to fetch articles page")
 
 		newsList, err := p.Element(".newsList")
@@ -73,9 +74,31 @@ func (ts *ThebellBuilderSuite) Test_fetchArticlesPage() {
 	})
 
 	ts.Run("when keyword is empty, it should return an error", func() {
-		p, err := ts.builder.fetchArticlesPage("", time.Time{})
+		p, err := ts.builder.FetchArticlesPage("", time.Time{})
 		ts.Error(err, "expected an error")
 		ts.Nil(p, "expected nil")
+	})
+}
+
+func (ts *ThebellBuilderSuite) Test_fetchNextPage() {
+	ts.Run("when next page exists, it should return exists=true, and should be able to navigate to the next page, and should have different text content", func() {
+		initialPage, err := ts.builder.FetchArticlesPage("삼성전자", time.Time{})
+		ts.NoError(err, "failed to fetch articles page")
+
+		nextPage, exists := ts.builder.FetchNextPage(initialPage)
+		ts.True(exists)
+		ts.NotNil(nextPage)
+
+		ts.NotEqual(initialPage.Text(), nextPage.Text())
+	})
+
+	ts.Run("when there is no next page, it should return exists=false", func() {
+		p, err := ts.builder.FetchArticlesPage("청호나이스", time.Time{})
+		ts.NoError(err, "failed to fetch articles page")
+
+		nextPage, exists := ts.builder.FetchNextPage(p)
+		ts.False(exists)
+		ts.Nil(nextPage)
 	})
 }
 

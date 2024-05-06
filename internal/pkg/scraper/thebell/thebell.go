@@ -1,34 +1,40 @@
-package scraper
+package thebell
 
 import (
 	"fmt"
 	"github.com/sejunpark/headline/internal/pkg/model"
 	"github.com/sejunpark/headline/internal/pkg/rodext"
+	"github.com/sejunpark/headline/internal/pkg/scraper"
 	"net/url"
+	"strconv"
 	"time"
 )
 
-type thebellScraperBuilder struct {
+type ScraperBuilder struct {
 	browser *rodext.Browser
 	util    *thebellUrlUtil
 }
 
-func newThebellScraperBuilder() (builder *thebellScraperBuilder, cleanup func(), err error) {
+func NewThebellScraperBuilder() (builder *ScraperBuilder, cleanup func(), err error) {
 	util, err := newThebellUrlUtil()
 	if err != nil {
 		return nil, nil, err
 	}
 
-	browser, cleanup, err := rodext.NewBrowser(browserOptions)
+	browser, cleanup, err := rodext.NewBrowser(scraper.DefaultBrowserOptions)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	return &thebellScraperBuilder{browser: browser, util: util}, cleanup, nil
+	return &ScraperBuilder{browser: browser, util: util}, cleanup, nil
 }
 
-func (b *thebellScraperBuilder) fetchArticlesPage(keyword string, startDate time.Time) (*rodext.Element, error) {
+func (b *ScraperBuilder) FetchArticlesPage(keyword string, startDate time.Time) (*scraper.ArticlesPage, error) {
 	keywordUrl, err := b.util.getKeywordUrl(keyword)
+	if err != nil {
+		return nil, err
+	}
+	pageNo, err := b.util.getPageNo(keywordUrl)
 	if err != nil {
 		return nil, err
 	}
@@ -44,15 +50,37 @@ func (b *thebellScraperBuilder) fetchArticlesPage(keyword string, startDate time
 	if err != nil {
 		return nil, err
 	}
-	return el, nil
+	ap := scraper.NewArticlesPage(el, keywordUrl, pageNo)
+	return ap, nil
 }
 
-func (b *thebellScraperBuilder) fetchNextPage(currentPage *rodext.Element) (p *rodext.Element, exists bool, err error) {
-	//TODO implement me
-	panic("implement me")
+func (b *ScraperBuilder) FetchNextPage(currentPage *scraper.ArticlesPage) (nextPage *scraper.ArticlesPage, exists bool) {
+	nextPageUrl, err := b.util.getNextPageUrl(currentPage.PageUrl)
+	if err != nil {
+		return nil, false
+	}
+
+	p, _, err := b.browser.Page()
+	if err != nil {
+		return nil, false
+	}
+	err = p.Navigate(nextPageUrl.String())
+	if err != nil {
+		return nil, false
+	}
+
+	nextPageEl, err := p.Element(".newsBox")
+	if err != nil {
+		return nil, false
+	}
+	if equal, equalErr := nextPageEl.Equal(currentPage.PageElement); equalErr != nil || equal {
+		return nil, false
+	}
+
+	return scraper.NewArticlesPage(nextPageEl, nextPageUrl, currentPage.PageNo+1), true
 }
 
-func (b *thebellScraperBuilder) parseArticlesPage(p *rodext.Element) ([]*model.ArticleInfos, error) {
+func (b *ScraperBuilder) ParseArticlesPage(p *scraper.ArticlesPage) ([]*model.ArticleInfos, error) {
 	//TODO implement me
 	panic("implement me")
 }
@@ -111,4 +139,30 @@ func (util *thebellUrlUtil) cleanArticleUrl(u string) (string, error) {
 	parsedUrl.RawQuery = query.Encode()
 	u = parsedUrl.String()
 	return u, nil
+}
+
+func (util *thebellUrlUtil) getPageNo(u *url.URL) (uint, error) {
+	query := u.Query()
+	pageNoStr := query.Get("page")
+	if pageNoStr == "" {
+		return 1, nil
+	}
+	pageNo, err := strconv.Atoi(pageNoStr)
+	if err != nil {
+		return 0, err
+	}
+	return uint(pageNo), nil
+}
+
+func (util *thebellUrlUtil) getNextPageUrl(currentUrl *url.URL) (*url.URL, error) {
+	pageNo, err := util.getPageNo(currentUrl)
+	if err != nil {
+		return nil, err
+	}
+	nextPageNo := pageNo + 1
+
+	query := currentUrl.Query()
+	query.Set("page", strconv.Itoa(int(nextPageNo)))
+	currentUrl.RawQuery = query.Encode()
+	return currentUrl, nil
 }

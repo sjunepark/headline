@@ -2,6 +2,7 @@ package rodext
 
 import (
 	"github.com/go-rod/rod"
+	"github.com/sejunpark/headline/internal/pkg/util"
 )
 
 type Element struct {
@@ -61,4 +62,18 @@ func (e *Element) Text() string {
 		return ""
 	}
 	return text
+}
+
+func (e *Element) Equal(other *Element) (bool, error) {
+	if e == nil && other == nil {
+		return true, nil
+	}
+	if e == nil || other == nil {
+		return false, util.NilError
+	}
+
+	// You can't use rod's Equal method directly
+	// because it's only available when two elements are in the same javascript world.
+	equal := e.Text() == other.Text()
+	return equal, nil
 }

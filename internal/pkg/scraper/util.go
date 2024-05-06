@@ -5,7 +5,7 @@ import (
 	"github.com/sejunpark/headline/internal/pkg/rodext"
 )
 
-var browserOptions = rodext.BrowserOptions{
+var DefaultBrowserOptions = rodext.BrowserOptions{
 	Debug:           false,
 	NoDefaultDevice: true,
 	Incognito:       true,
