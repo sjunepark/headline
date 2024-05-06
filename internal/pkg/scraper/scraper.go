@@ -13,7 +13,8 @@ import (
 //
 // FetchNextPage should return the next ArticlesPage if it exists.
 // It should also check if the current page and the next page are different.
-// Since an error is not returned, it should log all errors.
+// If not, return false.
+// Since an error is not returned from this function, it should log all errors.
 //
 // ParseArticlesPage should parse and return model.ArticleInfo objects.
 type Builder interface {
@@ -31,6 +32,8 @@ func NewScraper(builder Builder, cleanup func()) (*Scraper, func(), error) {
 }
 
 func (s *Scraper) Scrape(keyword string, startDate time.Time) ([]*model.ArticleInfo, error) {
+	functionName := "Scraper.Scrape"
+
 	currentPage, err := s.FetchArticlesPage(keyword, startDate)
 	if err != nil {
 		return nil, err
@@ -44,15 +47,16 @@ func (s *Scraper) Scrape(keyword string, startDate time.Time) ([]*model.ArticleI
 	for {
 		currentPage, nextPageExists = s.FetchNextPage(currentPage)
 		if !nextPageExists {
-			slog.Debug("no more pages")
+			slog.Debug("no more pages.", "function", functionName)
 			break
 		}
 		currentInfos, parseErr := s.ParseArticlesPage(currentPage)
 		if parseErr != nil {
-			slog.Error("failed to parse articles page", "error", parseErr)
+			slog.Error("failed to parse articles page.", "function", functionName, "error", parseErr)
 			break
 		}
 		infos = append(infos, currentInfos...)
+		slog.Debug("appended ArticleInfos.", "function", functionName, "appendedCount", len(currentInfos), "totalCount", len(infos))
 	}
 
 	return infos, nil

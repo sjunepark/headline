@@ -68,6 +68,9 @@ func (e *Element) Text() string {
 	return text
 }
 
+// Equal returns true if the text content of the two elements is the same.
+// It returns true even when both elements are nil.
+// If one of them is nil, it returns a util.NilError.
 func (e *Element) Equal(other *Element) (bool, error) {
 	if e == nil && other == nil {
 		return true, nil

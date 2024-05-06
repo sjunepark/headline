@@ -50,6 +50,7 @@ type pageOptions struct {
 // cleanup closes the Page
 func (p *Page) cleanup() {
 	err := p.rodPage.Close()
+	slog.Debug("page closed", "address", p)
 	if err != nil {
 		slog.Error("failed to close Page", "error", err)
 	}

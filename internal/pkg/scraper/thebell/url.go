@@ -80,15 +80,15 @@ func (util *thebellUrlUtil) getPageNo(u *url.URL) (uint, error) {
 	return uint(pageNo), nil
 }
 
-func (util *thebellUrlUtil) getNextPageUrl(currentUrl *url.URL) (*url.URL, error) {
+func (util *thebellUrlUtil) getNextPageUrl(currentUrl *url.URL) (u *url.URL, nextPageNo uint, err error) {
 	pageNo, err := util.getPageNo(currentUrl)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
-	nextPageNo := pageNo + 1
+	nextPageNo = pageNo + 1
 
 	query := currentUrl.Query()
 	query.Set("page", strconv.Itoa(int(nextPageNo)))
 	currentUrl.RawQuery = query.Encode()
-	return currentUrl, nil
+	return currentUrl, nextPageNo, nil
 }

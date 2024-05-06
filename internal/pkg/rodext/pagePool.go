@@ -49,6 +49,7 @@ func (pp *pagePool) cleanup() {
 //
 // The returned Page is thread-safe.
 func (pp *pagePool) Get(newPage func() (*Page, func(), error)) (p *Page, putPage func(), err error) {
+	functionName := "pagePool.Get"
 	if pp.ctx.Err() != nil {
 		return nil, nil, pp.ctx.Err()
 	}
@@ -61,11 +62,11 @@ func (pp *pagePool) Get(newPage func() (*Page, func(), error)) (p *Page, putPage
 		if err != nil {
 			return nil, nil, err
 		}
-		slog.Debug("Page: no Page in pool, created new Page", "address", p)
+		slog.Debug("no Page in pool, created new Page.", "function", functionName, "address", p)
 		return p, pp.putPageFactory(p), nil
 	}
 
-	slog.Debug("Page: got Page from pool", "address", p)
+	slog.Debug("got Page from pool.", "function", functionName, "address", p)
 	return p, pp.putPageFactory(p), nil
 }
 
@@ -75,13 +76,14 @@ func (pp *pagePool) Get(newPage func() (*Page, func(), error)) (p *Page, putPage
 // putPage gracefully handles context cancellation.
 func (pp *pagePool) putPageFactory(p *Page) func() {
 	return func() {
+		functionName := "pagePool.putPage"
 		if pp.ctx.Err() != nil {
 			p.cleanup()
-			slog.Debug("putPage: context cancelled, cleaning up Page", "address", p)
+			slog.Debug("context cancelled, cleaning up Page.", "function", functionName, "address", p)
 			return
 		}
 		pp.pool <- p
-		slog.Debug("putPage: putting back Page", "address", p)
+		slog.Debug("putting back Page.", "function", functionName, "address", p)
 	}
 }
 

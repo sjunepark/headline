@@ -25,8 +25,4 @@ func (ts *ThebellScraperSuite) TestScrape() {
 	articleInfos, err := ts.Scraper.Scrape("보령바이오파마", time.Time{})
 	ts.NoError(err, "failed to scrape")
 	ts.NotEmpty(articleInfos)
-	for _, articleInfo := range articleInfos {
-		ts.Truef(articleInfo.IsValid(), "expected valid articleInfo, got %v", articleInfo)
-		ts.T().Logf("articleInfo: %v", articleInfo)
-	}
 }

@@ -77,7 +77,6 @@ func (ts *BrowserSuite) TestBrowser_Page() {
 				wg.Add(1)
 				go func() {
 					defer wg.Done()
-					ts.T().Log("running goroutine")
 					p, putPage, err := ts.browser.Page()
 					ts.NoErrorf(err, "failed to get Page: %v", err)
 					if err == nil {

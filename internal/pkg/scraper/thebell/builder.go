@@ -28,6 +28,8 @@ func NewThebellScraperBuilder() (builder *ScraperBuilder, cleanup func(), err er
 }
 
 func (b *ScraperBuilder) FetchArticlesPage(keyword string, startDate time.Time) (*scraper.ArticlesPage, error) {
+	functionName := "FetchArticlesPage"
+
 	keywordUrl, err := b.util.getKeywordUrl(keyword)
 	if err != nil {
 		return nil, err
@@ -49,41 +51,47 @@ func (b *ScraperBuilder) FetchArticlesPage(keyword string, startDate time.Time) 
 		return nil, err
 	}
 	ap := scraper.NewArticlesPage(keyword, el, keywordUrl, pageNo)
+	slog.Debug("fetched articles page.", "function", functionName, "keyword", keyword, "pageNo", pageNo)
 	return ap, nil
 }
 
 func (b *ScraperBuilder) FetchNextPage(currentPage *scraper.ArticlesPage) (nextPage *scraper.ArticlesPage, exists bool) {
-	nextPageUrl, err := b.util.getNextPageUrl(currentPage.PageUrl)
+	functionName := "FetchNextPage"
+
+	nextPageUrl, nextPageNo, err := b.util.getNextPageUrl(currentPage.PageUrl)
 	if err != nil {
-		slog.Error("failed to get next page url", "error", err)
+		slog.Error("failed to get next page url.", "function", functionName, "error", err)
 		return nil, false
 	}
 
 	p, _, err := b.browser.Page()
 	if err != nil {
-		slog.Error("failed to get browser page", "error", err)
+		slog.Error("failed to get browser page.", "function", functionName, "error", err)
 		return nil, false
 	}
 	err = p.Navigate(nextPageUrl.String())
 	if err != nil {
-		slog.Error("failed to navigate to next page", "error", err)
+		slog.Error("failed to navigate to next page.", "function", functionName, "error", err)
 		return nil, false
 	}
+	slog.Debug("navigated to next page.", "function", functionName, "keyword", currentPage.Keyword, "pageNo", nextPageNo)
 
 	nextPageEl, err := p.Element(".newsBox")
 	if err != nil {
-		slog.Error("failed to get newsBox element", "error", err)
+		slog.Error("failed to get newsBox element.", "function", functionName, "error", err)
 		return nil, false
 	}
 	if equal, equalErr := nextPageEl.Equal(currentPage.PageElement); equalErr != nil || equal {
-		slog.Debug("returned page is the same as the current page")
+		slog.Debug("nextPage is the same as currentPage, returning function.", "function", functionName)
 		return nil, false
 	}
 
-	return scraper.NewArticlesPage(currentPage.Keyword, nextPageEl, nextPageUrl, currentPage.PageNo+1), true
+	return scraper.NewArticlesPage(currentPage.Keyword, nextPageEl, nextPageUrl, nextPageNo), true
 }
 
 func (b *ScraperBuilder) ParseArticlesPage(p *scraper.ArticlesPage) ([]*model.ArticleInfo, error) {
+	functionName := "ParseArticlesPage"
+
 	dlTags, err := p.Elements("ul>li>dl")
 	if err != nil {
 		return nil, err
@@ -104,18 +112,18 @@ func (b *ScraperBuilder) ParseArticlesPage(p *scraper.ArticlesPage) ([]*model.Ar
 
 		aTag, elErr := dlTag.Element("a")
 		if elErr != nil {
-			slog.Error("failed to get aTag", "error", elErr)
+			slog.Error("failed to get aTag.", "function", functionName, "error", elErr)
 			continue
 		}
 
 		// articleInfo.Title
 		title, attrErr := aTag.Attribute("title")
 		if attrErr != nil {
-			slog.Error("failed to get title attribute", "error", attrErr)
+			slog.Error("failed to get title attribute.", "function", functionName, "error", attrErr)
 			continue
 		}
 		if title == "" {
-			slog.Error("title is empty")
+			slog.Error("title is empty.", "function", functionName)
 			continue
 		}
 		articleInfo.Title = title
@@ -133,12 +141,12 @@ func (b *ScraperBuilder) ParseArticlesPage(p *scraper.ArticlesPage) ([]*model.Ar
 		// articleInfo.CreatedDateTime, articleInfo.UpdateDateTime
 		dateTag, elErr := dlTag.Element(".date")
 		if elErr != nil {
-			slog.Error("failed to get dateTag", "error", elErr)
+			slog.Error("failed to get dateTag.", "function", functionName, "error", elErr)
 			continue
 		}
 		datetime, dateErr := parseDatetime(dateTag.Text())
 		if dateErr != nil {
-			slog.Error("failed to parse datetime", "error", dateErr)
+			slog.Error("failed to parse datetime.", "function", functionName, "error", dateErr)
 			return nil, dateErr
 		}
 		articleInfo.CreatedDateTime = datetime
@@ -147,17 +155,19 @@ func (b *ScraperBuilder) ParseArticlesPage(p *scraper.ArticlesPage) ([]*model.Ar
 		// articleInfo.Url
 		relUrlStr, elErr := aTag.Attribute("href")
 		if elErr != nil || relUrlStr == "" {
-			slog.Error("failed to get href attribute", "error", elErr)
+			slog.Error("failed to get href attribute.", "function", functionName, "error", elErr)
 			continue
 		}
 		absUrl, urlErr := b.util.getAbsoluteUrl(relUrlStr)
 		if urlErr != nil {
-			slog.Error("failed to get absolute url", "error", urlErr)
+			slog.Error("failed to get absolute url.", "function", functionName, "error", urlErr)
 			continue
 		}
 		articleInfo.Url = absUrl
 
 		articleInfos = append(articleInfos, articleInfo)
+		slog.Debug("appended ArticleInfo.", "function", functionName, "title", articleInfo.Title)
+
 	}
 	return articleInfos, nil
 }
