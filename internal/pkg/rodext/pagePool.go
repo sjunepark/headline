@@ -66,7 +66,6 @@ func (pp *pagePool) Get(newPage func() (*Page, func(), error)) (p *Page, putPage
 		return p, pp.putPageFactory(p), nil
 	}
 
-	slog.Debug("got Page from pool.", "function", functionName, "address", p)
 	return p, pp.putPageFactory(p), nil
 }
 
@@ -83,7 +82,6 @@ func (pp *pagePool) putPageFactory(p *Page) func() {
 			return
 		}
 		pp.pool <- p
-		slog.Debug("putting back Page.", "function", functionName, "address", p)
 	}
 }
 
