@@ -59,14 +59,16 @@ func (p *Page) cleanup() {
 // Navigate navigates the Page to the given url.
 // It waits for the NetworkAlmostIdle event before returning.
 func (p *Page) Navigate(url string) error {
-	var err error
-	// A more conservative approach would be to wait for the onLoad event using the WaitLoad method.
-	wait := p.rodPage.WaitNavigation(proto.PageLifecycleEventNameNetworkAlmostIdle)
+	// WaitNavigation(proto.PageLifecycleEventNameNetworkAlmostIdle) is a more relaxed version of WaitLoad().
+	// However, it didn't work in GitHub actions
+	err := p.rodPage.WaitLoad()
+	if err != nil {
+		return err
+	}
 	err = p.rodPage.Navigate(url)
 	if err != nil {
 		return err
 	}
-	wait()
 
 	return nil
 }
