@@ -76,7 +76,8 @@ func (p *Page) Navigate(url string) error {
 func (p *Page) Element(selector string) (*Element, error) {
 	elements, err := p.rodPage.Elements(selector)
 	if err != nil {
-		return nil, err
+		html, _ := p.rodPage.HTML()
+		return nil, errors.Wrapf(err, "p.rodPage.Elements(%s) failed, p.rodPage.HTML()=%s", selector, html)
 	}
 
 	if len(elements) > 1 {

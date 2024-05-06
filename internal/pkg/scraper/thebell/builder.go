@@ -49,8 +49,7 @@ func (b *ScraperBuilder) FetchArticlesPage(keyword string, _ time.Time) (*scrape
 	}
 	el, err := page.Element(".newsBox")
 	if err != nil {
-		html, _ := page.HTML()
-		return nil, errors.Wrapf(err, "page.Element(.newsBox) failed, page.HTML()=%s", html)
+		return nil, err
 	}
 
 	articlesPage := scraper.NewArticlesPage(keyword, el, keywordUrl, pageNo)

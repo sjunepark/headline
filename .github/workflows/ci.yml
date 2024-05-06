@@ -14,6 +14,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Chrome via setup-chrome
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Verify Chrome Installation
+        run: ${{ steps.setup-chrome.outputs.chrome-path }} --version
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -38,4 +47,6 @@ jobs:
         run: make check-ci
 
       - name: Test
+        env:
+          ROD_BROWSER_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
         run: make test
