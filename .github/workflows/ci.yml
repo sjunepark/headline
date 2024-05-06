@@ -16,10 +16,9 @@ jobs:
 
       - name: Install Chrome via setup-chrome
         id: setup-chrome
-        uses: browser-actions/setup-chrome@v1.6.1
+        uses: browser-actions/setup-chrome@v1
         with:
-          chrome-version: 120
-          install-dependencies: true
+          chrome-version: stable
 
       - name: Verify Chrome Installation
         run: ${{ steps.setup-chrome.outputs.chrome-path }} --version
