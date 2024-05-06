@@ -58,6 +58,7 @@ func (b *ScraperBuilder) FetchArticlesPage(keyword string, _ time.Time) (*scrape
 func (b *ScraperBuilder) FetchNextPage(currentPage *scraper.ArticlesPage) (nextPage *scraper.ArticlesPage, exists bool) {
 	functionName := "FetchNextPage"
 
+	slog.Debug("fetching next page.", "function", functionName, "builder", b, "currentPage", currentPage)
 	nextPageUrl, nextPageNo, err := b.util.getNextPageUrl(currentPage.PageUrl)
 	if err != nil {
 		slog.Error("failed to get next page url.", "function", functionName, "error", err)
