@@ -14,6 +14,7 @@ type theBellScraperBuilderSuite struct {
 }
 
 func (ts *theBellScraperBuilderSuite) SetupSuite() {
+	// Have to set log level in the beginning, not in the BaseSuite since this has to be set before any other process.
 	ts.logLevel = slog.SetLogLoggerLevel(slog.LevelDebug)
 
 	builder, cleanup, err := NewThebellScraperBuilder()

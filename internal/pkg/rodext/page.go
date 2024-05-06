@@ -61,14 +61,12 @@ func (p *Page) cleanup() {
 func (p *Page) Navigate(url string) error {
 	// WaitNavigation(proto.PageLifecycleEventNameNetworkAlmostIdle) is a more relaxed version of WaitLoad().
 	// However, it didn't work in GitHub actions
-	err := p.rodPage.WaitLoad()
+	wait := p.rodPage.WaitNavigation(proto.PageLifecycleEventNameNetworkAlmostIdle)
+	err := p.rodPage.Navigate(url)
 	if err != nil {
 		return err
 	}
-	err = p.rodPage.Navigate(url)
-	if err != nil {
-		return err
-	}
+	wait()
 
 	return nil
 }
@@ -81,12 +79,13 @@ func (p *Page) Element(selector string) (*Element, error) {
 	}
 
 	if len(elements) > 1 {
-		return nil, MultipleElementsFoundError
+		return nil, errors.Wrapf(MultipleElementsFoundError, "p.rodPage.Elements(%s) found multiple elements", selector)
 	}
 
 	element := elements.First()
 	if element == nil {
-		return nil, ElementNotFoundError
+		html, _ := p.rodPage.HTML()
+		return nil, errors.Wrapf(ElementNotFoundError, "p.rodPage.Elements(%s) found no elements, p.rodPage.HTML()=%s", selector, html)
 	}
 
 	return &Element{rodElement: element}, nil
