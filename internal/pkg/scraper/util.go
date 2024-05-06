@@ -3,7 +3,6 @@ package scraper
 import (
 	"github.com/sejunpark/headline/internal/pkg/constant"
 	"github.com/sejunpark/headline/internal/pkg/rodext"
-	"os"
 )
 
 func init() {
@@ -18,9 +17,6 @@ func defaultBrowserOptions() rodext.BrowserOptions {
 		NoDefaultDevice: true,
 		Incognito:       true,
 		PagePoolSize:    constant.PAGE_POOL_SIZE,
-	}
-	if os.Getenv("CI") == "true" {
-		options.Debug = true
 	}
 	return *options
 }
