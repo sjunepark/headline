@@ -8,29 +8,15 @@ import (
 )
 
 type BrowserSuite struct {
-	suite.Suite
-	browser        *Browser
-	cleanupBrowser func()
-	pagePoolSize   int
+	BaseBrowserSuite
 }
 
 func (ts *BrowserSuite) SetupTest() {
-	options := BrowserOptions{
-		NoDefaultDevice: true,
-		Incognito:       true,
-		Debug:           false,
-		PagePoolSize:    16,
-	}
-	b, cleanup, err := NewBrowser(options)
-	ts.NoErrorf(err, "failed to initialize Browser: %v", err)
-	ts.browser = b
-	ts.cleanupBrowser = cleanup
-	ts.pagePoolSize = options.PagePoolSize
+	ts.SetupBaseBrowserTest()
 }
 
 func (ts *BrowserSuite) TearDownTest() {
-	ts.cleanupBrowser()
-	ts.Equal(ts.browser.pagePool.len(), 0, "pagePool should be empty after Cleanup")
+	ts.TearDownBaseBrowserTest()
 }
 
 func TestBrowserSuite(t *testing.T) {
@@ -39,9 +25,9 @@ func TestBrowserSuite(t *testing.T) {
 
 func (ts *BrowserSuite) TestBrowser_newBrowser() {
 	ts.Run("all pages in pagePool should be nil after initialization", func() {
-		size := ts.browser.pagePool.len()
+		size := ts.Browser.pagePool.len()
 		for i := 0; i < size; i++ {
-			p := <-ts.browser.pagePool.pool
+			p := <-ts.Browser.pagePool.pool
 			ts.Nil(p)
 		}
 	})
@@ -54,31 +40,31 @@ func (ts *BrowserSuite) TestBrowser_Page() {
 		for _, multiplier := range multipliers {
 			createdPageIds := make(map[proto.TargetTargetID]bool)
 
-			for i := 0; i < ts.pagePoolSize*multiplier; i++ {
-				p, putPage, err := ts.browser.Page()
-				ts.NoErrorf(err, "failed to get Page: %v", err)
+			for i := 0; i < ts.PagePoolSize*multiplier; i++ {
+				p, putPage, err := ts.Browser.Page()
+				ts.NoError(err, "failed to get Page")
 
 				id := p.rodPage.TargetID
 				createdPageIds[id] = true
 				putPage()
 			}
 
-			ts.Equal(len(createdPageIds), ts.pagePoolSize)
+			ts.Equal(len(createdPageIds), ts.PagePoolSize)
 		}
 	})
 
-	ts.Run("concurrent: unique pages returned from pool should be limited to the pool size", func() {
+	ts.Run("when concurrent unique pages returned from pool should be limited to the pool size", func() {
 		for _, multiplier := range multipliers {
-			createdPageIds := make(chan proto.TargetTargetID, ts.pagePoolSize*multiplier)
+			createdPageIds := make(chan proto.TargetTargetID, ts.PagePoolSize*multiplier)
 
 			var wg sync.WaitGroup
 
-			for i := 0; i < ts.pagePoolSize*multiplier; i++ {
+			for i := 0; i < ts.PagePoolSize*multiplier; i++ {
 				wg.Add(1)
 				go func() {
 					defer wg.Done()
-					p, putPage, err := ts.browser.Page()
-					ts.NoErrorf(err, "failed to get Page: %v", err)
+					p, putPage, err := ts.Browser.Page()
+					ts.NoError(err, "failed to get Page")
 					if err == nil {
 						defer putPage()
 					}
@@ -94,7 +80,7 @@ func (ts *BrowserSuite) TestBrowser_Page() {
 			for id := range createdPageIds {
 				pageIdsMap[id] = true
 			}
-			ts.Equal(ts.pagePoolSize, len(pageIdsMap))
+			ts.Equal(ts.PagePoolSize, len(pageIdsMap))
 		}
 	})
 }

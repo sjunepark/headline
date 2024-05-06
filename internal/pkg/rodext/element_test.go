@@ -21,15 +21,8 @@ func (ts *ElementSuite) SetupSuite() {
 	absPath, err := filepath.Abs(relPath)
 	ts.NoErrorf(err, "failed to get absolute path: %v", err)
 	ts.wikipediaURL = "file://" + absPath
-}
 
-func (ts *ElementSuite) SetupTest() {
-	options := BrowserOptions{
-		NoDefaultDevice: true,
-		Incognito:       true,
-		Debug:           false,
-		PagePoolSize:    16,
-	}
+	options := DefaultBrowserOptions
 	b, cleanupBrowser, err := NewBrowser(options)
 	ts.NoErrorf(err, "failed to initialize Browser: %v", err)
 	ts.browser = b
@@ -47,7 +40,7 @@ func (ts *ElementSuite) SetupTest() {
 	ts.NoErrorf(err, "failed to get Element: %v", err)
 }
 
-func (ts *ElementSuite) TearDownTest() {
+func (ts *ElementSuite) TearDownSuite() {
 	ts.putPage()
 	ts.cleanupBrowser()
 }
