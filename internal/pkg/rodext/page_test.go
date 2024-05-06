@@ -2,55 +2,27 @@ package rodext
 
 import (
 	"github.com/stretchr/testify/suite"
-	"path/filepath"
 	"testing"
 )
 
 type PageSuite struct {
-	suite.Suite
-	browser        *Browser
-	page           *Page
-	putPage        func()
-	cleanupBrowser func()
-	wikipediaURL   string
+	BasePageSuite
 }
 
 func (ts *PageSuite) SetupSuite() {
-	relPath := "./testdata/WikiMockup.html"
-	absPath, err := filepath.Abs(relPath)
-	ts.NoErrorf(err, "failed to get absolute path: %v", err)
-	ts.wikipediaURL = "file://" + absPath
+	ts.SetupBasePageSuite()
 }
 
-func (ts *PageSuite) SetupTest() {
-	options := BrowserOptions{
-		NoDefaultDevice: true,
-		Incognito:       true,
-		Debug:           false,
-		PagePoolSize:    16,
-	}
-	b, cleanupBrowser, err := NewBrowser(options)
-	ts.NoErrorf(err, "failed to initialize Browser: %v", err)
-	ts.browser = b
-	ts.cleanupBrowser = cleanupBrowser
-}
-
-func (ts *PageSuite) TearDownTest() {
-	ts.cleanupBrowser()
+func (ts *PageSuite) TearDownSuite() {
+	ts.TearDownBasePageSuite()
 }
 
 func (ts *PageSuite) SetupSubTest() {
-	p, putPage, err := ts.browser.Page()
-	ts.NoErrorf(err, "failed to get Page: %v", err)
-	ts.page = p
-	ts.putPage = putPage
-
-	err = ts.page.Navigate(ts.wikipediaURL)
-	ts.NoErrorf(err, "failed to navigate: %v", err)
+	ts.SetupBasePageSubTest()
 }
 
 func (ts *PageSuite) TearDownSubTest() {
-	ts.putPage()
+	ts.TearDownBasePageSubTest()
 }
 
 func TestPageSuite(t *testing.T) {
@@ -58,10 +30,10 @@ func TestPageSuite(t *testing.T) {
 }
 
 func (ts *PageSuite) TestPage_cleanup() {
-	ts.Run("Page should be cleaned up after cleanup is called", func() {
-		page := ts.page
+	ts.Run("page should be cleaned up after cleanup is called", func() {
+		page := ts.Page
 		_, err := page.rodPage.Info()
-		ts.NoErrorf(err, "failed to get Page info: %v", err)
+		ts.NoError(err, "failed to get Page info")
 
 		page.cleanup()
 
@@ -72,34 +44,34 @@ func (ts *PageSuite) TestPage_cleanup() {
 
 func (ts *PageSuite) TestPage_Element() {
 	ts.Run("Element should return the element if it exists", func() {
-		el, err := ts.page.Element("h1")
-		ts.NoErrorf(err, "failed to get element: %v", err)
-		ts.NotNilf(el, "element should not be nil: %v", el)
+		el, err := ts.Page.Element("h1")
+		ts.NoError(err, "failed to get element")
+		ts.NotNil(el, "element should not be nil")
 	})
 
 	ts.Run("Element should return an error when multiple elements are found", func() {
-		el, err := ts.page.Element("a")
-		ts.ErrorIsf(err, MultipleElementsFoundError, "should return MultipleElementsFoundError when multiple elements are found, got: %v", err)
-		ts.Nilf(el, "element should be nil: %v", el)
+		el, err := ts.Page.Element("a")
+		ts.ErrorIs(err, MultipleElementsFoundError, "should return MultipleElementsFoundError when multiple elements are found")
+		ts.Nil(el, "when multiple elements are found, element should be nil")
 	})
 
 	ts.Run("Element should return an error when no elements are found", func() {
-		el, err := ts.page.Element(".nonexistent-element")
-		ts.ErrorIsf(err, ElementNotFoundError, "should return ElementNotFoundError when no elements are found, got: %v", err)
-		ts.Nil(el, "element should be nil: %v", el)
+		el, err := ts.Page.Element(".nonexistent-element")
+		ts.ErrorIs(err, ElementNotFoundError, "should return ElementNotFoundError when no elements are found")
+		ts.Nil(el, "when no elements are found, element should be nil")
 	})
 }
 
 func (ts *PageSuite) TestPage_Elements() {
 	ts.Run("Elements should return the elements if they exist", func() {
-		els, err := ts.page.Elements("a")
-		ts.NoErrorf(err, "failed to get elements: %v", err)
-		ts.NotEmptyf(els, "elements should not be empty: %v", els)
+		els, err := ts.Page.Elements("a")
+		ts.NoError(err, "failed to get elements")
+		ts.NotEmpty(els, "elements should not be empty")
 	})
 
 	ts.Run("Elements should return an empty slice when no elements are found", func() {
-		els, err := ts.page.Elements(".nonexistent-element")
-		ts.NoErrorf(err, "failed to get elements: %v", err)
-		ts.Empty(els, "elements should be empty: %v", els)
+		els, err := ts.Page.Elements(".nonexistent-element")
+		ts.NoError(err, "failed to get elements")
+		ts.Empty(els, "elements should be empty")
 	})
 }
