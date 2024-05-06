@@ -1,6 +1,7 @@
 package scraper
 
 import (
+	"github.com/cockroachdb/errors"
 	"github.com/sejunpark/headline/internal/pkg/model"
 	"log/slog"
 	"time"
@@ -45,6 +46,9 @@ func (s *Scraper) Scrape(keyword string, startDate time.Time) ([]*model.ArticleI
 
 	var nextPageExists bool
 	for {
+		if currentPage == nil {
+			return nil, errors.AssertionFailedf("currentPage is nil. currentPage=%v,infos=%v, nextPageExists=%v", currentPage, infos, nextPageExists)
+		}
 		currentPage, nextPageExists = s.FetchNextPage(currentPage)
 		if !nextPageExists {
 			slog.Debug("no more pages.", "function", functionName)

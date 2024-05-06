@@ -6,6 +6,7 @@ toolchain go1.22.2
 
 require (
 	github.com/adrg/xdg v0.4.0
+	github.com/cockroachdb/errors v1.11.1
 	github.com/go-rod/rod v0.115.0
 	github.com/stretchr/testify v1.9.0
 	github.com/wailsapp/wails/v2 v2.8.1
@@ -13,7 +14,6 @@ require (
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect
-	github.com/cockroachdb/errors v1.11.1 // indirect
 	github.com/cockroachdb/logtags v0.0.0-20230118201751-21c54148d20b // indirect
 	github.com/cockroachdb/redact v1.1.5 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect

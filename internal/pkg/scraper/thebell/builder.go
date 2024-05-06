@@ -33,27 +33,29 @@ func (b *ScraperBuilder) FetchArticlesPage(keyword string, _ time.Time) (*scrape
 
 	keywordUrl, err := b.util.getKeywordUrl(keyword)
 	if err != nil {
-		return nil, errors.Newf("failed to get keyword url: %w", err)
+		return nil, errors.Wrapf(err, "getKeywordUrl(%s) failed", keyword)
 	}
 	pageNo, err := b.util.getPageNo(keywordUrl)
 	if err != nil {
-		return nil, errors.Newf("failed to get page no: %w", err)
+		return nil, errors.Wrapf(err, "getPageNo(%s) failed", keywordUrl.String())
 	}
 	page, _, err := b.browser.Page()
 	if err != nil {
-		return nil, errors.Newf("failed to get browser page: %w", err)
+		return nil, errors.Wrap(err, "browser.Page() failed")
 	}
 	err = page.Navigate(keywordUrl.String())
 	if err != nil {
-		return nil, errors.Newf("failed to navigate to keyword url: %w", err)
+		return nil, errors.Wrapf(err, "page.Navigate(%s) failed", keywordUrl.String())
 	}
 	el, err := page.Element(".newsBox")
 	if err != nil {
-		return nil, errors.Newf("failed to get newsBox element: %w", err)
+		html, _ := page.HTML()
+		return nil, errors.Wrapf(err, "page.Element(.newsBox) failed, page.HTML()=%s", html)
 	}
-	ap := scraper.NewArticlesPage(keyword, el, keywordUrl, pageNo)
-	slog.Debug("fetched articles page.", "function", functionName, "keyword", keyword, "pageNo", pageNo)
-	return ap, nil
+
+	articlesPage := scraper.NewArticlesPage(keyword, el, keywordUrl, pageNo)
+	slog.Debug("executed:", "function", functionName, "keyword", keyword, "pageNo", pageNo)
+	return articlesPage, nil
 }
 
 func (b *ScraperBuilder) FetchNextPage(currentPage *scraper.ArticlesPage) (nextPage *scraper.ArticlesPage, exists bool) {

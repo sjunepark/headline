@@ -1,7 +1,7 @@
 package thebell
 
 import (
-	"fmt"
+	"github.com/cockroachdb/errors"
 	"net/url"
 	"strconv"
 )
@@ -30,7 +30,7 @@ func (util *thebellUrlUtil) getAbsoluteUrl(relativeUrl string) (*url.URL, error)
 
 func (util *thebellUrlUtil) getKeywordUrl(keyword string) (*url.URL, error) {
 	if keyword == "" {
-		return nil, fmt.Errorf("keyword is empty")
+		return nil, errors.New("keyword is empty")
 	}
 	keywordRelPath := "/free/content/Search.asp"
 
@@ -59,7 +59,7 @@ func (util *thebellUrlUtil) cleanArticleUrl(articleUrl string) (string, error) {
 	query := parsedUrl.Query()
 	key := query.Get("key")
 	if key == "" {
-		return "", fmt.Errorf("parameter 'key' not found in url: %s", articleUrl)
+		return "", errors.Newf("parameter 'key' not found in url: %s", articleUrl)
 	}
 	query = url.Values{"key": []string{key}}
 	parsedUrl.RawQuery = query.Encode()
