@@ -55,23 +55,28 @@ func (b *ScraperBuilder) FetchArticlesPage(keyword string, startDate time.Time) 
 func (b *ScraperBuilder) FetchNextPage(currentPage *scraper.ArticlesPage) (nextPage *scraper.ArticlesPage, exists bool) {
 	nextPageUrl, err := b.util.getNextPageUrl(currentPage.PageUrl)
 	if err != nil {
+		slog.Error("failed to get next page url", "error", err)
 		return nil, false
 	}
 
 	p, _, err := b.browser.Page()
 	if err != nil {
+		slog.Error("failed to get browser page", "error", err)
 		return nil, false
 	}
 	err = p.Navigate(nextPageUrl.String())
 	if err != nil {
+		slog.Error("failed to navigate to next page", "error", err)
 		return nil, false
 	}
 
 	nextPageEl, err := p.Element(".newsBox")
 	if err != nil {
+		slog.Error("failed to get newsBox element", "error", err)
 		return nil, false
 	}
 	if equal, equalErr := nextPageEl.Equal(currentPage.PageElement); equalErr != nil || equal {
+		slog.Debug("returned page is the same as the current page")
 		return nil, false
 	}
 
