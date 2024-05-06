@@ -18,7 +18,7 @@ jobs:
         id: setup-chrome
         uses: browser-actions/setup-chrome@v1
         with:
-          chrome-version: stable  # Set the desired Chrome version or channel
+          chrome-version: 120
           install-dependencies: true
 
       - name: Verify Chrome Installation
