@@ -7,7 +7,7 @@ import (
 )
 
 type Article struct {
-	ArticleMetadata
+	ArticleInfos
 	Content string
 }
 
@@ -15,7 +15,7 @@ func (a *Article) IsContentScraped() bool {
 	return a.Content != ""
 }
 
-type ArticleMetadata struct {
+type ArticleInfos struct {
 	Keywords        map[string]bool // set implementation of keywords used to search this article
 	Title           string
 	Summary         string
@@ -26,7 +26,7 @@ type ArticleMetadata struct {
 	SourceUrl       *url.URL
 }
 
-func (a *ArticleMetadata) IsValid() bool {
+func (a *ArticleInfos) IsValid() bool {
 	keywordsNotEmpty := len(a.Keywords) > 0
 	titleNotEmpty := a.Title != ""
 	createdDateTimeNotEmpty := a.CreatedDateTime != time.Time{}

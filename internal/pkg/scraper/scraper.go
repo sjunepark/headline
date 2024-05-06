@@ -2,39 +2,49 @@ package scraper
 
 import (
 	"github.com/sejunpark/headline/internal/pkg/model"
+	"github.com/sejunpark/headline/internal/pkg/rodext"
 	"time"
 )
 
-// baseScraper
-//
-// fetchArticles should return a channel of ArticleMetadata for a given keyword.
-// It should close the returning channel when there are no more articles to scrape.
-// When no specific startDate is specified, a zero time.Time will be passed, which should be interpreted as "all time".
-//
-// fetchArticle should return an article for a given url, and should be thread-safe.
-//
-// cleanup should clean up any resources used by the baseScraper, such as closing the browser.
-type baseScraper interface {
-	cleanup()
-	fetchArticles(keyword string, startDate time.Time) (<-chan *model.ArticleMetadata, error)
-	String() string
+type scraperBuilder interface {
+	fetchArticlesPage(keyword string, startDate time.Time) (*rodext.Element, error)
+	fetchNextPage(currentPage *rodext.Element) (page *rodext.Element, exists bool, err error)
+	parseArticlesPage(p *rodext.Element) ([]*model.ArticleInfos, error)
 }
 
 type Scraper struct {
-	baseScraper
+	scraperBuilder
 }
 
-func NewScraper(s baseScraper) (scraper *Scraper, cleanup func()) {
-	scraper = &Scraper{s}
-	return scraper, s.cleanup
+func NewScraper(builder scraperBuilder, cleanup func()) (*Scraper, func(), error) {
+	return &Scraper{scraperBuilder: builder}, cleanup, nil
 }
 
-// scrape fetches articles for the given keywords and start date.
-// It returns a channel of articles, which will be closed when there are no more articles to scrape.
-func (s *Scraper) scrape(keyword string, startDate time.Time) (<-chan *model.ArticleMetadata, error) {
-	articles, err := s.fetchArticles(keyword, startDate)
-	if err != nil {
-		return nil, err
+func (s *Scraper) scrape(keyword string, startDate time.Time) ([]*model.ArticleInfos, error) {
+	var infos []*model.ArticleInfos
+	var currentPage *rodext.Element
+	var nextPageExists bool
+	var err error
+
+	for {
+		currentPage, err = s.fetchArticlesPage(keyword, startDate)
+		if err != nil {
+			return nil, err
+		}
+		currentInfos, parseErr := s.parseArticlesPage(currentPage)
+		if parseErr != nil {
+			return nil, parseErr
+		}
+		infos = append(infos, currentInfos...)
+
+		currentPage, nextPageExists, err = s.fetchNextPage(currentPage) //nolint:ineffassign,staticcheck
+		if err != nil {
+			break
+		}
+		if !nextPageExists {
+			break
+		}
 	}
-	return articles, nil
+
+	return infos, nil
 }
