@@ -42,7 +42,7 @@ func (s *Scraper) Scrape(keyword string, startDate time.Time) ([]*model.ArticleI
 
 	var nextPageExists bool
 	for {
-		currentPage, nextPageExists = s.FetchNextPage(currentPage) //nolint:ineffassign,staticcheck
+		currentPage, nextPageExists = s.FetchNextPage(currentPage)
 		if !nextPageExists {
 			slog.Debug("no more pages")
 			break
