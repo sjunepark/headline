@@ -26,7 +26,7 @@ func (e *Element) Element(selector string) (*Element, error) {
 		return nil, MultipleElementsFoundError
 	}
 	if len(elements) == 0 {
-		return nil, ElementNotFoundError
+		return nil, NotFoundError
 	}
 	return &Element{rodElement: elements[0]}, nil
 }
@@ -38,20 +38,24 @@ func (e *Element) Elements(selector string) ([]*Element, error) {
 	}
 
 	if len(elements) == 0 {
-		return nil, ElementNotFoundError
+		return nil, NotFoundError
 	}
 
 	return newElements(elements), nil
 }
 
 // Attribute returns the value of the attribute with the given name.
-// If the attribute is not found, an empty string is returned.
-func (e *Element) Attribute(name string) string {
+// If the attribute is not found, it returns a NotFoundError.
+// If the attribute is found but the value is empty, it returns an empty string.
+func (e *Element) Attribute(name string) (string, error) {
 	attribute, err := e.rodElement.Attribute(name)
 	if err != nil {
-		return ""
+		return "", err
 	}
-	return *attribute
+	if attribute == nil {
+		return "", NotFoundError
+	}
+	return *attribute, nil
 }
 
 // Text returns the text content of the element.

@@ -66,7 +66,7 @@ func (ts *ElementSuite) TestElement_Element() {
 
 	ts.Run("should error if the selector is invalid", func() {
 		el, err := ts.ulElement.Element("invalid")
-		ts.ErrorIsf(err, ElementNotFoundError, "expected ElementNotFoundError but got %v", err)
+		ts.ErrorIsf(err, NotFoundError, "expected NotFoundError but got %v", err)
 		ts.Nilf(el, "expected Element to be nil but got %v", el)
 	})
 
@@ -89,8 +89,28 @@ func (ts *ElementSuite) TestElement_Elements() {
 
 	ts.Run("should error if the selector is invalid", func() {
 		els, err := ts.ulElement.Elements("invalid")
-		ts.ErrorIsf(err, ElementNotFoundError, "expected ElementNotFoundError but got %v", err)
+		ts.ErrorIsf(err, NotFoundError, "expected NotFoundError but got %v", err)
 		ts.Nilf(els, "expected Elements to be nil but got %v", els)
+	})
+}
+
+func (ts *ElementSuite) TestElement_Attribute() {
+	ts.Run("should return an attribute value", func() {
+		ulClass, err := ts.ulElement.Attribute("class")
+		ts.NoError(err, "failed to get attribute")
+		ts.Equal("ulClass", ulClass)
+	})
+
+	ts.Run("should error attribute is not found", func() {
+		got, err := ts.ulElement.Attribute("invalid")
+		ts.ErrorIs(err, NotFoundError)
+		ts.Empty(got)
+	})
+
+	ts.Run("should return an empty string if the attribute exists but is empty", func() {
+		emptyAttr, err := ts.ulElement.Attribute("empty")
+		ts.NoError(err, "failed to get attribute")
+		ts.Equal("", emptyAttr)
 	})
 }
 
