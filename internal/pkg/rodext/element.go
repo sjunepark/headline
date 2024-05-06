@@ -84,3 +84,11 @@ func (e *Element) Equal(other *Element) (bool, error) {
 	equal := e.Text() == other.Text()
 	return equal, nil
 }
+
+func (e *Element) HTML() (string, error) {
+	html, err := e.rodElement.HTML()
+	if err != nil {
+		return "", err
+	}
+	return html, nil
+}

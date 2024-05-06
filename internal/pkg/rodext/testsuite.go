@@ -64,3 +64,22 @@ func (ts *BasePageSuite) SetupBasePageSubTest() {
 func (ts *BasePageSuite) TearDownBasePageSubTest() {
 	ts.PutPage()
 }
+
+type BaseElementSuite struct {
+	BasePageSuite
+	ulElement *Element
+}
+
+func (ts *BaseElementSuite) SetupBaseElementSuite() {
+	ts.SetupBasePageSuite()
+	ts.SetupBasePageSubTest()
+
+	var err error
+	ts.ulElement, err = ts.Page.Element("ul")
+	ts.NoError(err, "failed to get Element")
+}
+
+func (ts *BaseElementSuite) TearDownBaseElementSuite() {
+	ts.TearDownBasePageSubTest()
+	ts.TearDownBasePageSuite()
+}

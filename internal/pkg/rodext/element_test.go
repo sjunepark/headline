@@ -2,47 +2,19 @@ package rodext
 
 import (
 	"github.com/stretchr/testify/suite"
-	"path/filepath"
 	"testing"
 )
 
 type ElementSuite struct {
-	suite.Suite
-	browser        *Browser
-	page           *Page
-	ulElement      *Element
-	putPage        func()
-	cleanupBrowser func()
-	wikipediaURL   string
+	BaseElementSuite
 }
 
 func (ts *ElementSuite) SetupSuite() {
-	relPath := "./testdata/WikiMockup.html"
-	absPath, err := filepath.Abs(relPath)
-	ts.NoErrorf(err, "failed to get absolute path: %v", err)
-	ts.wikipediaURL = "file://" + absPath
-
-	options := DefaultBrowserOptions
-	b, cleanupBrowser, err := NewBrowser(options)
-	ts.NoErrorf(err, "failed to initialize Browser: %v", err)
-	ts.browser = b
-	ts.cleanupBrowser = cleanupBrowser
-
-	p, putPage, err := ts.browser.Page()
-	ts.NoErrorf(err, "failed to get Page: %v", err)
-	ts.page = p
-	ts.putPage = putPage
-
-	err = ts.page.Navigate(ts.wikipediaURL)
-	ts.NoErrorf(err, "failed to navigate: %v", err)
-
-	ts.ulElement, err = ts.page.Element("ul")
-	ts.NoErrorf(err, "failed to get Element: %v", err)
+	ts.SetupBaseElementSuite()
 }
 
 func (ts *ElementSuite) TearDownSuite() {
-	ts.putPage()
-	ts.cleanupBrowser()
+	ts.TearDownBaseElementSuite()
 }
 
 func TestElementSuite(t *testing.T) {
@@ -52,8 +24,9 @@ func TestElementSuite(t *testing.T) {
 func (ts *ElementSuite) TestElement_Element() {
 	ts.Run("should return an Element with the correct selector", func() {
 		aElement, err := ts.ulElement.Element("a[href='#section1']")
-		ts.NoErrorf(err, "failed to get Element: %v", err)
-		ts.Truef(isElement(aElement), "returned Element is not an Element")
+		html, _ := aElement.HTML()
+		ts.NoErrorf(err, "failed to get Element, target ulElement: %v", html)
+		ts.Truef(isElement(aElement), "returned Element is not an Element, got %T", aElement)
 		ts.NotNilf(aElement, "returned Element is nil")
 	})
 
@@ -73,16 +46,16 @@ func (ts *ElementSuite) TestElement_Element() {
 func (ts *ElementSuite) TestElement_Elements() {
 	ts.Run("should return a slice of Elements with the correct selector", func() {
 		liElements, err := ts.ulElement.Elements("li")
-		ts.NoErrorf(err, "failed to get Elements: %v", err)
-		ts.Truef(len(liElements) > 0, "expected slice of Elements to have length > 0 but got %v", len(liElements))
+		ts.NoError(err, "failed to get Elements")
+		ts.Truef(len(liElements) > 0, "expected slice of Elements to have length > 0 but got %v", liElements)
 		for _, el := range liElements {
-			ts.Truef(isElement(el), "returned Element is not an Element")
+			ts.Truef(isElement(el), "returned Element is not an Element, got %T", el)
 		}
 	})
 
 	ts.Run("should error if the selector is invalid", func() {
 		els, err := ts.ulElement.Elements("invalid")
-		ts.ErrorIsf(err, ElementNotFoundError, "expected ElementNotFoundError but got %v", err)
+		ts.ErrorIs(err, ElementNotFoundError)
 		ts.Nilf(els, "expected Elements to be nil but got %v", els)
 	})
 }
