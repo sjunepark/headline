@@ -1,20 +1,28 @@
-# This workflow will build a golang project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+# .github/workflows/your-workflow.yml
 
 name: Go
 
 on:
   push:
-    branches: [ "main", "test" ]
+    branches: ["main", "test"]
   pull_request:
-    branches: [ "main", "test" ]
+    branches: ["main", "test"]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install Chrome via setup-chrome
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable  # Set the desired Chrome version or channel
+          install-dependencies: true
+
+      - name: Verify Chrome Installation
+        run: ${{ steps['setup-chrome'].outputs.chrome-path }} --version
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -40,4 +48,6 @@ jobs:
         run: make check-ci
 
       - name: Test
+        env:
+          ROD_BROWSER_BIN: ${{ steps['setup-chrome'].outputs.chrome-path }}
         run: make test

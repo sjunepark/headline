@@ -2,9 +2,11 @@ package rodext
 
 import (
 	"context"
+	"github.com/cockroachdb/errors"
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
 	"log/slog"
+	"os"
 	"time"
 )
 
@@ -29,9 +31,26 @@ func NewBrowser(options BrowserOptions) (b *Browser, cleanup func(), err error) 
 		l, launchErr := launcher.New().Headless(false).Devtools(true).Launch()
 		if launchErr != nil {
 			cancel()
-			return nil, nil, launchErr
+			return nil, nil, errors.Wrap(launchErr, "failed to launch browser")
 		}
 		rodBrowser = rodBrowser.Trace(true).SlowMotion(2 * time.Second).ControlURL(l)
+	}
+
+	if os.Getenv("CI") == "true" {
+		binPath := os.Getenv("ROD_BROWSER_BIN")
+		fileInfo, statErr := os.Stat(binPath)
+		if statErr != nil {
+			cancel()
+			return nil, nil, errors.Wrapf(statErr, "failed to get browser binary from path %s", binPath)
+		}
+		slog.Debug("Using browser binary from path", "path", binPath, "fileInfo", fileInfo.Name())
+
+		l, launchErr := launcher.New().Bin(binPath).Launch()
+		if launchErr != nil {
+			cancel()
+			return nil, nil, errors.Wrap(launchErr, "failed to launch browser")
+		}
+		rodBrowser = rodBrowser.ControlURL(l)
 	}
 
 	err = rodBrowser.Connect()
