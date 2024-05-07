@@ -7,6 +7,14 @@ import (
 	"time"
 )
 
+type Scraper struct {
+	Builder
+}
+
+func NewScraper(builder Builder, cleanup func()) (*Scraper, func(), error) {
+	return &Scraper{Builder: builder}, cleanup, nil
+}
+
 // Builder is an interface that defines the methods which a scraper builder must implement.
 //
 // FetchArticlesPage should return an ArticlesPage object for the given keyword and start date.
@@ -22,14 +30,6 @@ type Builder interface {
 	FetchArticlesPage(keyword string, startDate time.Time) (*ArticlesPage, error)
 	FetchNextPage(currentPage *ArticlesPage) (nextPage *ArticlesPage, err error)
 	ParseArticlesPage(p *ArticlesPage) ([]*model.ArticleInfo, error)
-}
-
-type Scraper struct {
-	Builder
-}
-
-func NewScraper(builder Builder, cleanup func()) (*Scraper, func(), error) {
-	return &Scraper{Builder: builder}, cleanup, nil
 }
 
 func (s *Scraper) Scrape(keyword string, startDate time.Time) ([]*model.ArticleInfo, error) {
