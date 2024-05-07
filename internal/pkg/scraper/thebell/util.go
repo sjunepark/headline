@@ -1,6 +1,8 @@
 package thebell
 
 import (
+	"github.com/sejunpark/headline/internal/pkg/scraper"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -23,4 +25,39 @@ func parseDatetime(thebellDate string) (time.Time, error) {
 		return time.Time{}, err
 	}
 	return parsed, nil
+}
+
+// currentPageNoIsValid checks if the current page number is valid.
+// This check is used since the bell shows the last page when it's queried with a large page number beyond range.
+func currentPageNoIsValid(p *scraper.ArticlesPage) bool {
+	// When properly accessed, thebell colors the current page number element,
+	// which is represented as an "em.cur" element.
+	currentPageEl, err := p.Element("em.cur")
+	if err == nil {
+		currentPageNo, convErr := strconv.Atoi(currentPageEl.Text())
+		if convErr == nil && currentPageNo == int(p.PageNo) {
+			return true
+		}
+	}
+
+	// If em.cur is not found, check the page numbers in the page navigation anchor elements.
+	elements, err := p.Elements(".paging>.btnPage")
+	if err != nil {
+		return false
+	}
+	for _, el := range elements {
+		attribute, attrErr := el.Attribute("id")
+		if attrErr != nil {
+			return false
+		}
+		no, convErr := strconv.Atoi(attribute)
+		if convErr != nil {
+			return false
+		}
+
+		if p.PageNo == uint(no) {
+			return true
+		}
+	}
+	return false
 }

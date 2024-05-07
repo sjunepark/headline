@@ -20,7 +20,7 @@ import (
 // ParseArticlesPage should parse and return model.ArticleInfo objects.
 type Builder interface {
 	FetchArticlesPage(keyword string, startDate time.Time) (*ArticlesPage, error)
-	FetchNextPage(currentPage *ArticlesPage) (nextPage *ArticlesPage, exists bool)
+	FetchNextPage(currentPage *ArticlesPage) (nextPage *ArticlesPage, err error)
 	ParseArticlesPage(p *ArticlesPage) ([]*model.ArticleInfo, error)
 }
 
@@ -49,9 +49,9 @@ func (s *Scraper) Scrape(keyword string, startDate time.Time) ([]*model.ArticleI
 		if currentPage == nil {
 			return nil, errors.AssertionFailedf("currentPage is nil. currentPage=%v,infos=%v, nextPageExists=%v", currentPage, infos, nextPageExists)
 		}
-		currentPage, nextPageExists = s.FetchNextPage(currentPage)
-		if !nextPageExists {
-			slog.Debug("no more pages.", "function", functionName)
+		currentPage, err = s.FetchNextPage(currentPage)
+		if err != nil {
+			slog.Error("failed to fetch next page.", "function", functionName, "error", err)
 			break
 		}
 		currentInfos, parseErr := s.ParseArticlesPage(currentPage)

@@ -53,12 +53,12 @@ func (ts *theBellScraperBuilderSuite) Test_fetchArticlesPage() {
 }
 
 func (ts *theBellScraperBuilderSuite) Test_FetchNextPage() {
-	ts.Run("when nextPage exists should return true and a different next page", func() {
+	ts.Run("when nextPage exists should not return an error, and text should be different", func() {
 		initialPage, err := ts.Builder.FetchArticlesPage("삼성전자", time.Time{})
 		ts.NoError(err, "failed to fetch articles page")
 
-		nextPage, exists := ts.Builder.FetchNextPage(initialPage)
-		ts.True(exists)
+		nextPage, err := ts.Builder.FetchNextPage(initialPage)
+		ts.NoError(err, "failed to fetch next page")
 		ts.NotNil(nextPage)
 
 		ts.NotEqual(initialPage.Text(), nextPage.Text())
@@ -68,8 +68,8 @@ func (ts *theBellScraperBuilderSuite) Test_FetchNextPage() {
 		p, err := ts.Builder.FetchArticlesPage("청호나이스", time.Time{})
 		ts.NoError(err, "failed to fetch articles page")
 
-		nextPage, exists := ts.Builder.FetchNextPage(p)
-		ts.False(exists)
+		nextPage, err := ts.Builder.FetchNextPage(p)
+		ts.Error(err, "expected an error")
 		ts.Nil(nextPage)
 	})
 }

@@ -63,48 +63,44 @@ func (b *ScraperBuilder) FetchArticlesPage(keyword string, _ time.Time) (*scrape
 	return articlesPage, nil
 }
 
-func (b *ScraperBuilder) FetchNextPage(currentPage *scraper.ArticlesPage) (nextPage *scraper.ArticlesPage, exists bool) {
+func (b *ScraperBuilder) FetchNextPage(currentPage *scraper.ArticlesPage) (nextPage *scraper.ArticlesPage, err error) {
 	functionName := "FetchNextPage"
 
 	if currentPage == nil {
-		slog.Error("currentPage is nil.", "function", functionName)
-		return nil, false
+		return nil, errors.AssertionFailedf("currentPage is nil")
 	}
 
 	nextPageUrl, nextPageNo, err := b.util.getNextPageUrl(currentPage.PageUrl)
 	if err != nil {
-		slog.Error("failed to get next page url.", "function", functionName, "error", err)
-		return nil, false
+		return nil, errors.Wrapf(err, "getNextPageUrl(%s) failed", currentPage.PageUrl.String())
 	}
 
 	p, _, err := b.browser.Page()
 	if err != nil {
-		slog.Error("failed to get browser page.", "function", functionName, "error", err)
-		return nil, false
+		return nil, errors.Wrap(err, "browser.Page() failed")
 	}
 	wait, err := p.Navigate(nextPageUrl.String())
 	if err != nil {
-		slog.Error("failed to navigate to next page.", "function", functionName, "error", err)
-		return nil, false
+		return nil, errors.Wrapf(err, "page.Navigate(%s) failed", nextPageUrl.String())
 	}
 	slog.Debug("navigated to next page.", "function", functionName, "keyword", currentPage.Keyword, "pageNo", nextPageNo)
-
 	selector := ".newsBox"
 	err = wait(selector)
 	if err != nil {
-		return nil, false
-	}
-	nextPageEl, err := p.Element(selector)
-	if err != nil {
-		slog.Error("failed to get newsBox element.", "function", functionName, "error", err)
-		return nil, false
-	}
-	if equal, equalErr := nextPageEl.Equal(currentPage.PageElement); equalErr != nil || equal {
-		slog.Debug("nextPage is the same as currentPage, returning function.", "function", functionName)
-		return nil, false
+		return nil, errors.Wrapf(err, "wait(%s) failed", selector)
 	}
 
-	return scraper.NewArticlesPage(currentPage.Keyword, nextPageEl, nextPageUrl, nextPageNo), true
+	nextPageEl, err := p.Element(selector)
+	if err != nil {
+		return nil, errors.Wrapf(err, "page.Element(%s) failed", selector)
+	}
+	nextPage = scraper.NewArticlesPage(currentPage.Keyword, nextPageEl, nextPageUrl, nextPageNo)
+
+	if !currentPageNoIsValid(nextPage) {
+		return nil, errors.Newf("currentPageNoIsValid(%v) failed", nextPage)
+	}
+
+	return nextPage, nil
 }
 
 func (b *ScraperBuilder) ParseArticlesPage(p *scraper.ArticlesPage) ([]*model.ArticleInfo, error) {
