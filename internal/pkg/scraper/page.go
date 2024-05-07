@@ -21,22 +21,22 @@ func NewArticlesPage(keyword string, element *rodext.Element, currentUrl *url.UR
 	}
 }
 
-func (a *ArticlesPage) Element(selector string) (*rodext.Element, error) {
-	el, err := a.PageElement.Element(selector)
+func (p *ArticlesPage) Element(selector string) (*rodext.Element, error) {
+	el, err := p.PageElement.Element(selector)
 	if err != nil {
 		return nil, err
 	}
 	return el, nil
 }
 
-func (a *ArticlesPage) Elements(selector string) ([]*rodext.Element, error) {
-	els, err := a.PageElement.Elements(selector)
+func (p *ArticlesPage) Elements(selector string) ([]*rodext.Element, error) {
+	els, err := p.PageElement.Elements(selector)
 	if err != nil {
 		return nil, err
 	}
 	return els, nil
 }
 
-func (a *ArticlesPage) Text() string {
-	return a.PageElement.Text()
+func (p *ArticlesPage) Text() string {
+	return p.PageElement.Text()
 }
