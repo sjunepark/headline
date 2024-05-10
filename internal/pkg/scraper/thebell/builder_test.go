@@ -32,17 +32,12 @@ func TestThebellScraperBuilderSuite(t *testing.T) {
 }
 
 func (ts *theBellScraperBuilderSuite) Test_fetchArticlesPage() {
-	ts.Run("when keyword is valid it should return a page with newsList and paging", func() {
+	ts.Run("when keyword is valid it should have an articles element and a paging element", func() {
 		p, err := ts.Builder.FetchArticlesPage("삼성전자", time.Time{})
 		ts.NoError(err, "failed to fetch articles page")
 
-		newsList, err := p.Element(".newsList")
-		ts.NoError(err, "failed to get newsList")
-		ts.NotNil(newsList)
-
-		paging, err := p.Element(".paging")
-		ts.NoError(err, "failed to get paging")
-		ts.NotNil(paging)
+		ts.NotNil(p.Articles)
+		ts.NotNil(p.PageNav)
 	})
 
 	ts.Run("when keyword is empty it should return an error", func() {
@@ -53,7 +48,7 @@ func (ts *theBellScraperBuilderSuite) Test_fetchArticlesPage() {
 }
 
 func (ts *theBellScraperBuilderSuite) Test_FetchNextPage() {
-	ts.Run("when nextPage exists should not return an error, and text should be different", func() {
+	ts.Run("when nextPage exists it should not return an error, and text should be different", func() {
 		initialPage, err := ts.Builder.FetchArticlesPage("삼성전자", time.Time{})
 		ts.NoError(err, "failed to fetch articles page")
 
