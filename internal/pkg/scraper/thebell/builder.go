@@ -39,6 +39,7 @@ func (b *ScraperBuilder) FetchArticlesPage(keyword string, _ time.Time) (*scrape
 	if err != nil {
 		return nil, errors.Wrapf(err, "getPageNo(%s) failed", keywordUrl.String())
 	}
+
 	page, _, err := b.browser.Page()
 	if err != nil {
 		return nil, errors.Wrap(err, "browser.Page() failed")
@@ -48,17 +49,12 @@ func (b *ScraperBuilder) FetchArticlesPage(keyword string, _ time.Time) (*scrape
 		return nil, errors.Wrapf(err, "page.Navigate(%s) failed", keywordUrl.String())
 	}
 
-	selector := ".newsBox"
-	err = wait(selector)
+	articlesEl, pageNavEl, err := getPageElements(page, wait)
 	if err != nil {
-		return nil, err
-	}
-	el, err := page.Element(selector)
-	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "getPageElements() failed")
 	}
 
-	articlesPage := scraper.NewArticlesPage(keyword, el, keywordUrl, pageNo)
+	articlesPage := scraper.NewArticlesPage(keyword, articlesEl, pageNavEl, keywordUrl, pageNo)
 	slog.Debug("executed:", "function", functionName, "keyword", keyword, "pageNo", pageNo)
 	return articlesPage, nil
 }
@@ -84,18 +80,13 @@ func (b *ScraperBuilder) FetchNextPage(currentPage *scraper.ArticlesPage) (nextP
 		return nil, errors.Wrapf(err, "page.Navigate(%s) failed", nextPageUrl.String())
 	}
 	slog.Debug("navigated to next page.", "function", functionName, "keyword", currentPage.Keyword, "pageNo", nextPageNo)
-	selector := ".newsBox"
-	err = wait(selector)
+
+	nextPageEl, pageNavEl, err := getPageElements(p, wait)
 	if err != nil {
-		return nil, errors.Wrapf(err, "wait(%s) failed", selector)
+		return nil, errors.Wrap(err, "getPageElements() failed")
 	}
 
-	nextPageEl, err := p.Element(selector)
-	if err != nil {
-		return nil, errors.Wrapf(err, "page.Element(%s) failed", selector)
-	}
-	nextPage = scraper.NewArticlesPage(currentPage.Keyword, nextPageEl, nextPageUrl, nextPageNo)
-
+	nextPage = scraper.NewArticlesPage(currentPage.Keyword, nextPageEl, pageNavEl, nextPageUrl, nextPageNo)
 	if !currentPageNoIsValid(nextPage) {
 		return nil, errors.Newf("currentPageNoIsValid(%v) failed", nextPage)
 	}
@@ -103,10 +94,34 @@ func (b *ScraperBuilder) FetchNextPage(currentPage *scraper.ArticlesPage) (nextP
 	return nextPage, nil
 }
 
+func getPageElements(page *rodext.Page, wait func(selector string) error) (articlesEl *rodext.Element, pageNavEl *rodext.Element, err error) {
+	articlesSelector := ".listBox>ul"
+	err = wait(articlesSelector)
+	if err != nil {
+		return nil, nil, errors.Wrapf(err, "wait(%s) failed", articlesSelector)
+	}
+	articlesEl, err = page.Element(articlesSelector)
+	if err != nil {
+		return nil, nil, errors.Wrapf(err, "page.Element(%s) failed", articlesSelector)
+	}
+
+	pageNavSelector := ".paging"
+	err = wait(pageNavSelector)
+	if err != nil {
+		return nil, nil, errors.Wrapf(err, "wait(%s) failed", pageNavSelector)
+	}
+	pageNavEl, err = page.Element(pageNavSelector)
+	if err != nil {
+		return nil, nil, errors.Wrapf(err, "page.Element(%s) failed", pageNavSelector)
+	}
+
+	return articlesEl, pageNavEl, nil
+}
+
 func (b *ScraperBuilder) ParseArticlesPage(p *scraper.ArticlesPage) ([]*model.ArticleInfo, error) {
 	functionName := "ParseArticlesPage"
 
-	dlTags, err := p.Elements("ul>li>dl")
+	dlTags, err := p.Articles.Elements("li>dl")
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +176,7 @@ func (b *ScraperBuilder) ParseArticlesPage(p *scraper.ArticlesPage) ([]*model.Ar
 		datetime, dateErr := parseDatetime(dateTag.Text())
 		if dateErr != nil {
 			slog.Error("failed to parse datetime.", "function", functionName, "error", dateErr)
-			return nil, dateErr
+			continue
 		}
 		articleInfo.CreatedDateTime = datetime
 		articleInfo.UpdateDateTime = datetime

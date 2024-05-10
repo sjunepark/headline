@@ -75,16 +75,19 @@ func Test_currentPageNoIsValid(t *testing.T) {
 			urlString := fmt.Sprintf("https://thebell.co.kr/free/content/Search.asp?page=%d&sdt=&period=360&part=A&keyword=%s", tc.pageNo, tc.keyword)
 			wait, navErr := page.Navigate(urlString)
 			assert.NoError(t, navErr)
-			waitErr := wait(".newsBox")
+			waitErr := wait(".listBox>ul")
 			assert.NoError(t, waitErr)
 
-			el, elErr := page.Element(".newsBox")
+			articlesEl, elErr := page.Element(".listBox>ul")
 			assert.NoError(t, elErr)
+
+			pageNavEl, navErr := page.Element(".paging")
+			assert.NoError(t, navErr)
 
 			u, parseErr := url.Parse(urlString)
 			assert.NoError(t, parseErr)
 
-			articlesPage := scraper.NewArticlesPage(tc.keyword, el, u, tc.pageNo)
+			articlesPage := scraper.NewArticlesPage(tc.keyword, articlesEl, pageNavEl, u, tc.pageNo)
 			assert.True(t, currentPageNoIsValid(articlesPage) == tc.want)
 		})
 	}

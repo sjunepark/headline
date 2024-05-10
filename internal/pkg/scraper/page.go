@@ -5,38 +5,33 @@ import (
 	"net/url"
 )
 
+// ArticlesPage is a struct that contains the information of the current page of articles.
+// Articles is the element that contains all the articles.
+// PageNav is the element that contains the page navigation buttons.
 type ArticlesPage struct {
-	Keyword     string
-	PageElement *rodext.Element
-	PageUrl     *url.URL
-	PageNo      uint
+	Keyword  string
+	Articles *rodext.Element
+	PageNav  *rodext.Element
+	PageUrl  *url.URL
+	PageNo   uint
 }
 
-func NewArticlesPage(keyword string, element *rodext.Element, currentUrl *url.URL, currentPageNo uint) *ArticlesPage {
+func NewArticlesPage(
+	keyword string,
+	articles *rodext.Element,
+	pageNavigation *rodext.Element,
+	pageUrl *url.URL,
+	pageNo uint,
+) *ArticlesPage {
 	return &ArticlesPage{
-		Keyword:     keyword,
-		PageElement: element,
-		PageUrl:     currentUrl,
-		PageNo:      currentPageNo,
+		Keyword:  keyword,
+		Articles: articles,
+		PageNav:  pageNavigation,
+		PageUrl:  pageUrl,
+		PageNo:   pageNo,
 	}
 }
 
-func (p *ArticlesPage) Element(selector string) (*rodext.Element, error) {
-	el, err := p.PageElement.Element(selector)
-	if err != nil {
-		return nil, err
-	}
-	return el, nil
-}
-
-func (p *ArticlesPage) Elements(selector string) ([]*rodext.Element, error) {
-	els, err := p.PageElement.Elements(selector)
-	if err != nil {
-		return nil, err
-	}
-	return els, nil
-}
-
-func (p *ArticlesPage) Text() string {
-	return p.PageElement.Text()
+func (a *ArticlesPage) Text() string {
+	return a.Articles.Text()
 }
