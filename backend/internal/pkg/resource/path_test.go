@@ -1,7 +1,7 @@
 package resource
 
 import (
-	"github.com/sejunpark/headline/internal/pkg/constant"
+	"github.com/sejunpark/headline/backend/constant"
 	"github.com/stretchr/testify/assert"
 	"path"
 	"runtime"

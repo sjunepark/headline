@@ -2,7 +2,7 @@ package model
 
 import (
 	"fmt"
-	"github.com/sejunpark/headline/internal/pkg/util"
+	"github.com/sejunpark/headline/backend/internal/pkg/util"
 	"net/url"
 	"time"
 )

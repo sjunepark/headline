@@ -2,7 +2,7 @@ package scraper
 
 import (
 	"github.com/cockroachdb/errors"
-	"github.com/sejunpark/headline/internal/pkg/model"
+	"github.com/sejunpark/headline/backend/internal/pkg/model"
 	"log/slog"
 	"time"
 )

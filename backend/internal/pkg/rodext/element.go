@@ -3,7 +3,7 @@ package rodext
 import (
 	"github.com/cockroachdb/errors"
 	"github.com/go-rod/rod"
-	"github.com/sejunpark/headline/internal/pkg/util"
+	"github.com/sejunpark/headline/backend/internal/pkg/util"
 )
 
 type Element struct {

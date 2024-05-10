@@ -2,8 +2,8 @@ package thebell
 
 import (
 	"fmt"
-	"github.com/sejunpark/headline/internal/pkg/rodext"
-	"github.com/sejunpark/headline/internal/pkg/scraper"
+	"github.com/sejunpark/headline/backend/internal/pkg/rodext"
+	"github.com/sejunpark/headline/backend/internal/pkg/scraper"
 	"github.com/stretchr/testify/assert"
 	"net/url"
 	"testing"
