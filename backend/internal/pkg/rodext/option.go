@@ -3,7 +3,7 @@ package rodext
 import (
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/proto"
-	"github.com/sejunpark/headline/internal/pkg/constant"
+	"github.com/sejunpark/headline/backend/internal/pkg/constant"
 )
 
 func init() {

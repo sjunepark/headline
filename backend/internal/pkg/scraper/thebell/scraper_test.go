@@ -1,7 +1,7 @@
 package thebell
 
 import (
-	"github.com/sejunpark/headline/internal/pkg/scraper/testutil"
+	"github.com/sejunpark/headline/backend/internal/pkg/scraper/testutil"
 	"github.com/stretchr/testify/suite"
 	"testing"
 	"time"

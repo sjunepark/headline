@@ -1,7 +1,7 @@
 package testutil
 
 import (
-	"github.com/sejunpark/headline/internal/pkg/scraper"
+	"github.com/sejunpark/headline/backend/internal/pkg/scraper"
 	"github.com/stretchr/testify/suite"
 )
 

@@ -1,7 +1,7 @@
 package thebell
 
 import (
-	"github.com/sejunpark/headline/internal/pkg/scraper"
+	"github.com/sejunpark/headline/backend/internal/pkg/scraper"
 	"strconv"
 	"strings"
 	"time"

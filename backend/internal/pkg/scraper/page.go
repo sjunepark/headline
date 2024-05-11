@@ -1,7 +1,7 @@
 package scraper
 
 import (
-	"github.com/sejunpark/headline/internal/pkg/rodext"
+	"github.com/sejunpark/headline/backend/internal/pkg/rodext"
 	"net/url"
 )
 

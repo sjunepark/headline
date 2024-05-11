@@ -1,7 +1,7 @@
 package rodext
 
 import (
-	"github.com/sejunpark/headline/internal/pkg/util"
+	"github.com/sejunpark/headline/backend/internal/pkg/util"
 	"github.com/stretchr/testify/suite"
 	"testing"
 )
