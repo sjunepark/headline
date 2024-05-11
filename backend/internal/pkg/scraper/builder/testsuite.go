@@ -1,17 +1,16 @@
-package testutil
+package builder
 
 import (
-	"github.com/sejunpark/headline/backend/internal/pkg/scraper"
 	"github.com/stretchr/testify/suite"
 )
 
 type BaseScraperBuilderSuite struct {
 	suite.Suite
-	Builder scraper.Builder
+	Builder Builder
 	cleanup func()
 }
 
-func (ts *BaseScraperBuilderSuite) SetupScraperBuilderSuite(builder scraper.Builder, cleanup func()) {
+func (ts *BaseScraperBuilderSuite) SetupScraperBuilderSuite(builder Builder, cleanup func()) {
 	ts.Builder = builder
 	ts.cleanup = cleanup
 }

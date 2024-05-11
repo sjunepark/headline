@@ -2,34 +2,28 @@ package scraper
 
 import (
 	"github.com/cockroachdb/errors"
+	"github.com/sejunpark/headline/backend/constant"
 	"github.com/sejunpark/headline/backend/internal/pkg/model"
+	"github.com/sejunpark/headline/backend/internal/pkg/scraper/builder"
+	"github.com/sejunpark/headline/backend/internal/pkg/scraper/thebell"
 	"log/slog"
 	"time"
 )
 
 type Scraper struct {
-	Builder
+	builder.Builder
 }
 
-func NewScraper(builder Builder, cleanup func()) (*Scraper, func(), error) {
-	return &Scraper{Builder: builder}, cleanup, nil
-}
+func NewScraper(source constant.Source) (scraper *Scraper, cleanup func(), err error) {
+	var b builder.Builder
 
-// Builder is an interface that defines the methods which a scraper builder must implement.
-//
-// FetchArticlesPage should return an ArticlesPage object for the given keyword and start date.
-// The implementation of ArticlesPage is up to the builder, and effects how other methods handle it.
-//
-// FetchNextPage should return the next ArticlesPage if it exists.
-// It should also check if the current page and the next page are different.
-// If not, return false.
-// Since an error is not returned from this function, it should log all errors.
-//
-// ParseArticlesPage should parse and return model.ArticleInfo objects.
-type Builder interface {
-	FetchArticlesPage(keyword string, startDate time.Time) (*ArticlesPage, error)
-	FetchNextPage(currentPage *ArticlesPage) (nextPage *ArticlesPage, err error)
-	ParseArticlesPage(p *ArticlesPage) ([]*model.ArticleInfo, error)
+	switch source {
+	case constant.SourceThebell:
+		b, cleanup, err = thebell.NewThebellScraperBuilder()
+		return &Scraper{Builder: b}, cleanup, err
+	default:
+		return nil, nil, errors.AssertionFailedf("unsupported source: %v", source)
+	}
 }
 
 func (s *Scraper) Scrape(keyword string, startDate time.Time) ([]*model.ArticleInfo, error) {

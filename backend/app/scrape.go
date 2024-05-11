@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"github.com/sejunpark/headline/backend/internal/pkg/model"
 	"sync"
 )
 
@@ -24,4 +25,9 @@ func Scrape() *ScrapeService {
 
 func (s *ScrapeService) Start(ctx context.Context) {
 	s.ctx, s.cancel = context.WithCancel(ctx)
+}
+
+func (s *ScrapeService) Scrape(source string, keyword string) model.ArticlesPage {
+	// TODO: Implement this
+	return model.ArticlesPage{}
 }

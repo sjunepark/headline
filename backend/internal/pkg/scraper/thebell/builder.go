@@ -4,7 +4,6 @@ import (
 	"github.com/cockroachdb/errors"
 	"github.com/sejunpark/headline/backend/internal/pkg/model"
 	"github.com/sejunpark/headline/backend/internal/pkg/rodext"
-	"github.com/sejunpark/headline/backend/internal/pkg/scraper"
 	"log/slog"
 	"time"
 )
@@ -28,7 +27,7 @@ func NewThebellScraperBuilder() (builder *ScraperBuilder, cleanup func(), err er
 	return &ScraperBuilder{browser: browser, util: util}, cleanup, nil
 }
 
-func (b *ScraperBuilder) FetchArticlesPage(keyword string, _ time.Time) (*scraper.ArticlesPage, error) {
+func (b *ScraperBuilder) FetchArticlesPage(keyword string, _ time.Time) (*model.ArticlesPage, error) {
 	functionName := "FetchArticlesPage"
 
 	keywordUrl, err := b.util.getKeywordUrl(keyword)
@@ -54,12 +53,12 @@ func (b *ScraperBuilder) FetchArticlesPage(keyword string, _ time.Time) (*scrape
 		return nil, errors.Wrap(err, "getPageElements() failed")
 	}
 
-	articlesPage := scraper.NewArticlesPage(keyword, articlesEl, pageNavEl, keywordUrl, pageNo)
+	articlesPage := model.NewArticlesPage(keyword, articlesEl, pageNavEl, keywordUrl, pageNo)
 	slog.Debug("executed:", "function", functionName, "keyword", keyword, "pageNo", pageNo)
 	return articlesPage, nil
 }
 
-func (b *ScraperBuilder) FetchNextPage(currentPage *scraper.ArticlesPage) (nextPage *scraper.ArticlesPage, err error) {
+func (b *ScraperBuilder) FetchNextPage(currentPage *model.ArticlesPage) (nextPage *model.ArticlesPage, err error) {
 	functionName := "FetchNextPage"
 
 	if currentPage == nil {
@@ -86,7 +85,7 @@ func (b *ScraperBuilder) FetchNextPage(currentPage *scraper.ArticlesPage) (nextP
 		return nil, errors.Wrap(err, "getPageElements() failed")
 	}
 
-	nextPage = scraper.NewArticlesPage(currentPage.Keyword, nextPageEl, pageNavEl, nextPageUrl, nextPageNo)
+	nextPage = model.NewArticlesPage(currentPage.Keyword, nextPageEl, pageNavEl, nextPageUrl, nextPageNo)
 	if !currentPageNoIsValid(nextPage) {
 		return nil, errors.Newf("currentPageNoIsValid(%v) failed", nextPage)
 	}
@@ -118,7 +117,7 @@ func getPageElements(page *rodext.Page, wait func(selector string) error) (artic
 	return articlesEl, pageNavEl, nil
 }
 
-func (b *ScraperBuilder) ParseArticlesPage(p *scraper.ArticlesPage) ([]*model.ArticleInfo, error) {
+func (b *ScraperBuilder) ParseArticlesPage(p *model.ArticlesPage) ([]*model.ArticleInfo, error) {
 	functionName := "ParseArticlesPage"
 
 	dlTags, err := p.Articles.Elements("li>dl")

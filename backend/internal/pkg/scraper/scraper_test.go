@@ -1,20 +1,18 @@
-package thebell
+package scraper
 
 import (
-	"github.com/sejunpark/headline/backend/internal/pkg/scraper/testutil"
+	"github.com/sejunpark/headline/backend/constant"
 	"github.com/stretchr/testify/suite"
 	"testing"
 	"time"
 )
 
 type ThebellScraperSuite struct {
-	testutil.BaseScraperSuite
+	BaseScraperSuite
 }
 
 func (ts *ThebellScraperSuite) SetupSuite() {
-	builder, cleanup, err := NewThebellScraperBuilder()
-	ts.NoErrorf(err, "failed to initialize TheBellScraperBuilder: %v", err)
-	ts.SetupBuilderSuite(builder, cleanup)
+	ts.SetupScraperSuite(constant.SourceThebell)
 }
 
 func TestThebellScraperSuite(t *testing.T) {

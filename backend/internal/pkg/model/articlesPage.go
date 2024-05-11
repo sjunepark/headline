@@ -1,4 +1,4 @@
-package scraper
+package model
 
 import (
 	"github.com/sejunpark/headline/backend/internal/pkg/rodext"

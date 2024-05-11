@@ -2,8 +2,8 @@ package thebell
 
 import (
 	"fmt"
+	"github.com/sejunpark/headline/backend/internal/pkg/model"
 	"github.com/sejunpark/headline/backend/internal/pkg/rodext"
-	"github.com/sejunpark/headline/backend/internal/pkg/scraper"
 	"github.com/stretchr/testify/assert"
 	"net/url"
 	"testing"
@@ -87,7 +87,7 @@ func Test_currentPageNoIsValid(t *testing.T) {
 			u, parseErr := url.Parse(urlString)
 			assert.NoError(t, parseErr)
 
-			articlesPage := scraper.NewArticlesPage(tc.keyword, articlesEl, pageNavEl, u, tc.pageNo)
+			articlesPage := model.NewArticlesPage(tc.keyword, articlesEl, pageNavEl, u, tc.pageNo)
 			assert.True(t, currentPageNoIsValid(articlesPage) == tc.want)
 		})
 	}

@@ -1,7 +1,7 @@
 package thebell
 
 import (
-	"github.com/sejunpark/headline/backend/internal/pkg/scraper/testutil"
+	"github.com/sejunpark/headline/backend/internal/pkg/scraper/builder"
 	"github.com/stretchr/testify/suite"
 	"log/slog"
 	"testing"
@@ -9,13 +9,12 @@ import (
 )
 
 type theBellScraperBuilderSuite struct {
-	testutil.BaseScraperBuilderSuite
-	logLevel slog.Level
+	builder.BaseScraperBuilderSuite
+	defaultLoggerLevel slog.Level
 }
 
 func (ts *theBellScraperBuilderSuite) SetupSuite() {
-	// Have to set log level in the beginning, not in the BaseSuite since this has to be set before any other process.
-	ts.logLevel = slog.SetLogLoggerLevel(slog.LevelDebug)
+	ts.defaultLoggerLevel = slog.SetLogLoggerLevel(slog.LevelDebug)
 
 	builder, cleanup, err := NewThebellScraperBuilder()
 	ts.NoErrorf(err, "failed to initialize TheBellScraperBuilder: %v", err)
@@ -24,7 +23,7 @@ func (ts *theBellScraperBuilderSuite) SetupSuite() {
 
 func (ts *theBellScraperBuilderSuite) TearDownSuite() {
 	ts.SetupTearDownSuite()
-	slog.SetLogLoggerLevel(ts.logLevel)
+	slog.SetLogLoggerLevel(ts.defaultLoggerLevel)
 }
 
 func TestThebellScraperBuilderSuite(t *testing.T) {

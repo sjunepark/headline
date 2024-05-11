@@ -1,7 +1,7 @@
 package thebell
 
 import (
-	"github.com/sejunpark/headline/backend/internal/pkg/scraper"
+	"github.com/sejunpark/headline/backend/internal/pkg/model"
 	"strconv"
 	"strings"
 	"time"
@@ -29,7 +29,7 @@ func parseDatetime(thebellDate string) (time.Time, error) {
 
 // currentPageNoIsValid checks if the current page number is valid.
 // This check is used since the bell shows the last page when it's queried with a large page number beyond range.
-func currentPageNoIsValid(p *scraper.ArticlesPage) bool {
+func currentPageNoIsValid(p *model.ArticlesPage) bool {
 	pageNav := p.PageNav
 
 	// When properly accessed, thebell colors the current page number element,

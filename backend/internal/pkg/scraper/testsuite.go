@@ -1,24 +1,24 @@
-package testutil
+package scraper
 
 import (
-	"github.com/sejunpark/headline/backend/internal/pkg/scraper"
+	"github.com/sejunpark/headline/backend/constant"
 	"github.com/stretchr/testify/suite"
 	"log/slog"
 )
 
 type BaseScraperSuite struct {
 	suite.Suite
-	Scraper  *scraper.Scraper
+	Scraper  *Scraper
 	cleanup  func()
 	logLevel slog.Level
 }
 
-func (ts *BaseScraperSuite) SetupBuilderSuite(builder scraper.Builder, cleanup func()) {
+func (ts *BaseScraperSuite) SetupScraperSuite(source constant.Source) {
 	ts.logLevel = slog.SetLogLoggerLevel(slog.LevelDebug)
-	s, cleanup, err := scraper.NewScraper(builder, cleanup)
+
+	var err error
+	ts.Scraper, ts.cleanup, err = NewScraper(source)
 	ts.NoErrorf(err, "failed to initialize Scraper: %v", err)
-	ts.Scraper = s
-	ts.cleanup = cleanup
 }
 
 func (ts *BaseScraperSuite) TearDownSuite() {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"embed"
 	"github.com/sejunpark/headline/backend/app"
+	"github.com/sejunpark/headline/backend/constant"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
@@ -30,6 +31,9 @@ func main() {
 		},
 		Bind: []interface{}{
 			scrape,
+		},
+		EnumBind: []interface{}{
+			constant.Sources,
 		},
 	})
 
