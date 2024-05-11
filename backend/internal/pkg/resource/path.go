@@ -3,7 +3,7 @@ package resource
 import (
 	"github.com/adrg/xdg"
 	"github.com/cockroachdb/errors"
-	"github.com/sejunpark/headline/internal/pkg/constant"
+	"github.com/sejunpark/headline/backend/constant"
 	"path"
 )
 

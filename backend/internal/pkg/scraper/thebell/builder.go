@@ -2,9 +2,9 @@ package thebell
 
 import (
 	"github.com/cockroachdb/errors"
-	"github.com/sejunpark/headline/internal/pkg/model"
-	"github.com/sejunpark/headline/internal/pkg/rodext"
-	"github.com/sejunpark/headline/internal/pkg/scraper"
+	"github.com/sejunpark/headline/backend/internal/pkg/model"
+	"github.com/sejunpark/headline/backend/internal/pkg/rodext"
+	"github.com/sejunpark/headline/backend/internal/pkg/scraper"
 	"log/slog"
 	"time"
 )
